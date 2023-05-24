@@ -1,0 +1,109 @@
+{
+  "AptSnap Page Object": {
+    "prefix": "aptpage",
+    "description": "A page object",
+    "body": [
+      "import { PageObject } from '~/test'",
+      "",
+      "export class ${1:ClassName}PageObject extends PageObject {",
+      "  ${2}",
+      "}"
+    ]
+  },
+  "AptSnap React Functional Component": {
+    "prefix": "aptreactfunc",
+    "description": "A functional react component for ApartmentSnapshot",
+    "body": [
+      "interface $1Props {",
+      "}",
+      "",
+      "/**",
+      " * <$1>",
+      " */",
+      "export function ${1:ClassName}({",
+      "  ${2}",
+      "  ...rest",
+      "}:$1Props) {",
+      "  return (",
+      "    <Box testID='$1'>",
+      "      ${3}",
+      "    </Box>",
+      "  )",
+      "}",
+      ""
+    ]
+  },
+  "AptSnap React Test": {
+    "prefix": "aptreacttest",
+    "description": "Test for an ApartmentSnapshot component",
+    "body": [
+      "import React from 'react';",
+      "import { RenderAPI } from '@testing-library/react-native'",
+      "",
+      "import { renderWithTheme } from '~/test'",
+      "import { $1 } from './$1'",
+      "import $1PageObject from './$1.page-object'",
+      "",
+      "describe('${name:ComponentName}', () => {",
+      "  let page: $1PageObject",
+      "  let screen: RenderAPI",
+      "",
+      "  beforeEach(() => {",
+      "    screen = renderWithTheme(",
+      "      <$1 testID=\"$1\" />",
+      "    )",
+      "    page = new $1PageObject(screen.container)",
+      "  })",
+      "",
+      "  it(\"$1\", () => { ",
+      "    ${2} ",
+      "  }})",
+      "})"
+    ]
+  },
+  "Jest Before Each": {
+    "prefix": "beforeEach",
+    "description": "A Jest beforeEach test statement",
+    "body": [
+      "beforeEach(() => {",
+      "  ${1}",
+      "})"
+    ]
+  },
+  "Jest After Each": {
+    "prefix": "afterEach",
+    "description": "A Jest afterEach test statement",
+    "body": [
+      "afterEach(() => {",
+      "  ${1}",
+      "})"
+    ]
+  },
+  "Jest Describe": {
+    "prefix": "describe",
+    "description": "A Jest describe test statement",
+    "body": [
+      "describe('${1:description_here}', () => {",
+      "  ${2}",
+      "})"
+    ]
+  },
+  "Jest Test": {
+    "prefix": "it",
+    "description": "A Jest it test statement",
+    "body": [
+      "it('${1:description_here}', () => {",
+      "  ${2}",
+      "})"
+    ]
+  },
+  "Jest Skipped Test": {
+    "prefix": "xit",
+    "description": "A skipped Jest it test statement",
+    "body": [
+      "xit('${1:description_here}', () => {",
+      "  ${2}",
+      "})"
+    ]
+  }
+}
