@@ -7,6 +7,7 @@ NC='\033[0m' # No Color
 HOME="$(realpath ~)"
 NVIM_HOME="$HOME/.config/nvim"
 PACKER_CACHE="$HOME/.local/share/nvim/site/pack/packer"
+LAZY_CACHE="$HOME/.local/share/nvim/lazy"
 ROOT=$(realpath ../)
 CONFIG=$(realpath ./config)
 NVCHAD="$ROOT/NvChad"
@@ -21,11 +22,18 @@ else
   echo "✅ ${GREEN}NvChad/lua/custom${NC} not linked"
 fi
 
-# Remove the packer compiled code
+# Remove the packer compiled code (for backwards compat with NvChad v1)
 if [ -L $PACKER_CACHE ]
 then
   echo "🚫 removing Packer cache files"
   rm -rf $PACKER_CACHE
+fi
+
+# Remove the lazy.nvim compiled code
+if [ -L $LAZY_CACHE ]
+then
+  echo "🚫 removing Lazy.nvim cache files"
+  rm -rf $LAZY_CACHE
 fi
 
 # Remove the ~/.config/nvim symlink to NvChad and restore any backups

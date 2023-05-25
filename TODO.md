@@ -9,6 +9,8 @@
       h: getttime
 - Projects alternative: https://github.com/natecraddock/workspaces.nvim
 - Focus: https://github.com/Pocco81/true-zen.nvim
+- exit a terminal buffer with `<leader>-x`. Current command is <C-d>
+- key command to close a tab in the same manner as pressing the tab close button
 
 Terminal cursor?
 
