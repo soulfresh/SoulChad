@@ -11,9 +11,13 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 NVIM_HOME="$HOME/.config/nvim"
+# TODO find an alternative tot he realpath command so we don't have to
+# brew install coreutils before we can use this script.
 ROOT=$(realpath ../)
 DOTFILES=$(pwd)
 CONFIG=$(realpath ./nvchad)
+
+hadError=false
 
 # TODO Exit if no brew
 
@@ -32,11 +36,18 @@ done
 
 if [ "$installBrew" = true ]; then
   echo "🚗 Installing/Upgrading commandline tools..."
-  # realpath
-  # https://linux.die.net/man/1/realpath
-  brew install coreutils;
-  # used for searching with Telescope
-  brew install ripgrep;
+
+  # Install brew if it doesn't exist
+  if [[ $(command -v brew) == "" ]]; then
+    echo "👷 Installing Hombrew"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  else
+    echo "🌱 Updating Homebrew"
+    brew update
+  fi
+
+  # Use the bundle file to install system dependencies
+  brew bundle install --file "${DOTFILES}/Brewfile"
   echo "✅ ${GREEN} Installed/Upgraded commandline tools"
 fi 
 
@@ -54,8 +65,18 @@ else
     echo "✅ ${GREEN}Prompts${NC} linked"
   else
     echo "🙈 ${RED}${HOME}/.zsh.prompts/prompt_mwren_setup${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-    exit 1
+    hadError=true
   fi
+fi
+
+# Install Nerd Fonts
+if [ ! -d "../GetNerdFonts" ]
+then
+  echo "🚗 cloning NerdFonts"
+  git clone https://github.com/ronniedroid/getnf.git $ROOT/GetNerdFonts
+  echo "✅ ${GREEN}GetNerdFonts${NC} ready"
+else
+  echo "✅ ${GREEN}GetNerdFonts${NC} already checked out"
 fi
 
 # Copy chadrc.lua.template to chadrc.lua (if it doesn't already exist)
@@ -85,7 +106,7 @@ else
     echo "✅ ${GREEN}NvChad/lua/custom${NC} already linked"
   else
     echo "🙈 ${RED}../NvChad/lua/custom${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-    exit 1
+    hadError=true
   fi
 fi
 
@@ -111,3 +132,10 @@ else
   ln -s $ROOT/NvChad ~/.config/nvim
 fi
 
+if [ hadError = true ]
+then
+  echo "${RED} There was an error during install.${NC}"
+else
+  echo "${GREEN} Install successful!${NC}"
+  echo "You can now install any Nerd Fonts you want with the 'getnf' commandline tool"
+fi

@@ -1,7 +1,7 @@
 -- Font customizations: 
 -- Download fronts via: https://github.com/ronniedroid/getnf
 -- Preview fonts via: https://www.programmingfonts.org/
-vim.opt.guifont = "FiraCode_Nerd_Font_Mono:h10"
+vim.opt.guifont = "FiraCode_Nerd_Font:h10"
 -- vim.opt.guifont = "FuraMono_Nerd_Font:h10"
 -- vim.opt.guifont = "Lilex_Nerd_Font:h10"
 -- vim.opt.guifont = "MesloGL_Nerd_Font:h10"
