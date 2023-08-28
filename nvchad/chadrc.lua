@@ -29,6 +29,38 @@ M.ui = {
     lockfile = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config") .. "/lua/custom"), ':h') .. "/nvchad/lazy-lock.json",
   },
 
+  nvdash = {
+    load_on_startup = false,
+    -- Generated from https://fsymbols.com/generators/carty/
+    header = {
+
+      "█▀ █▀█ █░█ █░░ █░█ █ █▀▄▀█",
+      "▄█ █▄█ █▄█ █▄▄ ▀▄▀ █ █░▀░█",
+
+
+      -- "▟▛ ██ ▙▟ ▙▄ ▚▞ █ ▛▚▞▜ ",
+      --
+      --
+      -- "█─▄▄▄▄█─▄▄─█▄─██─▄█▄─▄███▄─█─▄█▄─▄█▄─▀█▀─▄█",
+      -- "█▄▄▄▄─█─██─██─██─███─██▀██▄▀▄███─███─█▄█─██",
+      -- "▀▄▄▄▄▄▀▄▄▄▄▀▀▄▄▄▄▀▀▄▄▄▄▄▀▀▀▄▀▀▀▄▄▄▀▄▄▄▀▄▄▄▀",
+      --
+      --
+      -- "█▀▀ █▀▀█ █░░█ █░░ ▀█░█▀ ░▀░ █▀▄▀█",
+      -- "▀▀█ █░░█ █░░█ █░░ ░█▄█░ ▀█▀ █░▀░█",
+      -- "▀▀▀ ▀▀▀▀ ░▀▀▀ ▀▀▀ ░░▀░░ ▀▀▀ ▀░░░▀",
+      --
+      --
+      -- "█▀▀ █▀▀█ █░░█ █░░",
+      -- "▀▀█ █░░█ █░░█ █░░",
+      -- "▀▀▀ ▀▀▀▀ ░▀▀▀ ▀▀▀",
+      -- " █░░█ ▀█▀ █▀▄▀█░ ",
+      -- " ██ █  █░░█░█░█░ ",
+      -- "  ▀█▀ ███░█░▀░█  ",
+
+    }
+  },
+
   tabufline = {
     overriden_modules = function()
       return {
@@ -58,6 +90,12 @@ M.ui = {
       }
     end
   },
+
+  cmp = {
+    -- sources = {
+    --   { name = "copilot", group_index = 2 },
+    -- },
+  }
 }
 
 M.plugins = "custom.plugins"

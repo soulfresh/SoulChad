@@ -11,6 +11,16 @@ function ChangeScaleFactor(delta)
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
 end
 
+M.disabled = {
+  n = {
+    -- replace NvChad's buffer close with something harder to hit
+    ['<leader>x'] = {},
+  },
+  i = {
+    ["<C-e>"] = {},
+  }
+}
+
 M.general = {
   i = {
     ["<C-O>"] = {
@@ -25,7 +35,9 @@ M.general = {
       end,
       "Move cursor down one line"
     },
-    ["<D-v>"] = { '"+p', "Paste" }
+    ["<D-v>"] = { '<c-r>*', "Paste" },
+    ["<D-]>"] = { "<cmd> tabnext<CR>", "Next tab" },
+    ["<D-[>"] = { "<cmd> tabprevious<CR>", "Previous tab" },
   },
   n = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
@@ -71,6 +83,12 @@ M.general = {
     ["Q"] = { ":close<CR>", "close window" },
     ["<D-q>"] = { ":qa<CR>", "quit Neovim" },
     ["W"] = { ":wa<CR>", "save all" },
+    ["<leader>xb"] = {
+      function()
+        require("nvchad_ui.tabufline").close_buffer()
+      end,
+      "Close buffer",
+    },
 
     -- splits
     ["ss"] = { ":split<CR><C-w>k", "horizontal split"},
@@ -80,6 +98,12 @@ M.general = {
     ["<leader>ts"] = { ":tab split", "open current buffer in new tab"},
     ["<D-]>"] = { ":tabnext<CR>", "Next tab" },
     ["<D-[>"] = { ":tabprevious<CR>", "Previous tab" },
+    ['<leader>xt'] = {
+      function()
+        require('nvchad_ui.tabufline').closeAllBufs('closeTab')
+      end,
+      "Close tab",
+    },
 
     -- window sizing/movement
     ["<Left>"] = { ":vertical resize -1<CR>", "resize window left"},
@@ -96,22 +120,24 @@ M.general = {
     ["<D-Down>"] = { ":winc J<CR>", "move window left"},
 
     -- comments
-    ["<C-Space>"] = { "<leader>/", "comment line"},
+    -- ["<C-Space>"] = { "<leader>/", "comment line"},
 
     -- highlighting
     ["//"] = { "<cmd> noh <CR>", "no highlight" },
+
+    -- text manipulation
+    ["<leader>sj"] = { ":TSJToggle<CR>", "Split or Join long lines"},
+    ["="] = {"V=", "Auto indent current line."},
 
     -- themes
     ["<leader>tt"] = { function()
       require("base46").toggle_theme()
     end, "toggle light/dark theme"},
+
   },
   v = {
     ["H"] = { "^", "go to first non-blank character in line"},
     ["L"] = { "g_", "go to the last non-blank character in line"},
-  },
-  t = {
-    ["<D-v>"] = { '"+p', "Paste" }
   },
 }
 
@@ -165,7 +191,6 @@ M.nvterm = {
       "Clear terminal output"
     }
   },
-
   t = {
     -- navigation in/out of terminal mode
     ["<Esc><Esc>"] = { "<C-\\><C-N>", "exit terminal mode"},
@@ -173,7 +198,23 @@ M.nvterm = {
     ["<C-l>"] = { "<C-\\><C-N><C-w>l", "leave terminal right" },
     ["<C-j>"] = { "<C-\\><C-N><C-w>j", "leave terminal down" },
     ["<C-k>"] = { "<C-\\><C-N><C-w>k", "leave terminal up" },
+    ["<D-]>"] = { "<C-\\><C-N>gt", "Next tab" },
+    ["<D-[>"] = { "<C-\\><C-N>gT", "Previous tab" },
 
+    -- window sizing/movement
+    ["<S-Left>"] = { ":vertical resize -10<CR>", "resize window left"},
+    ["<D-Left>"] = { ":winc H<CR>", "move window left"},
+    ["<S-Right>"] = { ":vertical resize +10<CR>", "resize window right"},
+    ["<D-Right>"] = { ":winc L<CR>", "move window left"},
+    ["<S-Up>"] = { ":resize -10<CR>", "resize window up"},
+    ["<D-Up>"] = { ":winc K<CR>", "move window left"},
+    ["<S-Down>"] = { ":resize +10<CR>", "resize window down"},
+    ["<D-Down>"] = { ":winc J<CR>", "move window left"},
+
+    -- Clipboard
+    ["<D-v>"] = { '<C-\\><C-N>"*pi', "Paste" },
+
+    -- Clear terminal
     ["<M-l>"] = {
       function()
         vim.cmd('set scrollback=1')
@@ -194,7 +235,7 @@ M.fugitive = {
 
 M.undo = {
   n = {
-    ["<leader>fu"] = { "<cmd> Telescope undo <cr>", "Find Undo: show undo history" },
+    ["<leader>u"] = { "<cmd> Telescope undo <cr>", "Find Undo: show undo history" },
   }
 }
 

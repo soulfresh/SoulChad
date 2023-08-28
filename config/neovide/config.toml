@@ -1,0 +1,9 @@
+# wsl = false
+multigrid = true
+# vsync = true
+# Not the same as g:neovide_fullscreen
+# maximized = true
+# srgb = false
+# idle = true
+neovim_bin = "/usr/local/bin/nvim"
+# frame = "Full"

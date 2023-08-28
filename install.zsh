@@ -132,10 +132,15 @@ else
   ln -s $ROOT/NvChad ~/.config/nvim
 fi
 
+# Copy other configs into place
+# TODO Convert this into a loop over each file/folder in configs/
+cp -r $DOTFILES/config/neovide $HOME/.config
+echo "✅ Copied configs into place"
+
 if [ hadError = true ]
 then
   echo "${RED} There was an error during install.${NC}"
 else
-  echo "${GREEN} Install successful!${NC}"
+  echo "🙌 ${GREEN}Install successful!${NC}"
   echo "You can now install any Nerd Fonts you want with the 'getnf' commandline tool"
 fi

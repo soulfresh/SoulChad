@@ -1,11 +1,11 @@
 -- Neovide config
--- Allow passing the command key
+-- Allow passing the command key as the Meta key
 vim.g.neovide_input_use_logo = true
 -- Pass the Alt key as the Meta key
 vim.g.neovide_input_macos_alt_is_meta = false
 -- Use an outline for the cursor when the window does not have focus
 vim.g.neovide_cursor_unfocused_outline_width = 0.125
-vim.g.neovide_fullscreen = true
+vim.g.neovide_fullscreen = false
 vim.g.neovide_confirm_quit = true
 -- vim.g.neovide_cursor_vfx_mode = "sonicboom"
 vim.g.neovide_hide_mouse_when_typing = true
