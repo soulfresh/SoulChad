@@ -20,9 +20,9 @@
 - Use <C-Enter> to select a cmp item unless we have selected something other
   than the first item in the list.
     - Using <Enter> to select an item from the completion menu causes unexpected
-      results when trying to enter a new line character. Is there a better
+      results when trying to start a new line of code. Is there a better
       keybinding so wrapping code doesn't select a completion if that's not what we
-      wanted to do? Currently I have to <C-Space><Enter> to start a new line of code
+      wanted to do? Currently I have to <C-Enter> to start a new line of code
 - Turn off Tab insertion of snippets (but not completion) because it interferes
   with copilot suggestions.
   - Type `xit` and wait for but a copilot suggestion and the snippet completion

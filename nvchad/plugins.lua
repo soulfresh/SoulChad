@@ -1,31 +1,31 @@
 local overrides = require("custom.configs.overrides")
 local cmp = require("cmp")
 
-local function nextCompletion(fallback)
-	local copilot = require("copilot.suggestion")
-	if cmp.visible() then
-		cmp.select_next_item()
-	elseif require("luasnip").expand_or_jumpable() then
-		vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-	elseif copilot.is_visible() then
-		copilot.accept()
-	else
-		fallback()
-	end
-end
-
-local function previousCompletion(fallback)
-	local copilot = require("copilot.suggestion")
-	if cmp.visible() then
-		cmp.select_prev_item()
-	elseif require("luasnip").jumpable(-1) then
-		vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-	elseif copilot.is_visible() then
-		copilot.dismiss()
-	else
-		fallback()
-	end
-end
+-- local function nextCompletion(fallback)
+-- 	local copilot = require("copilot.suggestion")
+-- 	if cmp.visible() then
+-- 		cmp.select_next_item()
+-- 	elseif require("luasnip").expand_or_jumpable() then
+-- 		vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+-- 	elseif copilot.is_visible() then
+-- 		copilot.accept()
+-- 	else
+-- 		fallback()
+-- 	end
+-- end
+--
+-- local function previousCompletion(fallback)
+-- 	local copilot = require("copilot.suggestion")
+-- 	if cmp.visible() then
+-- 		cmp.select_prev_item()
+-- 	elseif require("luasnip").jumpable(-1) then
+-- 		vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+-- 	elseif copilot.is_visible() then
+-- 		copilot.dismiss()
+-- 	else
+-- 		fallback()
+-- 	end
+-- end
 
 ---@type NvPluginSpec[]
 local plugins = {
@@ -310,6 +310,24 @@ local plugins = {
 					"i",
 					"s",
 				}),
+        -- ["<CR>"] = cmp.mapping({
+        --   i = function(fallback)
+        --     if cmp.visible() then
+        --       cmp.confirm({
+        --         behavior = cmp.ConfirmBehavior.Replace,
+        --         select = false,
+        --       })
+        --     else
+        --       fallback()
+        --     end
+        --   end,
+        --   s = function()
+        --     cmp.confirm({
+        --       behavior = cmp.ConfirmBehavior.Replace,
+        --       select = true,
+        --     })
+        --   end,
+        -- }),
 				-- ["<C-e>"] = false,
 			},
 		},
@@ -338,7 +356,7 @@ local plugins = {
           -- multiline copilot suggestions from appearing in copilot-cmp.
           -- https://github.com/zbirenbaum/copilot-cmp/issues/87
 					enabled = false,
-					auto_trigger = true,
+					auto_trigger = false,
 					-- keymap = {
 					--   accept = "<C-,>",
 					-- }
@@ -368,12 +386,38 @@ local plugins = {
 		end,
 	},
 
-  -- Breaking Telescope?
-  -- {
-  --   "godlygeek/tabular",
-		-- event = { "BufRead", "BufWinEnter", "BufNewFile" },
-  -- },
+  -- EasyAlign
+  -- https://github.com/junegunn/vim-easy-align
+  {
+    'junegunn/vim-easy-align',
+		event = { "BufRead", "BufWinEnter", "BufNewFile" },
+  },
 
+  -- Surround 
+  -- https://github.com/kylechui/nvim-surround
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
+
+  -- Focus buffer
+  -- https://github.com/Pocco81/true-zen.nvim
+  {
+    "Pocco81/true-zen.nvim",
+		event = "VimEnter",
+    config = function()
+      require("true-zen").setup {
+        -- your config goes here
+        -- or just leave it empty :)
+      }
+    end,
+  }
 	-- To make a plugin not be loaded
 	-- {
 	--   "NvChad/nvim-colorizer.lua",

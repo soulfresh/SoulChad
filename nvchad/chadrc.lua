@@ -22,13 +22,6 @@ M.ui = {
   hl_override = highlights.override,
   hl_add = highlights.add,
 
-  lazy_nvim = {
-    -- directory where plugins will be installed
-    root = vim.fn.stdpath("data") .. "/lazy",
-    -- Save the lock file next to our NvChad configs
-    lockfile = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config") .. "/lua/custom"), ':h') .. "/nvchad/lazy-lock.json",
-  },
-
   nvdash = {
     load_on_startup = false,
     -- Generated from https://fsymbols.com/generators/carty/
@@ -97,6 +90,14 @@ M.ui = {
     -- },
   }
 }
+
+M.lazy_nvim = {
+  -- directory where plugins will be installed
+  -- root = vim.fn.stdpath("data") .. "/lazy",
+  -- Save the lock file next to our NvChad configs
+  lockfile = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config") .. "/lua/custom"), ':h') .. "/nvchad/lazy-lock.json",
+}
+
 
 M.plugins = "custom.plugins"
 

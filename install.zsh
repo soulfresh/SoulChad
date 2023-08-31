@@ -52,19 +52,40 @@ if [ "$installBrew" = true ]; then
 fi 
 
 # Symlink Prezto prompt
+# TODO Install Prezto repo (see setup/prezto.zsh)
 # if the file doesn't exists and is not a directory
-if [ ! -d "${HOME}/.zsh.prompts/prompt_mwren_setup" ]
+if [ ! -d "${HOME}/.zsh.prompts" ]
 then
-  echo "🔗 Linking ZSH Prompt $DOTFILES"
-  cp $DOTFILES/zsh/prezto/prompt_mwren_setup $HOME/.zsh.prompts/prompt_mwren_setup
+  echo "🔗 Linking ZSH Prompt"
+  ln -s $DOTFILES/zsh/.zsh.prompts $HOME
+  echo "✅ ${GREEN}ZSH Prompts${NC} linked"
 else
   # If the file is already there, replace it
-  if [ -L "${HOME}/.zsh.prompts/prompt_mwren_setup" ]
+  if [ -L "${HOME}/.zsh.prompts" ]
   then
-    cp $DOTFILES/zsh/prezto/prompt_mwren_setup $HOME/.zsh.prompts/prompt_mwren_setup
+    ln -s $DOTFILES/zsh/.zsh.prompts $HOME
     echo "✅ ${GREEN}Prompts${NC} linked"
   else
-    echo "🙈 ${RED}${HOME}/.zsh.prompts/prompt_mwren_setup${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
+    echo "🙈 ${RED}${HOME}/.zsh.prompts${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
+    hadError=true
+  fi
+fi
+
+# Symlink ZSH Configs
+# if the file doesn't exists and is not a directory
+if [ ! -d "${HOME}/.zsh.after" ]
+then
+  echo "🔗 Linking ZSH Configs"
+  ln -s $DOTFILES/zsh/.zsh.after $HOME
+  echo "✅ ${GREEN}ZSH Configs${NC} linked"
+else
+  # If the file is already there, replace it
+  if [ -L "${HOME}/.zsh.after" ]
+  then
+    ln -s $DOTFILES/zsh/.zsh.after $HOME
+    echo "✅ ${GREEN}ZSH Configs${NC} linked"
+  else
+    echo "🙈 ${RED}${HOME}/.zsh.after${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
     hadError=true
   fi
 fi
@@ -110,6 +131,8 @@ else
   fi
 fi
 
+# TODO if `config/chardc.lua` doesn't exist, then copy the template into place
+
 # Symlink NvChad into ~/.config/nvim
 if [ -e "$NVIM_HOME" ]
 then
@@ -137,6 +160,8 @@ fi
 cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 
+# TODO Copy ZSH configs into place
+
 if [ hadError = true ]
 then
   echo "${RED} There was an error during install.${NC}"
@@ -144,3 +169,4 @@ else
   echo "🙌 ${GREEN}Install successful!${NC}"
   echo "You can now install any Nerd Fonts you want with the 'getnf' commandline tool"
 fi
+

@@ -239,4 +239,13 @@ M.undo = {
   }
 }
 
+M.easyalign = {
+  n = {
+    ["<leader>ta"] = { "<Plug>(EasyAlign)", "Align/tabularize" },
+  },
+  v = {
+    ['<leader>ta'] = { "<Plug>(EasyAlign)", "Align/tabularize" },
+  }
+}
+
 return M

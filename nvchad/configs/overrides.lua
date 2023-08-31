@@ -67,7 +67,7 @@ M.nvimtree = {
           width = 50,
           height = vim.opt.lines:get(),
           -- account for NvChad tabbufline
-          row = 2,
+          row = 1,
           col = 0,
         }
       end
