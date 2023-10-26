@@ -13,6 +13,8 @@ M.treesitter = {
     "graphql",
     "markdown",
     "markdown_inline",
+    "rust",
+    "toml",
   },
   indent = {
     enable = true,
@@ -39,6 +41,8 @@ M.mason = {
     -- c/cpp stuff
     "clangd",
     "clang-format",
+    "rust-analyzer",
+    "codelldb",
   },
 }
 

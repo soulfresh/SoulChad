@@ -32,6 +32,7 @@ local plugins = {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
+      -- { "simrat39/rust-tools.nvim", name = "rust-tools" },
 			-- format & linting
 			{
 				"jose-elias-alvarez/null-ls.nvim",
@@ -103,7 +104,7 @@ local plugins = {
 			local alpha = require("alpha")
 			local dashboard = require("alpha.themes.dashboard")
 			local opts = require("custom.configs.alpha")
-			print(vim.inspect(opts))
+
 			dashboard.section.header = opts.override_options.header
 			dashboard.section.buttons = opts.override_options.buttons
 			-- alpha.setup(opts.override_options)
@@ -310,24 +311,43 @@ local plugins = {
 					"i",
 					"s",
 				}),
-        -- ["<CR>"] = cmp.mapping({
-        --   i = function(fallback)
-        --     if cmp.visible() then
-        --       cmp.confirm({
-        --         behavior = cmp.ConfirmBehavior.Replace,
-        --         select = false,
-        --       })
-        --     else
-        --       fallback()
-        --     end
-        --   end,
-        --   s = function()
-        --     cmp.confirm({
-        --       behavior = cmp.ConfirmBehavior.Replace,
-        --       select = true,
-        --     })
-        --   end,
-        -- }),
+        ["<CR>"] = cmp.mapping({
+          i = function(fallback)
+            fallback()
+            -- if cmp.visible() then
+            --   cmp.confirm({
+            --     behavior = cmp.ConfirmBehavior.Replace,
+            --     select = false,
+            --   })
+            -- else
+            --   fallback()
+            -- end
+          end,
+          s = function()
+            cmp.confirm({
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true,
+            })
+          end,
+        }),
+        ["<C-CR>"] = cmp.mapping({
+          i = function(fallback)
+            if cmp.visible() then
+              cmp.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = false,
+              })
+            else
+              fallback()
+            end
+          end,
+          s = function()
+            cmp.confirm({
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true,
+            })
+          end,
+        }),
 				-- ["<C-e>"] = false,
 			},
 		},
@@ -417,8 +437,86 @@ local plugins = {
         -- or just leave it empty :)
       }
     end,
-  }
-	-- To make a plugin not be loaded
+  },
+
+  -- TODO - This doesn't seem to work.
+  -- Unception
+  -- Prevent nested NVim sessions from being opened inside of terminal.
+  -- https://github.com/samjwill/nvim-unception
+  {
+    "samjwill/nvim-unception",
+		event = "TermEnter",
+    -- If you have issues going back to the terminal after starting a nvim
+    -- session within a terminal, try:
+    -- https://github.com/samjwill/nvim-unception/wiki/Setup-with-terminal-toggling-plugins!
+    init = function()
+      -- Optional settings go here!
+      -- e.g.) vim.g.unception_open_buffer_in_new_tab = true
+    end
+  },
+
+  -- Rust language tooling
+  {
+    'simrat39/rust-tools.nvim',
+    ft = 'rust',
+    config = function() 
+      require("rust-tools").setup({
+    --     tools = {
+    --       runnables = {
+    --         use_telescope = true,
+    --       },
+    --       inlay_hints = {
+    --         auto = true,
+    --         show_parameter_hints = false,
+    --         parameter_hints_prefix = "",
+    --         other_hints_prefix = "",
+    --       },
+    --     },
+    --
+        -- all the opts to send to nvim-lspconfig
+        -- these override the defaults set by rust-tools.nvim
+        -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+        server = {
+          on_attach = function(_, buffer)
+            require("core.utils").load_mappings('lspconfig')
+          end,
+
+          -- settings = {
+          --   -- to enable rust-analyzer settings visit:
+          --   -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+          --   ["rust-analyzer"] = {
+          --     -- enable clippy on save
+          --     checkOnSave = {
+          --       command = "clippy",
+          --     },
+          --   },
+          -- },
+        },
+      })
+    end,
+  },
+
+  -- Debugging server
+  {
+    'mfussenegger/nvim-dap'
+  },
+
+  -- Update imports when renaming files in nvim-tree
+  -- https://github.com/antosha417/nvim-lsp-file-operations
+  {
+    'antosha417/nvim-lsp-file-operations',
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-tree.lua",
+    },
+		event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    config = function()
+      require("lsp-file-operations").setup()
+    end,
+  },
+
+
+  -- To make a plugin not be loaded
 	-- {
 	--   "NvChad/nvim-colorizer.lua",
 	--   enabled = false
