@@ -6,6 +6,7 @@
       "import { PageObject } from '~/test'",
       "",
       "export class ${1:ClassName}PageObject extends PageObject {",
+      "  static selector = '$1'",
       "  ${2}",
       "}"
     ]

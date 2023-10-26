@@ -25,14 +25,12 @@ vim.opt.scrolloff = 10
 -- keep x columns visible left and right of the cursor at all times
 vim.opt.sidescrolloff = 10
 
--- TODO I don't think this is working
-vim.diagnostic.config({virtual_text = false})
-
 -- Override NvChad settings
 -- vim.g.mapleader = ","
 -- put cursor wrapping back to the vim defaults
 vim.opt.whichwrap = "b,s"
 
+-- Set the cursor color in terminal mode
 -- Not sure why this can't be set through `vim.opt.guicursor`
 vim.cmd [[
   set guicursor=n-v-c-sm:block-blinkwait900-blinkoff500-blinkon500-Cursor,i-ci-ve:ver25,r-cr-o:hor20

@@ -20,7 +20,7 @@ vim.g.vscode_snippets_path = vim.fn.stdpath "config" .. "/lua/custom/snippets"
 --   command = "tabdo wincmd =",
 -- })
 
--- Set startup directory
+-- Set startup directory when VIM loads
 autocmd("VimEnter", {
   pattern = "*",
   callback = function()
@@ -29,6 +29,14 @@ autocmd("VimEnter", {
       local root = vim.g.soulvim_root_dir
       if root ~= '' then vim.api.nvim_set_current_dir(root) end
     end
+  end
+})
+
+-- Check open file timestamps when exiting terminal mode.
+autocmd("TermLeave", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_command('checktime')
   end
 })
 
