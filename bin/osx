@@ -4,6 +4,12 @@
 # Disable menu bar transparency
 # defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false
 
+# Prevent spotlight from indexing development projects
+# This speeds up things like `yarn install`
+# I put my code in ~/Development but you may need to configure a different
+# location
+sudo defaults write /.Spotlight-V100/Store-V1/Exclusions Exclusions -array-add ~/Development
+
 # Show remaining battery time; hide percentage
 defaults write com.apple.menuextra.battery ShowPercent -string "NO"
 defaults write com.apple.menuextra.battery ShowTime -string "YES"
@@ -57,7 +63,8 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # Set a blazingly fast keyboard repeat rate
 defaults write -g InitialKeyRepeat -int 20
-defaults write NSGlobalDomain KeyRepeat -int 0.02 
+defaults write NSGlobalDomain KeyRepeat -int 0.8
+# defaults write NSGlobalDomain KeyRepeat -int 0.02
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false

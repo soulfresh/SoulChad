@@ -3,8 +3,7 @@
   Use this inside of the startup plugin
 
 ### Buffers/Tabs
-- D-[ and D-] in insert mode currently type ":tabnext" but should instead change
-  tabs
+- Buffer history: https://github.com/ton/vim-bufsurf
 - Close all buffers except current
 - TabBuffline:
   - Reorder tabs

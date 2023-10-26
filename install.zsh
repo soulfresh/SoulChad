@@ -90,6 +90,35 @@ else
   fi
 fi
 
+# Symlink Git Configs
+echo "🔗 Linking Git Configs ${HOME}/${FILE##*/}"
+for FILE in ./git/.git*; do
+  # if the glob failed to return any files, skip
+  if [ ! -e "$FILE" ]
+  then
+    echo "${RED}No Git configs to link${NC}"
+    continue
+  fi
+
+  # if the file doesn't exists and is not a directory
+  if [ ! -e "${HOME}/${FILE##*/}" ]
+  then
+    ln -s $DOTFILES/git/${FILE##*/} $HOME
+    echo "✅ ${GREEN}${FILE##*/}${NC} linked"
+  else
+    # If the file is already there, replace it
+    if [ -L "${HOME}/${FILE##*/}" ]
+    then
+      ln -s -f $DOTFILES/git/${FILE##*/} $HOME
+      echo "✅ ${GREEN}${FILE##*/}${NC} linked"
+    else
+      echo "🙈 ${RED}${HOME}/${FILE##*/}${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
+      hadError=true
+    fi
+  fi
+done
+
+
 # Install Nerd Fonts
 if [ ! -d "../GetNerdFonts" ]
 then

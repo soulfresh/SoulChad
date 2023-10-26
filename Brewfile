@@ -47,6 +47,7 @@ brew "tidy-html5"
 # brew "boost"
 # brew "glib"
 # brew "glew"
+brew glslang
 # brew "gobject-introspection"
 brew "cmake"
 # brew "llvm"
