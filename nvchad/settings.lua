@@ -30,13 +30,16 @@ vim.opt.sidescrolloff = 10
 -- put cursor wrapping back to the vim defaults
 vim.opt.whichwrap = "b,s"
 
+-- Turn off swap files
+vim.opt.swapfile = false
+
 -- Set the cursor color in terminal mode
 -- Not sure why this can't be set through `vim.opt.guicursor`
-vim.cmd [[
+vim.cmd([[
   set guicursor=n-v-c-sm:block-blinkwait900-blinkoff500-blinkon500-Cursor,i-ci-ve:ver25,r-cr-o:hor20
   hi! TermCursor guifg=NONE guibg=yellow gui=NONE cterm=NONE
   hi! TermCursorNC guifg=yellow guibg=#3c3836 gui=NONE cterm=NONE
-]]
+]])
 
 -- Snippets path relative to $MYVIMRC. You can use ~/ prefixed paths.
 -- See https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md#loaders
@@ -44,8 +47,9 @@ vim.g.luasnippets_path = "~/.config/nvim/lua/custom/snippets"
 
 -- Custom filetypes
 vim.filetype.add({
-  extension = {
-    -- Treat .pch files as C++ header files
-    pch = "cpp",
-  }
+	extension = {
+		-- Treat .pch files as C++ header files
+		pch = "cpp",
+	},
 })
+

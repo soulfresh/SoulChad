@@ -1,31 +1,23 @@
 local overrides = require("custom.configs.overrides")
 local cmp = require("cmp")
 
--- local function nextCompletion(fallback)
--- 	local copilot = require("copilot.suggestion")
--- 	if cmp.visible() then
--- 		cmp.select_next_item()
--- 	elseif require("luasnip").expand_or_jumpable() then
--- 		vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
--- 	elseif copilot.is_visible() then
--- 		copilot.accept()
--- 	else
--- 		fallback()
--- 	end
--- end
---
--- local function previousCompletion(fallback)
--- 	local copilot = require("copilot.suggestion")
--- 	if cmp.visible() then
--- 		cmp.select_prev_item()
--- 	elseif require("luasnip").jumpable(-1) then
--- 		vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
--- 	elseif copilot.is_visible() then
--- 		copilot.dismiss()
--- 	else
--- 		fallback()
--- 	end
--- end
+-- codelldb file path
+-- TODO Try to get this working using mason-registry
+-- local mason_registry = require("mason-registry")
+local mason_root = vim.fn.stdpath("data") .. "/mason"
+local extension_path = mason_root .. "/packages/codelldb/extension"
+local codelldb_path = extension_path .. "/adapter/codelldb"
+local liblldb_path = extension_path .. "/lldb/lib/liblldb"
+local this_os = vim.loop.os_uname().sysname;
+
+-- The path in windows is different
+if this_os:find "Windows" then
+  codelldb_path = extension_path .. "adapter\\codelldb.exe"
+  liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+else
+  -- The liblldb extension is .so for linux and .dylib for macOS
+  liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+end
 
 ---@type NvPluginSpec[]
 local plugins = {
@@ -456,43 +448,79 @@ local plugins = {
   },
 
   -- Rust language tooling
-  {
-    'simrat39/rust-tools.nvim',
-    ft = 'rust',
-    config = function() 
-      require("rust-tools").setup({
-    --     tools = {
-    --       runnables = {
-    --         use_telescope = true,
-    --       },
-    --       inlay_hints = {
-    --         auto = true,
-    --         show_parameter_hints = false,
-    --         parameter_hints_prefix = "",
-    --         other_hints_prefix = "",
-    --       },
-    --     },
-    --
-        -- all the opts to send to nvim-lspconfig
-        -- these override the defaults set by rust-tools.nvim
-        -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
-        server = {
-          on_attach = function(_, buffer)
-            require("core.utils").load_mappings('lspconfig')
-          end,
+  -- {
+  --   'simrat39/rust-tools.nvim',
+  --   ft = 'rust',
+  --   config = function() 
+  --     require("rust-tools").setup({
+  --       tools = {
+  --         hover_actions = {
+  --           auto_focus = true,
+  --         },
+  --
+  --         inlay_hints = {
+  --           auto = true,
+  --           only_current_line = true,
+  --         },
+  --       },
+  --       dap = {
+  --         adapter = require("rust-tools.dap").get_codelldb_adapter(
+  --           codelldb_path,
+  --           liblldb_path
+  --         ),
+  --       },
+  --       -- all the opts to send to nvim-lspconfig
+  --       -- these override the defaults set by rust-tools.nvim
+  --       -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+  --       server = {
+  --         on_attach = function(_, buffer)
+  --           require("core.utils").load_mappings('lspconfig')
+  --         end,
+  --         settings = {
+  --           -- to enable rust-analyzer settings visit:
+  --           -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+  --           ["rust-analyzer"] = {
+  --             -- enable clippy on save
+  --             checkOnSave = {
+  --               command = "clippy",
+  --             },
+  --           },
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
 
-          -- settings = {
-          --   -- to enable rust-analyzer settings visit:
-          --   -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-          --   ["rust-analyzer"] = {
-          --     -- enable clippy on save
-          --     checkOnSave = {
-          --       command = "clippy",
-          --     },
-          --   },
-          -- },
+  -- rust language tooling
+  -- https://github.com/mrcjkb/rustaceanvim
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^3',
+    ft = { 'rust' },
+    init = function()
+      vim.g.rustaceanvim = {
+        dap = {
+          adapter = {
+            type = 'server',
+            port = '${port}',
+            host = '127.0.0.1',
+            executable = {
+              command = codelldb_path,
+              args = { '--liblldb', liblldb_path, '--port', '${port}' },
+            },
+          },
         },
-      })
+        -- server = {
+        --   capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        --   settings = {
+        --     ["rust-analyzer"] = {
+        --       checkOnSave = {
+        --         command = "clippy",
+        --       },
+        --     },
+        --   },
+        -- },
+      }
     end,
   },
 

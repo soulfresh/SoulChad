@@ -50,7 +50,7 @@ brew "tidy-html5"
 brew glslang
 # brew "gobject-introspection"
 brew "cmake"
-# brew "llvm"
+brew "llvm"
 brew "ninja"
 # HTTP2 implementation in C
 # brew "nghttp2"

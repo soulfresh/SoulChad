@@ -1,6 +1,19 @@
+### Bugs
+- Copilot-cmp removes my non-copilot results from the menu sometimes
+
 ### General
 - Vim Tips plugin: https://github.com/michaelb/vim-tips
   Use this inside of the startup plugin
+
+### Editing
+- DOCS surround plugin
+    - surround some text with arbitrary characters
+    - change the char surrounding some text
+- DOCS Focus: https://github.com/Pocco81/true-zen.nvim
+- DOCS Move files in nvim-tree will update imports
+- Buffer outline plugin: https://github.com/simrat39/symbols-outline.nvim
+- Better diff colors
+- Hide virtual_text
 
 ### Buffers/Tabs
 - Buffer history: https://github.com/ton/vim-bufsurf
@@ -36,17 +49,14 @@
   if the CMP menu isn't shown, the suggestion is not inserted as expected.
 - Copilot suggestions are shown in the CMP window inconsistently (mostly not)
 
-### Editing
-- surround plugin
-    - surround some text with arbitrary characters
-    - change the char surrounding some text
-- Focus: https://github.com/Pocco81/true-zen.nvim
-- Buffer outline plugin: https://github.com/simrat39/symbols-outline.nvim
-
 ### Git
 - Better file revision history:
     https://www.reddit.com/r/neovim/comments/w1q8eh/efficiently_review_past_commits_of_specific_file/
     https://github.com/Civitasv/runvim/blob/master/keymaps.md
+
+### Rust
+- Manage crates
+  https://github.com/Saecki/crates.nvim
 
 ### Terminal
 - Terminal insert icon: https://github.com/wincent/terminus

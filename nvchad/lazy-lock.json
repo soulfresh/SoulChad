@@ -29,7 +29,7 @@
   "nvim-web-devicons": { "branch": "master", "commit": "e283ab937e0197b37ec5d8013e49495193407324" },
   "nvterm": { "branch": "main", "commit": "5ae78fb332e92447121d2af58a6313189a7799fb" },
   "plenary.nvim": { "branch": "master", "commit": "52544825d6b8be677eb395983515ad5e30ae1f2e" },
-  "rust-tools": { "branch": "master", "commit": "0cc8adab23117783a0292a0c8a2fbed1005dc645" },
+  "rustaceanvim": { "branch": "master", "commit": "5ae04f957277f10d8b183a2d5902f82c91cb5be2" },
   "taboo.vim": { "branch": "master", "commit": "caf948187694d3f1374913d36f947b3f9fa1c22f" },
   "telescope-undo.nvim": { "branch": "main", "commit": "231b5ebb4328d2768c830c9a8d1b9c696116848d" },
   "telescope.nvim": { "branch": "master", "commit": "9609686a8cd5d75d03ba96775e8517932a0342c0" },
