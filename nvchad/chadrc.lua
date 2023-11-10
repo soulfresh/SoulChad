@@ -15,6 +15,35 @@ local M = {}
 -- Path to overriding theme and highlights files
 local highlights = require "custom.highlights"
 
+-- Replace the tab list logic with a version that uses Taboo to set tab
+-- names. You can use `TabooOpen {name}` or `TabooRename {new_name}` to
+-- name your tabs.
+local tablist = function()
+  local result, number_of_tabs = "", vim.fn.tabpagenr "$"
+
+  if number_of_tabs > 1 then
+    for i = 1, number_of_tabs, 1 do
+      local tab_hl = ((i == vim.fn.tabpagenr()) and "%#TbLineTabOn# ") or "%#TbLineTabOff# "
+      -- Ask Taboo for the name of the tab at index i
+      local success, taboo_name = pcall(vim.fn["TabooTabName"], i)
+      local tab_name = i
+      -- If we received a name, update the tab_name variable
+      if success and taboo_name ~= '' then tab_name = taboo_name end
+
+      -- Continue building the tab list the way NvChad usually does
+      result = result .. ("%" .. i .. "@TbGotoTab@" .. tab_hl .. tab_name .. " ")
+      result = (i == vim.fn.tabpagenr() and result .. "%#TbLineTabCloseBtn#" .. "%@TbTabClose@󰅙 %X") or result
+    end
+
+    local new_tabtn = "%#TblineTabNewBtn#" .. "%@TbNewTab@  %X"
+    local tabstoggleBtn = "%@TbToggleTabs@ %#TBTabTitle# TABS %X"
+
+    return vim.g.TbTabsToggled == 1 and tabstoggleBtn:gsub("()", { [36] = " " })
+      or new_tabtn .. tabstoggleBtn .. result
+  end
+  return ""
+end
+
 M.ui = {
   theme = "bearded-arc",
   theme_toggle = { "bearded-arc", "one_light" },
@@ -55,32 +84,15 @@ M.ui = {
   },
 
   tabufline = {
-    overriden_modules = function()
-      return {
-        -- Replace the tab list logic with a version that uses Taboo to set tab
-        -- names. You can use `TabooOpen {name}` or `TabooRename {new_name}` to
-        -- name your tabs.
-        tablist = function()
-          local result, number_of_tabs = "", vim.fn.tabpagenr "$"
-
-          if number_of_tabs > 1 then
-            for i = 1, number_of_tabs, 1 do
-              local tab_hl = ((i == vim.fn.tabpagenr()) and "%#TbLineTabOn# ") or "%#TbLineTabOff# "
-              local success, taboo_name = pcall(vim.fn["TabooTabName"], i)
-              local tab_name = i
-              if success and taboo_name ~= '' then tab_name = taboo_name end
-              result = result .. ("%" .. i .. "@TbGotoTab@" .. tab_hl .. tab_name .. " ")
-              result = (i == vim.fn.tabpagenr() and result .. "%#TbLineTabCloseBtn#" .. "%@TbTabClose@󰅙 %X") or result
-            end
-
-            local new_tabtn = "%#TblineTabNewBtn#" .. "%@TbNewTab@  %X"
-            local tabstoggleBtn = "%@TbToggleTabs@ %#TBTabTitle# TABS %X"
-
-            return vim.g.TbTabsToggled == 1 and tabstoggleBtn:gsub("()", { [36] = " " })
-              or new_tabtn .. tabstoggleBtn .. result
-          end
-        end
-      }
+    overriden_modules = function(modules)
+      -- Generate a tab list that includes custom tab names
+      local tabs = tablist()
+      -- If it worked, then replace the tab module with our updated tab
+      -- definitions.
+      if tabs ~= nil or tabs ~= "" then
+        -- Current modules are [empty, buffer list, tab list]
+        modules[3] = tabs
+      end
     end
   },
 

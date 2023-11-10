@@ -59,8 +59,9 @@
   https://github.com/Saecki/crates.nvim
 
 ### Terminal
-- Terminal insert icon: https://github.com/wincent/terminus
-  Or try: `au VimLeave * set guicursor=a:ver100`
+- Terminal insert icon
+  I've tried all the things. This will have to wait until this issue is resolved:
+  https://github.com/neovim/neovim/issues/3681
 - "& " in terminal mode clears the terminal and changes vim mode. ZSH config
   issue?
 - How to exit a terminal buffer and any processes it is running?

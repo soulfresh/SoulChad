@@ -88,13 +88,6 @@ M.nvimtree = {
       show = {
         git = true,
       },
-      glyphs = {
-        folder = {
-          -- For some reason the default folder icon defined by NvChad stopped
-          -- working for me recently. This is the icon defined in the v1 branch.
-          default = "",
-        }
-      }
     },
   },
 }

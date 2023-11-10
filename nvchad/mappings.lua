@@ -85,9 +85,13 @@ M.general = {
     ["W"] = { ":wa<CR>", "save all" },
     ["<leader>xb"] = {
       function()
-        require("nvchad_ui.tabufline").close_buffer()
+        require("nvchad.tabufline").close_buffer()
       end,
-      "Close buffer",
+      "Close current buffer",
+    },
+    ["<leader>xo"] = {
+      function() require("nvchad.tabufline").closeOtherBufs() end,
+      "Close other buffers"
     },
 
     -- splits
@@ -100,9 +104,9 @@ M.general = {
     ["<D-[>"] = { ":tabprevious<CR>", "Previous tab" },
     ['<leader>xt'] = {
       function()
-        require('nvchad_ui.tabufline').closeAllBufs('closeTab')
+        require('nvchad.tabufline').closeAllBufs('closeTab')
       end,
-      "Close tab",
+      "Close current tab",
     },
 
     -- window sizing/movement
@@ -139,6 +143,21 @@ M.general = {
     ["H"] = { "^", "go to first non-blank character in line"},
     ["L"] = { "g_", "go to the last non-blank character in line"},
   },
+}
+
+M.telescope = {
+  n = {
+    ["<leader>fb"] = { "<cmd> Telescope buffers only_cwd=true sort_lastused=true sort_mru=true ignore_current_buffer=true<CR>", "Find buffers" },
+  },
+  x = {},
+  v = {},
+  c = {},
+  i = {},
+  l = {},
+  o = {},
+  s = {},
+  t = {},
+  -- plugin = false,
 }
 
 M.lspconfig = {

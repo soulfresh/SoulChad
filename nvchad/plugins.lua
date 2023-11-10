@@ -64,7 +64,7 @@ local plugins = {
 		opts = overrides.nvimtree,
 	},
 
-	-- Install a plugin
+	-- Use `jk` as the escape key
 	{
 		"max397574/better-escape.nvim",
 		enabled = false,
@@ -437,13 +437,15 @@ local plugins = {
   -- https://github.com/samjwill/nvim-unception
   {
     "samjwill/nvim-unception",
-		event = "TermEnter",
+    -- To work, this plugin needs to load on startup
+    lazy = false,
     -- If you have issues going back to the terminal after starting a nvim
     -- session within a terminal, try:
     -- https://github.com/samjwill/nvim-unception/wiki/Setup-with-terminal-toggling-plugins!
     init = function()
       -- Optional settings go here!
       -- e.g.) vim.g.unception_open_buffer_in_new_tab = true
+      vim.g.unception_block_while_host_edits = true
     end
   },
 
