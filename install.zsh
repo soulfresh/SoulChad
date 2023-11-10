@@ -1,4 +1,9 @@
 #!/bin/sh
+set -e
+
+# shopt -s execfail
+# fnc() { echo $?, $_, Oops;}
+# trap fnc ERR
 
 # TODO Also setup:
 # - ZSH
@@ -11,7 +16,7 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 NVIM_HOME="$HOME/.config/nvim"
-# TODO find an alternative tot he realpath command so we don't have to
+# TODO find an alternative to the realpath command so we don't have to
 # brew install coreutils before we can use this script.
 ROOT=$(realpath ../)
 DOTFILES=$(pwd)
@@ -19,7 +24,10 @@ CONFIG=$(realpath ./nvchad)
 
 hadError=false
 
-# TODO Exit if no brew
+# Exit if no brew
+echo "Brew version:"
+brew --version
+echo ""
 
 echo "Install/Upgrade required commandline dependencies?"
 select yn in "Yes" "No"; do
@@ -63,7 +71,7 @@ else
   # If the file is already there, replace it
   if [ -L "${HOME}/.zsh.prompts" ]
   then
-    ln -s $DOTFILES/zsh/.zsh.prompts $HOME
+    ln -sfn $DOTFILES/zsh/.zsh.prompts $HOME
     echo "✅ ${GREEN}Prompts${NC} linked"
   else
     echo "🙈 ${RED}${HOME}/.zsh.prompts${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
@@ -82,7 +90,7 @@ else
   # If the file is already there, replace it
   if [ -L "${HOME}/.zsh.after" ]
   then
-    ln -s $DOTFILES/zsh/.zsh.after $HOME
+    ln -sfn $DOTFILES/zsh/.zsh.after $HOME
     echo "✅ ${GREEN}ZSH Configs${NC} linked"
   else
     echo "🙈 ${RED}${HOME}/.zsh.after${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
@@ -109,7 +117,7 @@ for FILE in ./git/.git*; do
     # If the file is already there, replace it
     if [ -L "${HOME}/${FILE##*/}" ]
     then
-      ln -s -f $DOTFILES/git/${FILE##*/} $HOME
+      ln -sfn $DOTFILES/git/${FILE##*/} $HOME
       echo "✅ ${GREEN}${FILE##*/}${NC} linked"
     else
       echo "🙈 ${RED}${HOME}/${FILE##*/}${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
@@ -181,7 +189,7 @@ then
   fi
 else
   echo "🔗 Linking NvChad into ${GREEN}~/.config/nvim"
-  ln -s $ROOT/NvChad ~/.config/nvim
+  ln -sfn $ROOT/NvChad ~/.config/nvim
 fi
 
 # Copy other configs into place
