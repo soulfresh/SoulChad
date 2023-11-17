@@ -46,7 +46,7 @@ end
 
 M.ui = {
   theme = "bearded-arc",
-  theme_toggle = { "bearded-arc", "one_light" },
+  theme_toggle = { "bearded-arc", "ayu_light" },
 
   hl_override = highlights.override,
   hl_add = highlights.add,
@@ -109,7 +109,6 @@ M.lazy_nvim = {
   -- Save the lock file next to our NvChad configs
   lockfile = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config") .. "/lua/custom"), ':h') .. "/nvchad/lazy-lock.json",
 }
-
 
 M.plugins = "custom.plugins"
 

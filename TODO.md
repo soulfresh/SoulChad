@@ -1,3 +1,6 @@
+### Dotfile Inspiration
+- https://github.com/BrunoKrugel/dotfiles
+
 ### Bugs
 - Copilot-cmp removes my non-copilot results from the menu sometimes
 
@@ -12,10 +15,19 @@
 - DOCS Focus: https://github.com/Pocco81/true-zen.nvim
 - DOCS Move files in nvim-tree will update imports
 - Buffer outline plugin: https://github.com/simrat39/symbols-outline.nvim
-- Better diff colors
 - Hide virtual_text
+- Workspace wide diagnostics: 
+  https://github.com/neomake/neomake
+  or https://github.com/dmmulroy/tsc.nvim
+- Treesitter context: stop the function name from being clipped when scrolling
+  https://github.com/nvim-treesitter/nvim-treesitter-context
+
+### Testing
+- Neotest https://github.com/nvim-neotest/neotest-jest
+  No debugging with Jest yet but might be worth playing with
 
 ### Buffers/Tabs
+- Winbar (from nvchad community): https://github.com/utilyre/barbecue.nvim
 - Buffer history: https://github.com/ton/vim-bufsurf
 - Close all buffers except current
 - TabBuffline:

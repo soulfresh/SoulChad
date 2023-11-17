@@ -10,38 +10,40 @@ M.override = {
     italic = true,
   },
 
-  -- terminal focused cursor color
-  TermCursor = {
-    bg = "sun",
+  -- New lines
+  DiffAdd = {
+    fg = "green",
+    bg = {"green", "black", 90 },
   },
-  -- terminal unfocused cursor color
-  TermCursorNC = {
-    bg = "pink",
+
+  -- Line that has a change in it
+  DiffChange = {
+    fg = {"green", "black", 30},
+    bg = { "green", "black", 97 },
   },
+
+  -- The change in a line containing changes
+  DiffText = {
+    fg = {"green", "white", 5},
+    bg = {"green", "black", 85}
+  },
+
+  -- Removed lines
+  DiffDelete = {
+    fg = "red",
+    bg = { "red", "black", 90 },
+  }
 }
 
---     DiffAdd = {
---       fg = "#afbdaa",
---       bg = "#1c2c31",
---     },
 
 ---@type HLTable
 M.add = {
-  NvimTreeOpenedFolderName = { fg = "#ff00ff", bold = true },
-  MyCustomHi = { bg = "#ff00ff" },
+  -- NvimTreeOpenedFolderName = { fg = "#green", bold = true },
 
--- -  hi! TermCursor guifg=NONE guibg=yellow gui=NONE cterm=NONE
--- -  hi! TermCursorNC guifg=yellow guibg=#3c3836 gui=NONE cterm=NONE
-  --
-  -- terminal focused cursor color
-  TermCursor = { bg = "#ff00ff" },
+  -- terminal unfocused cursor color
+  TermCursorNC = { bg = "pink" },
+  -- terminal focused color
+  TermCursor = { bg = "green" },
 }
-
--- vim.api.nvim_set_hl(0, "TermCursor", {
---   bg = "#9bdead",
--- })
--- vim.api.nvim_set_hl(0, "TermCursorNc", {
---   bg = "pink",
--- })
 
 return M
