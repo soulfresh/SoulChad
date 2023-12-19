@@ -51,6 +51,9 @@ M.ui = {
   hl_override = highlights.override,
   hl_add = highlights.add,
 
+  -- better highlighting of variables
+  lsp_semantic_tokens = true,
+
   nvdash = {
     load_on_startup = false,
     -- Generated from https://fsymbols.com/generators/carty/

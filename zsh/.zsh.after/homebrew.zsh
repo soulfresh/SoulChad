@@ -1,1 +1,1 @@
-HOMEBREW_BUNDLE_FIL=~/Development/dotfiles/nvchad-config-v2/Brewfile
+HOMEBREW_BUNDLE_FILE=~/Development/dotfiles/nvchad-config-v2/Brewfile

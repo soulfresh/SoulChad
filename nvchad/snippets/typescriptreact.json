@@ -90,6 +90,15 @@
     ]
   },
   "Jest Test": {
+    "prefix": "fit",
+    "description": "A Jest it test statement",
+    "body": [
+      "fit('${1:description_here}', () => {",
+      "  ${2}",
+      "})"
+    ]
+  },
+  "Jest Test": {
     "prefix": "it",
     "description": "A Jest it test statement",
     "body": [

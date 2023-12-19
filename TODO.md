@@ -21,6 +21,7 @@
   or https://github.com/dmmulroy/tsc.nvim
 - Treesitter context: stop the function name from being clipped when scrolling
   https://github.com/nvim-treesitter/nvim-treesitter-context
+- Turn off coloring plugin in git buffers
 
 ### Testing
 - Neotest https://github.com/nvim-neotest/neotest-jest

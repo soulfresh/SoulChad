@@ -15,16 +15,13 @@
     "prefix": "aptreactfunc",
     "description": "A functional react component for ApartmentSnapshot",
     "body": [
-      "interface $1Props {",
-      "}",
-      "",
       "/**",
       " * <$1>",
       " */",
       "export function ${1:ClassName}({",
       "  ${2}",
       "  ...rest",
-      "}:$1Props) {",
+      "}) {",
       "  return (",
       "    <Box testID='$1'>",
       "      ${3}",
@@ -43,11 +40,11 @@
       "",
       "import { renderWithTheme } from '~/test'",
       "import { $1 } from './$1'",
-      "import { $1PageObject } from './$1.page-object'",
+      "import $1PageObject from './$1.page-object'",
       "",
-      "describe('${1}', () => {",
+      "describe('${name:ComponentName}', () => {",
       "  let page: $1PageObject",
-      "  let screen: RenderAPI",
+      "  let screen",
       "",
       "  beforeEach(() => {",
       "    screen = renderWithTheme(",
@@ -56,10 +53,9 @@
       "    page = new $1PageObject(screen.container)",
       "  })",
       "",
-      "  it(\"should render.\", () => { ",
-      "    expect(page.exists).toBe(true)",
+      "  it(\"$1\", () => { ",
       "    ${2} ",
-      "  })",
+      "  }})",
       "})"
     ]
   },
@@ -99,9 +95,9 @@
       "})"
     ]
   },
-  "Jest Test": {
+  "Jest Skipped Test": {
     "prefix": "fit",
-    "description": "A Jest it test statement",
+    "description": "A skipped Jest it test statement",
     "body": [
       "fit('${1:description_here}', () => {",
       "  ${2}",
