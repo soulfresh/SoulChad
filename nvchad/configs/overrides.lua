@@ -37,7 +37,13 @@ M.mason = {
     "typescript-language-server",
     "deno",
     "prettier",
+    "eslint_d",
+    -- TODO Not sure if this is being used
+    -- vscode eslint integration
+    -- uses the eslint installed either in the current workspace or globally
+    -- https://github.com/microsoft/vscode-eslint
     "eslint-lsp",
+    -- modern JS debug adapter used in VSCode
     "js-debug-adapter",
 
     -- c/cpp stuff
@@ -93,7 +99,35 @@ M.nvimtree = {
     },
   },
 }
-  -- TODO use floating window
-  -- https://github.com/nvim-tree/nvim-tree.lua/issues/135#issuecomment-1288002079
+
+M.telescope = {
+  defaults = {
+    file_ignore_patterns = {
+      "node_modules",
+      ".docker",
+      ".git",
+      "yarn.lock",
+      "go.sum",
+      "go.mod",
+      "tags",
+      "mocks",
+      "refactoring",
+      "^.git/",
+      "^./.git/",
+      "^node_modules/",
+      "^build/",
+      "^dist/",
+      "^target/",
+      "^vendor/",
+      "^lazy%-lock%.json$",
+      "^package%-lock%.json$",
+    },
+    layout_config = {
+      horizontal = {
+        prompt_position = "bottom",
+      },
+    },
+  },
+}
 
 return M

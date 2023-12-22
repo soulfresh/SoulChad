@@ -74,6 +74,8 @@ local plugins = {
 	},
 
 	"NvChad/nvcommunity",
+	{ import = "nvcommunity.lsp.codeactionmenu" },
+	{ import = "nvcommunity.lsp.prettyhover" },
 	{ import = "nvcommunity.motion.hop" },
 
 	-- Use `jk` as the escape key
@@ -540,76 +542,159 @@ local plugins = {
 
 	-- Debugging server
 	{
-		"mfussenegger/nvim-dap",
-	},
+    "mfussenegger/nvim-dap",
+    cmd = { "DapContinue", "DapStepOver", "DapStepInto", "DapStepOut", "DapToggleBreakpoint" },
+    dependencies = {
+      -- Show variable values as virtual text during debug sessions
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        config = function()
+          require "custom.configs.dap-virtual-text"
+        end,
+      },
+      -- Debugging UI for a nicer debugging experience
+      {
+        "rcarriga/nvim-dap-ui",
+        config = function()
+          require "custom.configs.dap-ui"
+        end,
+      },
+    },
+  },
+
 
 	{
 		"mxsdev/nvim-dap-vscode-js",
-		requires = { "mfussenegger/nvim-dap" },
+		dependencies = {
+      "mfussenegger/nvim-dap",
+      -- Debug adapter for Javascript debugging using the most recent VSCode
+      -- functionality
+      {
+        "microsoft/vscode-js-debug",
+        run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      },
+    },
 		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 		-- run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
 		config = function()
 			require("dap-vscode-js").setup({
 				-- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-				-- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
 				-- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-				-- debugger_path = vim.fn.stdpath('data') .. "/mason/bin/js-debug-adapter",
-				debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
-				debugger_cmd = { "js-debug-adapter" },
-				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
+				debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+				-- debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
+				-- debugger_cmd = { "js-debug-adapter" },
+        -- which adapters to register in nvim-dap
+				adapters = { "chrome", "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost", "node" },
 				-- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
 				-- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
 				-- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
 			})
 
-			for _, language in ipairs({ "typescript", "javascript" }) do
-				require("dap").configurations[language] = {
-					{
-						type = "pwa-node",
-						request = "launch",
-						name = "Debug Jest Tests",
-						-- trace = true, -- include debugger info
-						runtimeExecutable = "node",
-						runtimeArgs = {
-							"./node_modules/jest/bin/jest.js",
-							"--runInBand",
-						},
-						rootPath = "${workspaceFolder}",
-						cwd = "${workspaceFolder}",
-						console = "integratedTerminal",
-						internalConsoleOptions = "neverOpen",
-					},
-				}
-			end
+      local js_based_languages = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+
+      for _, language in ipairs(js_based_languages) do
+        require("dap").configurations[language] = {
+          -- Debug single node js files
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+          },
+          -- Debug node processes like express applications
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach",
+            processId = require 'dap.utils'.pick_process,
+            cwd = "${workspaceFolder}",
+          },
+          -- Debug web applications
+          {
+            type = "pwa-chrome",
+            request = "launch",
+            name = "Start Chrome with \"localhost\"",
+            url = "http://localhost:3000",
+            webRoot = "${workspaceFolder}",
+            userDataDir = "${workspaceFolder}/.vscode/vscode-chrome-debug-userdatadir"
+          }
+        }
+      end
+
+      -- local dap = require('dap')
+      -- dap.adapters.node2 = {
+      --   type = 'executable',
+      --   command = 'node',
+      --   args = {
+      --     os.getenv('HOME') ..
+      --       '/.local/share/nvim/lazy/vscode-node-debug2/out/src/nodeDebug.js'
+      --   }
+      -- }
+
+			-- for _, language in ipairs({ "typescript", "typescriptreact", "javascript", "javascriptreact" }) do
+			-- 	dap.configurations[language] = {
+			-- 		{
+			-- 			type = "pwa-node",
+			-- 			request = "launch",
+			-- 			name = "Debug Jest Tests",
+			-- 			-- trace = true, -- include debugger info
+			-- 			runtimeExecutable = "node",
+			-- 			runtimeArgs = {
+			-- 				"./node_modules/jest/bin/jest.js",
+			-- 				"--runInBand",
+			-- 			},
+			-- 			rootPath = "${workspaceFolder}",
+			-- 			cwd = "${workspaceFolder}",
+			-- 			console = "integratedTerminal",
+			-- 			internalConsoleOptions = "neverOpen",
+			-- 		},
+			-- 	}
+			-- end
 		end,
 	},
 
-	{ "haydenmeade/neotest-jest" },
-	{ "antoinemadec/FixCursorHold.nvim" },
-
+  -- Run Jest tests in a terminal.
+  -- This just launches a terminal and starts Jest tests filtered to the test
+  -- under cursor or the file. Also sets up nvim-dap for debugging Jest tests.
+  -- Not quite as feature complete as Neotest but worked for me out of the box.
 	{
-		"nvim-neotest/neotest",
-		requires = {
-			"haydenmeade/neotest-jest",
-			"nvim-lua/plenary.nvim",
-			"antoinemadec/FixCursorHold.nvim",
+		"David-Kunz/jester",
+		opts = {
+			path_to_jest_run = "yarn test",
+      dap = {type = 'pwa-node'},
 		},
-		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-		config = function()
-			require("neotest").setup({
-				adapters = {
-					require("neotest-jest")({
-						jestCommand = "yarn test --",
-						jestConfigFile = "jest.config.ts",
-						env = { CI = true },
-						cwd = function(path)
-							return vim.fn.getcwd()
-						end,
-					}),
-				},
-			})
-		end,
 	},
+
+	-- Neotest
+	-- This wasn't working out of the box with the snapshot repo. Probably just
+	-- needs to follow the config docs for monorepos but giving jester plugin a quick try
+	-- { "haydenmeade/neotest-jest" },
+	-- { "antoinemadec/FixCursorHold.nvim" },
+	--
+	-- {
+	-- 	"nvim-neotest/neotest",
+	-- 	requires = {
+	-- 		"haydenmeade/neotest-jest",
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"antoinemadec/FixCursorHold.nvim",
+	-- 	},
+	-- 	ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+	-- 	config = function()
+	-- 		require("neotest").setup({
+	-- 			adapters = {
+	-- 				require("neotest-jest")({
+	-- 					jestCommand = "yarn test --",
+	-- 					jestConfigFile = "jest.config.ts",
+	-- 					env = { CI = true },
+	-- 					cwd = function(path)
+	-- 						return vim.fn.getcwd()
+	-- 					end,
+	-- 				}),
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 
 	-- Update imports when renaming files in nvim-tree
 	-- https://github.com/antosha417/nvim-lsp-file-operations
@@ -692,11 +777,15 @@ local plugins = {
 		end,
 	},
 
+	-- Auto-format on save
+	-- Will require some integration witll lsp-config
+	-- { "lukas-reineke/lsp-format.nvim" },
+
 	-- Dim unfocused windows
-	{
-		"levouh/tint.nvim",
-		event = { "BufRead", "BufWinEnter", "BufNewFile" },
-	},
+	-- {
+	-- 	"levouh/tint.nvim",
+	-- 	event = { "BufRead", "BufWinEnter", "BufNewFile" },
+	-- },
 
 	-- To make a plugin not be loaded
 	-- {

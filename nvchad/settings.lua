@@ -26,7 +26,7 @@ vim.opt.scrolloff = 10
 vim.opt.sidescrolloff = 10
 
 -- Override NvChad settings
--- vim.g.mapleader = ","
+vim.g.mapleader = ","
 -- put cursor wrapping back to the vim defaults
 vim.opt.whichwrap = "b,s"
 
@@ -39,6 +39,8 @@ vim.opt.guicursor = "n-v-c-sm:block-blinkwait900-blinkoff500-blinkon500-Cursor,i
 -- Snippets path relative to $MYVIMRC. You can use ~/ prefixed paths.
 -- See https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md#loaders
 vim.g.luasnippets_path = "~/.config/nvim/lua/custom/snippets"
+-- vscode format i.e json files
+vim.g.vscode_snippets_path = vim.fn.stdpath "config" .. "/lua/custom/snippets"
 
 -- Custom filetypes
 vim.filetype.add({

@@ -65,14 +65,13 @@ M.general = {
 			function()
 				ChangeScaleFactor(1.25)
 			end,
-			"Zoom + (Neovide)",
+			"Zoom In (Neovide)",
 		},
 		["<D-->"] = {
 			function()
 				ChangeScaleFactor(1 / 1.25)
 			end,
-			"Zoom - (Neovide)",
-			{ silent = false },
+			"Zoom Out (Neovide)",
 		},
 
 		-- Cursor movement
@@ -90,11 +89,6 @@ M.general = {
 		["<D-K>"] = { "5<C-y>", "scroll window to right edge" },
 		["<D-j>"] = { "<C-e>", "scroll window to left edge" },
 		["E"] = { "ge", "move to the end of the previous word" },
-		-- TODO Get the "silent" working so it doesn't output the search string to
-		-- the commandline
-		-- TODO Find a way to prevent the highlighting from flashing
-		-- ["f"] = { "/[A-Z_-]<CR><CMD>nohls<CR>", "move within Pascal/Snake/BBQ cased word", { silent = true } },
-		-- ["F"] = { "?[A-Z_-]<CR><CMD>nohls<CR>", "move within Pascal/Snake/BBQ cased word", { silent = true } },
 
 		-- buffers
 		["Q"] = { ":close<CR>", "close window" },
@@ -117,7 +111,7 @@ M.general = {
 		["vv"] = { ":vsplit<CR><C-w>h", "vertical split" },
 
 		-- tabs
-		["<leader>ts"] = { ":tab split", "open current buffer in new tab" },
+		-- ["<leader>ts"] = { ":tab split", "open current buffer in new tab" },
 		["<D-]>"] = { ":tabnext<CR>", "Next tab" },
 		["<D-[>"] = { ":tabprevious<CR>", "Previous tab" },
 		["<leader>xt"] = {
@@ -174,15 +168,6 @@ M.telescope = {
 			"Find buffers",
 		},
 	},
-	x = {},
-	v = {},
-	c = {},
-	i = {},
-	l = {},
-	o = {},
-	s = {},
-	t = {},
-	-- plugin = false,
 }
 
 M.lspconfig = {
@@ -290,6 +275,52 @@ M.easyalign = {
 	v = {
 		["<leader>ta"] = { "<Plug>(EasyAlign)", "Align/tabularize" },
 	},
+}
+
+M.jester = {
+  n = {
+    ["<leader>ts"] = {
+      function() 
+        require('jester').run()
+      end,
+      "Test Start: Run the test under the cursor"
+    }
+  }
+}
+
+-- https://miguelcrespo.co/posts/debugging-javascript-applications-with-neovim/
+M.dap = {
+  n = {
+    -- TODO Terminate an active debug session
+    -- TODO Restart the active debug session
+    -- Provide multiple keybindings for terminals that don't support Meta and Command.
+    -- Continue
+    ["<F5>"] = { function() require('dap').contine() end, "Debug Continue" },
+    ["<D-\\>"] = { function() require('dap').contine() end, "Debug Continue" },
+    -- Close UI
+    ["<leader>xd"] = { function() require('dapui').close() end, "Debug Close UI" },
+    ["<D-|>"] = { function() require('dapui').close() end, "Debug Close UI" },
+    -- Step Over
+    ["<D-'>"] = { function() require('dap').step_over() end, "Debug Step Over" },
+    ["<F10>"] = { function() require('dap').step_over() end, "Debug Step Over" },
+    -- Step Into
+    ["<D-;>"] = { function() require('dap').step_into() end, "Debug Step Into" },
+    ["<F11>"] = { function() require('dap').step_into() end, "Debug Step Into" },
+    -- Step Out
+    ["<D-:>"] = { function() require('dap').step_out() end, "Debug Step Out" },
+    ["<F12>"] = { function() require('dap').step_out() end, "Debug Step Out" },
+    -- Toggle Breakpoint
+    ["<D-b>"] = { function() require('dap').toggle_breakpoint() end, "Debug Toggle Breakpoint" },
+    -- Set Conditional Breakpoint
+    ["<D-B>"] = { 
+      function()
+        require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))
+      end,
+      "Debug Toggle Conditional Breakpoint"
+    },
+    -- Disable Breakpoints
+    ["<D-F8>"] = { function() require('dap') end, "Enable/Disable All Breapoints" },
+  }
 }
 
 return M
