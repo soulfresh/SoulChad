@@ -168,6 +168,21 @@ else
   fi
 fi
 
+# Symlink tresitter overrides into NVChad/after
+if [ ! -d "../NvChad/after" ]
+then
+  echo "🔗 Linking nvim after scripts"
+  ln -s $CONFIG/after $ROOT/NVChad/after
+else
+  if [ -L "../NvChad/after" ]
+  then
+    echo "✅ ${GREEN}NvChad/after${NC} already linked"
+  else
+    echo "🙈 ${RED}../NvChad/after${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
+    hadError=true
+  fi
+fi
+
 # TODO if `config/chardc.lua` doesn't exist, then copy the template into place
 
 # Symlink NvChad into ~/.config/nvim
