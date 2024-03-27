@@ -90,15 +90,6 @@
     ]
   },
   "Jest Test": {
-    "prefix": "fit",
-    "description": "A Jest it test statement",
-    "body": [
-      "fit('${1:description_here}', () => {",
-      "  ${2}",
-      "})"
-    ]
-  },
-  "Jest Test": {
     "prefix": "it",
     "description": "A Jest it test statement",
     "body": [
@@ -107,13 +98,18 @@
       "})"
     ]
   },
+  "Jest Focused Test": {
+    "prefix": "fit",
+    "description": "A skipped Jest it test statement",
+    "body": [
+      "fit('${1:description_here}', () => {${2}})"
+    ]
+  },
   "Jest Skipped Test": {
     "prefix": "xit",
     "description": "A skipped Jest it test statement",
     "body": [
-      "xit('${1:description_here}', () => {",
-      "  ${2}",
-      "})"
+      "xit('${1:description_here}', () => {${2}})"
     ]
   }
 }

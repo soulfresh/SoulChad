@@ -66,6 +66,12 @@ local plugins = {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = overrides.treesitter,
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "syntax")
+      require("nvim-treesitter.configs").setup(opts)
+      -- tell treesitter to use the markdown parser for mdx files
+      vim.treesitter.language.register('markdown', 'mdx')
+    end,
 	},
 
 	{
@@ -74,8 +80,8 @@ local plugins = {
 	},
 
 	"NvChad/nvcommunity",
-	{ import = "nvcommunity.lsp.codeactionmenu" },
-	{ import = "nvcommunity.lsp.prettyhover" },
+	-- { import = "nvcommunity.lsp.codeactionmenu" },
+	-- { import = "nvcommunity.lsp.prettyhover" },
 	{ import = "nvcommunity.motion.hop" },
 
 	-- Use `jk` as the escape key
@@ -91,6 +97,11 @@ local plugins = {
 	{
 		"NvChad/nvterm",
 		opts = {
+			terminals = {
+				-- Use zsh as the terminal shell (for features)
+				-- rather than the default which is bash (for speed)
+				shell = "zsh", --vim.o.shell,
+			},
 			behavior = {
 				autoclose_on_quit = {
 					enabled = true,
@@ -155,6 +166,23 @@ local plugins = {
 		cmd = { "Flog", "Flogsplit" },
 	},
 
+	{
+		"nvim-telescope/telescope.nvim",
+		opts = {
+			defaults = {
+				prompt_prefix = "   ",
+			},
+			extensions_list = {
+        "themes",
+        "terms",
+        "undo",
+        -- Projects plugin currently not working
+        -- "projects",
+        "ui-select",
+      },
+		},
+	},
+
 	-- Undo history for telescope
 	{
 		"debugloop/telescope-undo.nvim",
@@ -172,11 +200,35 @@ local plugins = {
 		end,
 	},
 
+	-- Code action menu UI using Telescope
+	-- https://github.com/aznhe21/actions-preview.nvim?tab=readme-ov-file
+	{
+		"nvim-telescope/telescope-ui-select.nvim",
+		dependencies = { "telescope.nvim" },
+		-- keys = { "<leader>ca" },
+		event = { "BufRead", "BufWinEnter", "BufNewFile" },
+		config = function()
+			require("telescope").setup({
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown({
+							-- even more opts
+						}),
+					},
+				},
+			})
+			-- To get ui-select loaded and working with telescope, you need to call
+			-- load_extension, somewhere after setup function:
+			require("telescope").load_extension("ui-select")
+		end,
+	},
+
 	-- Split join
 	{
 		"Wansmer/treesj",
 		dependencies = { "nvim-treesitter" },
-		event = { "BufRead", "BufWinEnter", "BufNewFile" },
+		-- event = { "BufRead", "BufWinEnter", "BufNewFile" },
+		cmd = { "TSJToggle", "TSJSplit", "TSJJoin" },
 		use_default_keymaps = false,
 		max_join_length = 1000,
 		config = function()
@@ -184,18 +236,6 @@ local plugins = {
 				-- https://github.com/Wansmer/treesj#settings
 			})
 		end,
-	},
-
-	{
-		"nvim-telescope/telescope.nvim",
-		opts = {
-			defaults = {
-				prompt_prefix = "   ",
-			},
-			-- extensions_list = {},
-			-- extensions_list = { "themes", "terms", "projects" },
-			extensions_list = { "themes", "terms", "undo" },
-		},
 	},
 
 	-- Project Directory
@@ -259,6 +299,7 @@ local plugins = {
 	{
 		"gcmt/taboo.vim",
 		dependencies = { "NvChad/ui" },
+		-- Needs to load up fron so that NvChad tabufline can use it.
 		lazy = false,
 	},
 
@@ -416,7 +457,8 @@ local plugins = {
 	-- https://github.com/junegunn/vim-easy-align
 	{
 		"junegunn/vim-easy-align",
-		event = { "BufRead", "BufWinEnter", "BufNewFile" },
+		-- event = { "BufRead", "BufWinEnter", "BufNewFile" },
+		cmd = { "EasyAlign" },
 	},
 
 	-- Surround
@@ -436,7 +478,8 @@ local plugins = {
 	-- https://github.com/Pocco81/true-zen.nvim
 	{
 		"Pocco81/true-zen.nvim",
-		event = "VimEnter",
+		-- event = "VimEnter",
+		cmd = { "TZAtaraxis", "TZMinimalist", "TZNarrow", "TZFocus" },
 		config = function()
 			require("true-zen").setup({
 				-- your config goes here
@@ -540,131 +583,101 @@ local plugins = {
 		end,
 	},
 
-	-- Debugging server
-	{
-    "mfussenegger/nvim-dap",
-    cmd = { "DapContinue", "DapStepOver", "DapStepInto", "DapStepOut", "DapToggleBreakpoint" },
-    dependencies = {
-      -- Show variable values as virtual text during debug sessions
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        config = function()
-          require "custom.configs.dap-virtual-text"
-        end,
-      },
-      -- Debugging UI for a nicer debugging experience
-      {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-          require "custom.configs.dap-ui"
-        end,
-      },
-    },
-  },
+	-- -- Debugging server
+	-- {
+	--    "mfussenegger/nvim-dap",
+	--    cmd = { "DapContinue", "DapStepOver", "DapStepInto", "DapStepOut", "DapToggleBreakpoint" },
+	--    dependencies = {
+	--      -- Show variable values as virtual text during debug sessions
+	--      {
+	--        "theHamsta/nvim-dap-virtual-text",
+	--        config = function()
+	--          require "custom.configs.dap-virtual-text"
+	--        end,
+	--      },
+	--      -- Debugging UI for a nicer debugging experience
+	--      {
+	--        "rcarriga/nvim-dap-ui",
+	--        config = function()
+	--          require "custom.configs.dap-ui"
+	--        end,
+	--      },
+	--    },
+	--  },
 
+	-- JS debugging
+	-- {
+	-- 	"mxsdev/nvim-dap-vscode-js",
+	-- 	dependencies = {
+	--      "mfussenegger/nvim-dap",
+	--      -- Debug adapter for Javascript debugging using the most recent VSCode
+	--      -- functionality
+	--      {
+	--        "microsoft/vscode-js-debug",
+	--        run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+	--      },
+	--    },
+	-- 	ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+	-- 	-- run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+	-- 	config = function()
+	-- 		require("dap-vscode-js").setup({
+	-- 			-- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+	-- 			-- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+	-- 			debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+	-- 			-- debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
+	-- 			-- debugger_cmd = { "js-debug-adapter" },
+	--        -- which adapters to register in nvim-dap
+	-- 			adapters = { "chrome", "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost", "node" },
+	-- 			-- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
+	-- 			-- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
+	-- 			-- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+	-- 		})
+	--
+	--      local js_based_languages = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+	--
+	--      for _, language in ipairs(js_based_languages) do
+	--        require("dap").configurations[language] = {
+	--          -- Debug single node js files
+	--          {
+	--            type = "pwa-node",
+	--            request = "launch",
+	--            name = "Launch file",
+	--            program = "${file}",
+	--            cwd = "${workspaceFolder}",
+	--          },
+	--          -- Debug node processes like express applications
+	--          {
+	--            type = "pwa-node",
+	--            request = "attach",
+	--            name = "Attach",
+	--            processId = require 'dap.utils'.pick_process,
+	--            cwd = "${workspaceFolder}",
+	--          },
+	--          -- Debug web applications
+	--          {
+	--            type = "pwa-chrome",
+	--            request = "launch",
+	--            name = "Start Chrome with \"localhost\"",
+	--            url = "http://localhost:3000",
+	--            webRoot = "${workspaceFolder}",
+	--            userDataDir = "${workspaceFolder}/.vscode/vscode-chrome-debug-userdatadir"
+	--          }
+	--        }
+	--      end
+	-- 	end,
+	-- },
 
-	{
-		"mxsdev/nvim-dap-vscode-js",
-		dependencies = {
-      "mfussenegger/nvim-dap",
-      -- Debug adapter for Javascript debugging using the most recent VSCode
-      -- functionality
-      {
-        "microsoft/vscode-js-debug",
-        run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
-      },
-    },
-		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-		-- run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
-		config = function()
-			require("dap-vscode-js").setup({
-				-- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-				-- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-				debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-				-- debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
-				-- debugger_cmd = { "js-debug-adapter" },
-        -- which adapters to register in nvim-dap
-				adapters = { "chrome", "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost", "node" },
-				-- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
-				-- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
-				-- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
-			})
-
-      local js_based_languages = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
-
-      for _, language in ipairs(js_based_languages) do
-        require("dap").configurations[language] = {
-          -- Debug single node js files
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
-          },
-          -- Debug node processes like express applications
-          {
-            type = "pwa-node",
-            request = "attach",
-            name = "Attach",
-            processId = require 'dap.utils'.pick_process,
-            cwd = "${workspaceFolder}",
-          },
-          -- Debug web applications
-          {
-            type = "pwa-chrome",
-            request = "launch",
-            name = "Start Chrome with \"localhost\"",
-            url = "http://localhost:3000",
-            webRoot = "${workspaceFolder}",
-            userDataDir = "${workspaceFolder}/.vscode/vscode-chrome-debug-userdatadir"
-          }
-        }
-      end
-
-      -- local dap = require('dap')
-      -- dap.adapters.node2 = {
-      --   type = 'executable',
-      --   command = 'node',
-      --   args = {
-      --     os.getenv('HOME') ..
-      --       '/.local/share/nvim/lazy/vscode-node-debug2/out/src/nodeDebug.js'
-      --   }
-      -- }
-
-			-- for _, language in ipairs({ "typescript", "typescriptreact", "javascript", "javascriptreact" }) do
-			-- 	dap.configurations[language] = {
-			-- 		{
-			-- 			type = "pwa-node",
-			-- 			request = "launch",
-			-- 			name = "Debug Jest Tests",
-			-- 			-- trace = true, -- include debugger info
-			-- 			runtimeExecutable = "node",
-			-- 			runtimeArgs = {
-			-- 				"./node_modules/jest/bin/jest.js",
-			-- 				"--runInBand",
-			-- 			},
-			-- 			rootPath = "${workspaceFolder}",
-			-- 			cwd = "${workspaceFolder}",
-			-- 			console = "integratedTerminal",
-			-- 			internalConsoleOptions = "neverOpen",
-			-- 		},
-			-- 	}
-			-- end
-		end,
-	},
-
-  -- Run Jest tests in a terminal.
-  -- This just launches a terminal and starts Jest tests filtered to the test
-  -- under cursor or the file. Also sets up nvim-dap for debugging Jest tests.
-  -- Not quite as feature complete as Neotest but worked for me out of the box.
-	{
-		"David-Kunz/jester",
-		opts = {
-			path_to_jest_run = "yarn test",
-      dap = {type = 'pwa-node'},
-		},
-	},
+	-- Run Jest tests in a terminal.
+	-- This just launches a terminal and starts Jest tests filtered to the test
+	-- under cursor or the file. Also sets up nvim-dap for debugging Jest tests.
+	-- Not quite as feature complete as Neotest but worked for me out of the box.
+	-- {
+	-- 	"David-Kunz/jester",
+	-- 	opts = {
+	-- 		path_to_jest_run = "yarn test",
+	-- 		dap = { type = "pwa-node" },
+	-- 	},
+	-- },
 
 	-- Neotest
 	-- This wasn't working out of the box with the snapshot repo. Probably just
@@ -705,6 +718,7 @@ local plugins = {
 			"nvim-tree/nvim-tree.lua",
 		},
 		event = { "BufRead", "BufWinEnter", "BufNewFile" },
+		-- cmd = { "NvimTreeToggle", "NvimTreeFocus" },
 		config = function()
 			require("lsp-file-operations").setup()
 		end,
@@ -800,6 +814,30 @@ local plugins = {
 	--   "mg979/vim-visual-multi",
 	--   lazy = false,
 	-- }
+
+	-- Pretty hover with better formatting
+	-- I wasn't able to get this working. I just says "No info" when running
+	-- require('pretty_hover').hover()
+	-- {
+	--   "Fildo7525/pretty_hover",
+	--   event = "LspAttach",
+	--   opts = {},
+	-- config = function(_, opts)
+	--     require('pretty_hover').setup(opts)
+	--   end,
+	-- },
+	-- {
+	--   "levouh/tint.nvim",
+	-- event = { "BufRead", "BufWinEnter", "BufNewFile" },
+	--   config = function()
+	--     require("tint").setup()
+	--   end,
+	-- },
 }
 
-return plugins
+local utils = require("custom.utils")
+
+local debugging = require("custom.configs.debugging")
+-- TODO Merge in other properties like keymaps
+local out = utils.concat(plugins, debugging.plugins)
+return out

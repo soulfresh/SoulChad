@@ -45,15 +45,16 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
 end
 
 dap.listeners.after.disconnect["dapui_config"] = function()
-  require("dap.repl").close()
-  dapui.close()
+  -- TODO temporarily disabled while I'm getting debuging working
+  -- require("dap.repl").close()
+  -- dapui.close()
   dap_virtual_text.refresh()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
+  -- dapui.close()
   dap_virtual_text.refresh()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
+  -- dapui.close()
   dap_virtual_text.refresh()
 end

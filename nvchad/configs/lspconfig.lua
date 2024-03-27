@@ -9,6 +9,7 @@ local servers = {
   "cssls",
   "cssmodules_ls",
   "clangd",
+  -- TODO Are we using this? Is this eslint-lsp?
   "eslint",
 }
 

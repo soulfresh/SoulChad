@@ -2,11 +2,20 @@
 - https://github.com/BrunoKrugel/dotfiles
 
 ### Bugs
+- Slow Git commands
+  This is due to zsh start time. The fix is probably to set the default shell
+  to bash (`:set shell=/bin/bash` or `:set shell=bash`) and then using
+  `:terminal zsh` to open the built in terminal with zsh (will probably
+  need to over ride NVChad's terminal plugin).
 - Copilot-cmp removes my non-copilot results from the menu sometimes
 
 ### General
 - Vim Tips plugin: https://github.com/michaelb/vim-tips
   Use this inside of the startup plugin
+- LSP error underline color should better match theme
+
+### ZSH
+- Yarn run autocomplete: https://github.com/g-plane/zsh-yarn-autocompletions
 
 ### Editing
 - DOCS surround plugin
@@ -14,8 +23,16 @@
     - change the char surrounding some text
 - DOCS Focus: https://github.com/Pocco81/true-zen.nvim
 - DOCS Move files in nvim-tree will update imports
+- Pretty hover:
+  - code action menu (deprecated) 
+    https://github.com/weilbith/nvim-code-action-menu?tab=readme-ov-file
+  - pretty hover (couldn't get it working)
+    https://github.com/Fildo7525/pretty_hover
+  - lsp saga - includes a bunch of lsp functionality
+    https://nvimdev.github.io/lspsaga/hover/
+    how to nvim/typescript: https://dev.to/craftzdog/my-neovim-setup-for-react-typescript-tailwind-css-etc-58fb
+- File name styling in Telescope: https://github.com/nvim-telescope/telescope.nvim/issues/2014
 - Buffer outline plugin: https://github.com/simrat39/symbols-outline.nvim
-- Hide virtual_text
 - Workspace wide diagnostics: 
   https://github.com/neomake/neomake
   or https://github.com/dmmulroy/tsc.nvim
@@ -42,6 +59,7 @@
       h: getftime
 
 ### Snippets/Copilot/Completion coordination
+- Copilot chat window: https://github.com/CopilotC-Nvim/CopilotChat.nvim
 - Use <C-Enter> to select a cmp item unless we have selected something other
   than the first item in the list.
     - Using <Enter> to select an item from the completion menu causes unexpected

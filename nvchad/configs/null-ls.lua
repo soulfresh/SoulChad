@@ -1,6 +1,7 @@
 local present, null_ls = pcall(require, "null-ls")
 
 if not present then
+  vim.print('Failed to load null-ls plugin')
 	return
 end
 

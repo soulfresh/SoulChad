@@ -49,8 +49,8 @@ M.general = {
 		["<D-v>"] = { "<c-r>*", "Paste" },
 
 		-- Tabs
-		["<D-]>"] = { "<cmd> tabnext<CR>", "Next tab" },
-		["<D-[>"] = { "<cmd> tabprevious<CR>", "Previous tab" },
+		["<D-]>"] = { "<cmd> tabnext<CR>", "Next tab", opts = {silent = true} },
+		["<D-[>"] = { "<cmd> tabprevious<CR>", "Previous tab", opts = {silent = true} },
 	},
 	n = {
 		[";"] = { ":", "enter command mode", opts = { nowait = true } },
@@ -60,8 +60,8 @@ M.general = {
 			"Show Highlight: show the highlight group name under the cursor.",
 		},
 
-		-- Zoom
-		["<D-+>"] = {
+    -- Zoom
+    ["<D-+>"] = {
 			function()
 				ChangeScaleFactor(1.25)
 			end,
@@ -221,6 +221,11 @@ M.nvterm = {
 		},
 	},
 	t = {
+    -- disable sending Shift + space because it clears the current line in ZSH
+    -- https://github.com/neovim/neovim/issues/24093
+    ["<S-Space>"] = {"<Space>", "Disable Shift + Space in terminals"},
+    ["<S-Enter>"] = {"<Enter>", "Disable Shift + Enter in terminals"},
+
 		-- navigation in/out of terminal mode
 		["<Esc><Esc>"] = { "<C-\\><C-N>", "exit terminal mode" },
 		["<C-h>"] = { "<C-\\><C-N><C-w>h", "leave terminal left" },
@@ -254,6 +259,10 @@ M.nvterm = {
 			"Clear terminal output",
 		},
 	},
+  -- Command mode
+  c = {
+		["<D-v>"] = { "<c-r>*", "Paste" },
+  }
 }
 
 M.fugitive = {
@@ -295,8 +304,8 @@ M.dap = {
     -- TODO Restart the active debug session
     -- Provide multiple keybindings for terminals that don't support Meta and Command.
     -- Continue
-    ["<F5>"] = { function() require('dap').contine() end, "Debug Continue" },
-    ["<D-\\>"] = { function() require('dap').contine() end, "Debug Continue" },
+    ["<F5>"] = { function() require('dap').continue() end, "Debug Continue" },
+    ["<D-\\>"] = { function() require('dap').continue() end, "Debug Continue" },
     -- Close UI
     ["<leader>xd"] = { function() require('dapui').close() end, "Debug Close UI" },
     ["<D-|>"] = { function() require('dapui').close() end, "Debug Close UI" },

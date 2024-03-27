@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
   end,
 })
 
+-- TODO Can I replace null-ls with nvim-lint?
 lint.linters_by_ft = {
   lua = {
     "luacheck",
