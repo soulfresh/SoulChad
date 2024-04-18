@@ -5,6 +5,7 @@ NeoVim customizations on top of NvChad
 
 - Install [Better Touch Tool](https://folivora.ai/)
 - Import Better Touch Tool configuration from `config/BetterTouchTool.bttpreset`
+  by opening the BTT configuration window and then "Presets > Import Preset"
 
 ## Setup
 

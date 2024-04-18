@@ -24,25 +24,36 @@ CONFIG=$(realpath ./nvchad)
 
 hadError=false
 
-# Exit if no brew
-echo "Brew version:"
-brew --version
-echo ""
-
 echo "Install/Upgrade required commandline dependencies?"
 select yn in "Yes" "No"; do
   case $yn in
-    Yes ) installBrew = true; break;;
+    Yes ) fullInstall = true; break;;
     No ) break;;
   esac
 done
+
+if [ "$fullInstall" = true ]; then
+  # Install xcode command line tools
+  xcode-select --install
+fi
+
+# Make sure brew is installed
+if ! command -v brew &> /dev/null
+then
+    echo "Installing Brew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+  echo "Brew version:"
+  brew --version
+fi
+echo ""
 
 # TODO Do the following conditionally
 # Pre-reqs
 # brew install coreutils # realpath
 # brew install ripgrep # grep searching with Telescope.
 
-if [ "$installBrew" = true ]; then
+if [ "$fullInstall" = true ]; then
   echo "🚗 Installing/Upgrading commandline tools..."
 
   # Install brew if it doesn't exist
