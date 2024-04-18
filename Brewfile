@@ -1,6 +1,4 @@
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
 tap "mulle-kybernetik/software"
 
 # Tmux 3.3 introduced an issue in my tmux + vim + iterm where cursors would not
@@ -13,7 +11,7 @@ tap "mulle-kybernetik/software"
 # brew "python@3.10"
 
 # General Development Tools
-brew "git"
+# brew "git" # Already installed by install script
 # Github issues commandline
 # brew "ghi"
 # Add GitHub support to git cli
