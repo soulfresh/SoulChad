@@ -22,20 +22,21 @@ ROOT=$(realpath ../)
 DOTFILES=$(pwd)
 CONFIG=$(realpath ./nvchad)
 
-fullInstall = false
+fullInstall=false
 hadError=false
 
 echo "Install/Upgrade required commandline dependencies?"
 select yn in "Yes" "No"; do
   case $yn in
-    Yes ) fullInstall = true; break;;
+    Yes ) fullInstall=true; break;;
     No ) break;;
   esac
 done
 
 if [ "$fullInstall" = true ]; then
+  echo "Installing XCode Command Line Tools"
   # Install xcode command line tools
-  xcode-select --install
+  xcode-select --install || echo "Command Line Tools already installed"
 fi
 
 # Make sure brew is installed
