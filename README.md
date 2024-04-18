@@ -1,6 +1,11 @@
 # SoulVim
 NeoVim customizations on top of NvChad
 
+## Marc's Setup
+
+- Install [Better Touch Tool](https://folivora.ai/)
+- Import Better Touch Tool configuration from `config/BetterTouchTool.bttpreset`
+
 ## Setup
 
 TODO List out the NvChad prereqs here
