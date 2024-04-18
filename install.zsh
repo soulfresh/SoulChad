@@ -22,6 +22,7 @@ ROOT=$(realpath ../)
 DOTFILES=$(pwd)
 CONFIG=$(realpath ./nvchad)
 
+fullInstall = false
 hadError=false
 
 echo "Install/Upgrade required commandline dependencies?"
