@@ -15,12 +15,17 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
+ROOT=$(cd ..; pwd)
 NVIM_HOME="$HOME/.config/nvim"
-# TODO find an alternative to the realpath command so we don't have to
-# brew install coreutils before we can use this script.
-ROOT=$(realpath ../)
 DOTFILES=$(pwd)
-CONFIG=$(realpath ./nvchad)
+CONFIG="$DOTFILES/nvchad"
+
+echo "Using the following paths:"
+echo "NVIM_HOME: $NVIM_HOME"
+echo "DOTFILES: $DOTFILES"
+echo "ROOT: $ROOT"
+echo "CONFIG: $CONFIG"
+echo ""
 
 fullInstall=false
 hadError=false

@@ -24,8 +24,6 @@ brew "neovim"
 # brew "tmux"
 brew "zsh"
 cask "neovide"
-# used for the `realpath` command used by our install script
-brew "coreutils"
 
 # Web Development Tools
 # I think nvm will take care of this for me
