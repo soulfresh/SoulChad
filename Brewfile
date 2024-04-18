@@ -6,7 +6,7 @@ tap "mulle-kybernetik/software"
 # Tmux 3.3 introduced an issue in my tmux + vim + iterm where cursors would not
 # update between insert and normal mode.
 # https://github.com/tmux/tmux/issues/3218
-tap "soulfresh/homebrew", "git@github.com:soulfresh/homebrew-homebrew.git"
+# tap "soulfresh/homebrew", "git@github.com:soulfresh/homebrew-homebrew.git"
 
 # brew "python@3.9"
 # brew "python@3.11"
@@ -88,7 +88,7 @@ brew "libheif"
 
 # Search
 # TODO Are we still using fzf?
-brew "fzf"
+# brew "fzf"
 # Used by nvim Telescope
 brew "ripgrep"
 # brew "the_silver_searcher"
