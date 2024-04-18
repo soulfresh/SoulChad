@@ -299,7 +299,7 @@ local plugins = {
 	{
 		"gcmt/taboo.vim",
 		dependencies = { "NvChad/ui" },
-		-- Needs to load up fron so that NvChad tabufline can use it.
+		-- Needs to load up front so that NvChad tabufline can use it.
 		lazy = false,
 	},
 
@@ -770,6 +770,7 @@ local plugins = {
 	-- https://github.com/pmizio/typescript-tools.nvim
 	{
 		"pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		ft = {
 			"javascript",
 			"typescript",
