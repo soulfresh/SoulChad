@@ -227,7 +227,11 @@ then
   fi
 else
   echo "🔗 Linking NvChad into ${GREEN}~/.config/nvim"
-  ln -sfn $ROOT/NvChad ~/.config/nvim
+  if [ ! -d "$HOME/.config" ]
+  then
+    mkdir $HOME/.config
+  fi
+  ln -sfn $ROOT/NvChad $HOME/.config/nvim
 fi
 
 # Copy other configs into place
