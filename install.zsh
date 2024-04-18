@@ -22,8 +22,8 @@ CONFIG="$DOTFILES/nvchad"
 
 echo "Using the following paths:"
 echo "NVIM_HOME: $NVIM_HOME"
-echo "DOTFILES: $DOTFILES"
 echo "ROOT: $ROOT"
+echo "DOTFILES: $DOTFILES"
 echo "CONFIG: $CONFIG"
 echo ""
 
@@ -49,6 +49,11 @@ if ! command -v brew &> /dev/null
 then
     echo "Installing Brew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo ""
+
+    echo "Adding Brew to PATH..."
+    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/marcwren/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo "Brew version:"
   brew --version
