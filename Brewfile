@@ -20,7 +20,7 @@ tap "mulle-kybernetik/software"
 brew "ctags"
 brew "neovim"
 # brew "tmux"
-brew "zsh"
+# brew "zsh" # This is now the default shell on OSX
 cask "neovide"
 
 # Web Development Tools

@@ -51,3 +51,31 @@ then
 else
   echo "✅ ${GREEN}${NVCHAD} is not present"
 fi
+
+# Remove ZSH configs
+if [ -L $HOME/.zsh.prompts ]
+then
+  echo "🧹 unlinking ${GREEN}~/.zsh.prompts"
+  rm $HOME/.zsh.prompts
+else
+  echo "✅ ${GREEN}~/.zsh.prompts${NC} is not symlinked"
+fi
+if [ -L $HOME/.zsh.after ]
+then
+  echo "🧹 unlinking ${GREEN}~/.zsh.after"
+  rm $HOME/.zsh.after
+else
+  echo "✅ ${GREEN}~/.zsh.after${NC} is not symlinked"
+fi
+
+# Remove Prezto configs
+echo "Removing Prezto Configs"
+  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+    if [ -L "${HOME}/.${rcfile:t}" ]
+    then
+      echo "🧹 unlinking ${GREEN}${HOME}/.${rcfile:t}${NC}"
+      rm "${HOME}/.${rcfile:t}"
+    else 
+      echo "✅ ${GREEN}.${rcfile:t}${NC} is not symlinked"
+    fi
+  done

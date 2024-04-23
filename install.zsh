@@ -6,8 +6,6 @@ set -e
 # trap fnc ERR
 
 # TODO Also setup:
-# - ZSH
-# - Set ZSH as default shell
 # - Setup Pretzo: https://github.com/sorin-ionescu/prezto
 # - get nerd font (getNf)
 # - Conditionally run OSX settings file
@@ -61,11 +59,7 @@ else
 fi
 echo ""
 
-# TODO Do the following conditionally
-# Pre-reqs
-# brew install coreutils # realpath
-# brew install ripgrep # grep searching with Telescope.
-
+## XCode Command Line Tools
 if [ "$fullInstall" = true ]; then
   echo "🚗 Installing/Upgrading commandline tools..."
 
@@ -83,14 +77,36 @@ if [ "$fullInstall" = true ]; then
   echo "✅ ${GREEN} Installed/Upgraded commandline tools"
 fi 
 
-if [ "$fullInstall" = true ]; then
-  # Make ZSH the default shell
-  echo "🐚 Setting ZSH as default shell"
-  sudo chsh -s $(which zsh) $USER
+## ZSH
+# zsh is now the default shell on OSX
+# if [ "$fullInstall" = true ]; then
+#   # Make ZSH the default shell
+#   echo "🐚 Setting ZSH as default shell"
+#   sudo chsh -s $(which zsh) $USER
+# fi
+
+## Prezto
+if [ ! -d "${HOME}/.zprezto" ]
+then
+  echo "🧬 Cloning Prezto"
+  git clone --recursive https://github.com/sorin-ionescu/prezto.git "${HOME}/.zprezto"
+  echo "🔗 Linking Prezto runcoms"
+  setopt EXTENDED_GLOB
+  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+  done
+else
+  if [ "$fullInstall" = true ] then
+    echo "♻️  Updating Prezto"
+    cd "${HOME}/.zprezto"
+    git pull
+    git submodule sync --recursive
+    git submodule update --init --recursive
+    cd -
+  fi
 fi
 
-# Symlink Prezto prompt
-# TODO Install Prezto repo (see setup/prezto.zsh)
+# Prompt
 # if the file doesn't exists and is not a directory
 if [ ! -d "${HOME}/.zsh.prompts" ]
 then
