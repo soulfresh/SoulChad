@@ -88,11 +88,6 @@ if [ ! -d "${HOME}/.zprezto" ]
 then
   echo "🧬 Cloning Prezto"
   git clone --recursive https://github.com/sorin-ionescu/prezto.git "${HOME}/.zprezto"
-  echo "🔗 Linking Prezto runcoms"
-  setopt EXTENDED_GLOB
-  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-  done
 else
   if [ "$fullInstall" = true ] then
     echo "♻️  Updating Prezto"
@@ -127,7 +122,7 @@ fi
 # if the file doesn't exists and is not a directory
 if [ ! -d "${HOME}/.zsh.after" ]
 then
-  echo "🔗 Linking ZSH Configs"
+  echo "🔗 Linking ZSH After Configs"
   ln -s $DOTFILES/zsh/.zsh.after $HOME
   echo "✅ ${GREEN}ZSH Configs${NC} linked"
 else
@@ -139,6 +134,25 @@ else
   else
     echo "🙈 ${RED}${HOME}/.zsh.after${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
     hadError=true
+  fi
+fi
+
+if [ ! -d "${HOME}/.zshrc"]
+then 
+  echo "🔗 Linking ZSH RC file"
+  ln -s $DOTFILES/zsh/prezto-overrides/zshrc $HOME
+  echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
+else
+  # If the file is already there, replace it
+  if [ -L "${HOME}/.zshrc" ]
+  then
+    ln -sfn $DOTFILES/zsh/prezto-overrides/zshrc $HOME
+    echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
+  else
+    echo "📦 Backing up existing nvim config to ${GREEN}.config/nvim.backup"
+    mv $NVIM_HOME $NVIM_HOME.backup
+    ln -sfn $DOTFILES/zsh/prezto-overrides/zshrc $HOME
+    echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
   fi
 fi
 
