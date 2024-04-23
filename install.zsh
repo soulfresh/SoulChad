@@ -135,7 +135,7 @@ else
   fi
 fi
 
-if [ ! -d "${HOME}/.zshrc"]
+if [ ! -d "${HOME}/.zshrc" ]
 then 
   echo "🔗 Linking ZSH RC file"
   ln -s $DOTFILES/zsh/prezto-overrides/zshrc $HOME
@@ -154,7 +154,7 @@ else
 fi
 
 # Symlink Git Configs
-echo "🔗 Linking Git Configs ${HOME}/${FILE##*/}"
+echo "🔗 Linking Git Configs"
 for FILE in ./git/.git*; do
   # if the glob failed to return any files, skip
   if [ ! -e "$FILE" ]
@@ -164,18 +164,18 @@ for FILE in ./git/.git*; do
   fi
 
   # if the file doesn't exists and is not a directory
-  if [ ! -e "${HOME}/${FILE##*/}" ]
+  if [ ! -e "${HOME}/${FILE}" ]
   then
-    ln -s $DOTFILES/git/${FILE##*/} $HOME
-    echo "✅ ${GREEN}${FILE##*/}${NC} linked"
+    ln -s $DOTFILES/git/${FILE} $HOME
+    echo "✅ ${GREEN}${FILE}${NC} linked"
   else
     # If the file is already there, replace it
-    if [ -L "${HOME}/${FILE##*/}" ]
+    if [ -L "${HOME}/${FILE}" ]
     then
-      ln -sfn $DOTFILES/git/${FILE##*/} $HOME
-      echo "✅ ${GREEN}${FILE##*/}${NC} linked"
+      ln -sfn $DOTFILES/git/${FILE} $HOME
+      echo "✅ ${GREEN}${FILE}${NC} linked"
     else
-      echo "🙈 ${RED}${HOME}/${FILE##*/}${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
+      echo "🙈 ${RED}${HOME}/${FILE}${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
       hadError=true
     fi
   fi
