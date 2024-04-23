@@ -14,8 +14,8 @@ sudo defaults write /.Spotlight-V100/Store-V1/Exclusions Exclusions -array-add ~
 defaults write com.apple.menuextra.battery ShowPercent -string "NO"
 defaults write com.apple.menuextra.battery ShowTime -string "YES"
 
-# Always show scrollbars
-# defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+# When to show scrollbars
+defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
 
 # Expand save panel by default
 # defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true

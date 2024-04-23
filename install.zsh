@@ -10,6 +10,7 @@ set -e
 # - Set ZSH as default shell
 # - Setup Pretzo: https://github.com/sorin-ionescu/prezto
 # - get nerd font (getNf)
+# - Conditionally run OSX settings file
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -170,7 +171,7 @@ fi
 if [ ! -d "../NvChad" ]
 then
   echo "🚗 cloning NvChad"
-  git clone https://github.com/NvChad/NvChad $ROOT/NvChad --depth 1
+  git clone -b v2.0 https://github.com/NvChad/NvChad $ROOT/NvChad --depth 1
   echo "✅ ${GREEN}NvChad${NC} ready"
 else
   echo "✅ ${GREEN}NvChad${NC} already checked out"
