@@ -6,9 +6,7 @@ set -e
 # trap fnc ERR
 
 # TODO Also setup:
-# - Setup Pretzo: https://github.com/sorin-ionescu/prezto
 # - get nerd font (getNf)
-# - Conditionally run OSX settings file
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -270,5 +268,10 @@ then
 else
   echo "🙌 ${GREEN}Install successful!${NC}"
   echo "You can now install any Nerd Fonts you want with the 'getnf' commandline tool"
+fi
+
+if [ "$fullInstall" = true ]; then
+  echo "🍏 Changing OSX settings"
+  ./bin/osx
 fi
 
