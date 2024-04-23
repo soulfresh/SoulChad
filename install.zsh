@@ -89,13 +89,13 @@ then
   echo "🧬 Cloning Prezto"
   git clone --recursive https://github.com/sorin-ionescu/prezto.git "${HOME}/.zprezto"
 else
-  if [ "$fullInstall" = true ] then
+  if [ "$fullInstall" = true ]; then
     echo "♻️  Updating Prezto"
     cd "${HOME}/.zprezto"
     git pull
     git submodule sync --recursive
     git submodule update --init --recursive
-    cd -
+    cd "${DOTFILES}"
   fi
 fi
 
@@ -108,8 +108,7 @@ then
   echo "✅ ${GREEN}ZSH Prompts${NC} linked"
 else
   # If the file is already there, replace it
-  if [ -L "${HOME}/.zsh.prompts" ]
-  then
+  if [ -L "${HOME}/.zsh.prompts" ]; then
     ln -sfn $DOTFILES/zsh/.zsh.prompts $HOME
     echo "✅ ${GREEN}Prompts${NC} linked"
   else
@@ -127,8 +126,7 @@ then
   echo "✅ ${GREEN}ZSH Configs${NC} linked"
 else
   # If the file is already there, replace it
-  if [ -L "${HOME}/.zsh.after" ]
-  then
+  if [ -L "${HOME}/.zsh.after" ]; then
     ln -sfn $DOTFILES/zsh/.zsh.after $HOME
     echo "✅ ${GREEN}ZSH Configs${NC} linked"
   else
@@ -144,8 +142,7 @@ then
   echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
 else
   # If the file is already there, replace it
-  if [ -L "${HOME}/.zshrc" ]
-  then
+  if [ -L "${HOME}/.zshrc" ]; then
     ln -sfn $DOTFILES/zsh/prezto-overrides/zshrc $HOME
     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
   else
