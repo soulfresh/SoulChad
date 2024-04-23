@@ -15,7 +15,7 @@ CUSTON="$NVCHAD/lua/custom"
 # Remove the custom folder symlined into the NvChad folder
 if [ -L "$CUSTOM" ]
 then
-  echo "🚫 removing nvchad-config link"
+  echo "🧹 removing nvchad-config link"
   rm $ROOT/NVChad/lua/custom
 else
   echo "✅ ${GREEN}NvChad/lua/custom${NC} not linked"
@@ -24,14 +24,14 @@ fi
 # Remove the nvim compiled code/cache
 if [ -d $NVIM_CACHE ]
 then
-  echo "🚫 removing Nvim cache files"
+  echo "🧹 removing Nvim cache files"
   rm -rf $NVIM_CACHE
 fi
 
 # Remove the ~/.config/nvim symlink to NvChad and restore any backups
 if [ -L $NVIM_HOME ]
 then
-  echo "🚫 unlinking ${GREEN}~/.config/nvim"
+  echo "🧹 unlinking ${GREEN}~/.config/nvim"
   rm $NVIM_HOME
 
   if [ -d ${NVIM_HOME}.backup ]
@@ -46,7 +46,7 @@ fi
 # Remove NvChad
 if [ -d "$NVCHAD" ]
 then
-  echo "🚫 deleting ${GREEN}${NVCHAD}"
+  echo "🧹 deleting ${GREEN}${NVCHAD}"
   rm -rf $NVCHAD
 else
   echo "✅ ${GREEN}${NVCHAD} is not present"

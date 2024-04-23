@@ -83,6 +83,12 @@ if [ "$fullInstall" = true ]; then
   echo "✅ ${GREEN} Installed/Upgraded commandline tools"
 fi 
 
+if [ "$fullInstall" = true ]; then
+  # Make ZSH the default shell
+  echo "🐚 Setting ZSH as default shell"
+  sudo chsh -s $(which zsh) $USER
+fi
+
 # Symlink Prezto prompt
 # TODO Install Prezto repo (see setup/prezto.zsh)
 # if the file doesn't exists and is not a directory
