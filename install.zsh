@@ -100,11 +100,10 @@ symlink_dir () {
 #           string (ex `symlink_files_matching_glob "git/.git*" ~/`)
 # @param $1 The directory into which files should be linked.
 ###
-symlink_files_matching_glob () {
-  local glob=$1
-  local link=$2
+symlink_multiple_files () {
+  local link=$1
 
-  for FILE in $glob; do
+  for FILE in "${@:2}"; do
     # if the glob failed to return any files, skip
     if [ ! -e "$FILE" ]
     then
@@ -200,7 +199,7 @@ symlink_dir zsh/.zsh.prompts $HOME/.zsh.prompts
 # Symlink all files in the prezto/runcoms folder into the home directory
 setopt EXTENDED_GLOB
 for rcfile in "${ROOT}"/prezto/runcoms/^README.md(.N); do
-  ln -s "$rcfile" "${HOME}/.${rcfile:t}"
+  ln -sfn "$rcfile" "${HOME}/.${rcfile:t}"
 done
 
 # Override some of the default prezto runcoms with my own
@@ -240,7 +239,7 @@ fi
 
 
 # Symlink Git Configs
-symlink_files_matching_glob "git/.git*" $HOME
+symlink_multiple_files $HOME git/.git*
 
 # Install Nerd Fonts
 if [ ! -d "../GetNerdFonts" ]
@@ -249,6 +248,7 @@ then
   git clone https://github.com/ronniedroid/getnf.git $ROOT/GetNerdFonts
   echo "✅ ${GREEN}GetNerdFonts${NC} ready"
 else
+  # TODO Update
   echo "✅ ${GREEN}GetNerdFonts${NC} already checked out"
 fi
 
@@ -265,6 +265,7 @@ then
   git clone -b v2.0 https://github.com/NvChad/NvChad $ROOT/NvChad --depth 1
   echo "✅ ${GREEN}NvChad${NC} ready"
 else
+  # TODO Update
   echo "✅ ${GREEN}NvChad${NC} already checked out"
 fi
 
