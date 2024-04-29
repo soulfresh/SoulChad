@@ -203,6 +203,9 @@ symlink_dir zsh $HOME/.zsh
 if [ "$fullInstall" = true ]; then
   echo "🚗 Installing NVM"
   PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
+  # Make NVM available immediately so we can install node.
+  export NVM_DIR="$HOME/.nvm"
+
   # if [ ! -e "$HOME/.nvm" ]
   # then
   #   echo "🚗 Installing NVM"
