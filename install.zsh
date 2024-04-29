@@ -142,9 +142,9 @@ then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     echo ""
 
-    echo "Adding Brew to PATH..."
-    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/marcwren/.zprofile
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # echo "Adding Brew to PATH..."
+    # (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
+    # eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo "Brew version:"
   brew --version
@@ -178,14 +178,14 @@ fi
 # fi
 
 ## Prezto
-if [ ! -d "${HOME}/.zprezto" ]
+if [ ! -d "${ROOT}/prezto" ]
 then
   echo "🧬 Cloning Prezto"
-  git clone --recursive https://github.com/sorin-ionescu/prezto.git "${HOME}/.zprezto"
+  git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ROOT}/prezto"
 else
   if [ "$fullInstall" = true ]; then
     echo "♻️  Updating Prezto"
-    cd "${HOME}/.zprezto"
+    cd "${ROOT}/prezto"
     git pull
     git submodule sync --recursive
     git submodule update --init --recursive
@@ -194,14 +194,22 @@ else
 fi
 
 # Prompt
+symlink_dir $ROOT/prezto $HOME/.zprezto
 symlink_dir zsh/.zsh.prompts $HOME/.zsh.prompts
+
+# Symlink all files in the prezto/runcoms folder into the home directory
+setopt EXTENDED_GLOB
+for rcfile in "${ROOT}"/prezto/runcoms/^README.md(.N); do
+  ln -s "$rcfile" "${HOME}/.${rcfile:t}"
+done
+
+# Override some of the default prezto runcoms with my own
+symlink_file zsh/prezto-override/.zpreztorc $HOME/.zpreztorc
+symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
 
 # Symlink ZSH Configs
 symlink_dir zsh/.zsh.after $HOME/.zsh.after
 symlink_dir zsh $HOME/.zsh
-
-# If the file exists and is not a symlink
-symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
 
 # Install NVM
 if [ "$fullInstall" = true ]; then
@@ -270,8 +278,8 @@ symlink_dir $CONFIG/after $ROOT/NVChad/after
 symlink_dir $ROOT/NvChad $HOME/.config/nvim
 
 # Copy other configs into place
-# TODO Convert this into a loop over each file/folder in configs/
-cp -r $DOTFILES/config/neovide $HOME/.config
+symlink_dir "$DOTFILES/config/neovide" $HOME/.config
+# cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 
 if [ hadError = true ]
