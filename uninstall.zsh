@@ -19,6 +19,7 @@ CUSTON="$NVCHAD/lua/custom"
 # NVM
 # Node
 # Any repos installed into $DOTFILES
+# Git Configs
 #
 # This script WILL remove the following:
 # Prezto and configs
