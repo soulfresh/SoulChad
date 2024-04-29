@@ -246,13 +246,18 @@ if [ ! -d "../GetNerdFonts" ]
 then
   echo "🚗 cloning NerdFonts"
   git clone https://github.com/ronniedroid/getnf.git $ROOT/GetNerdFonts
+else if [ "$fullInstall" = true ]; then
+  cd $ROOT/GetNerdFonts
+  git pull
+  cd $DOTFILES
+  echo "✅ ${GREEN}GetNerdFonts${NC} already checked out"
+fi
+
+if [ "$fullInstall" = true ]; then
   cd $ROOT/GetNerdFonts
   ./install.sh
   cd $DOTFILES
   echo "✅ ${GREEN}GetNerdFonts${NC} ready"
-else
-  # TODO Update
-  echo "✅ ${GREEN}GetNerdFonts${NC} already checked out"
 fi
 
 # Copy chadrc.lua.template to chadrc.lua (if it doesn't already exist)
