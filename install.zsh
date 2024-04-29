@@ -242,11 +242,10 @@ fi
 symlink_multiple_files $HOME git/.git*
 
 # Install Nerd Fonts
-if [ ! -d "../GetNerdFonts" ]
-then
+if [ ! -d "../GetNerdFonts" ]; then
   echo "🚗 cloning NerdFonts"
   git clone https://github.com/ronniedroid/getnf.git $ROOT/GetNerdFonts
-else if [ "$fullInstall" = true ]; then
+elif [ "$fullInstall" = true ]; then
   echo "🚗 upgrading NerdFonts"
   cd $ROOT/GetNerdFonts
   git pull
@@ -258,6 +257,8 @@ if [ "$fullInstall" = true ]; then
   echo "🚗 installing NerdFonts"
   cd $ROOT/GetNerdFonts
   ./install.sh
+  # Install the font configured as my default
+  getnf -i FiraCode
   cd $DOTFILES
   echo "✅ ${GREEN}GetNerdFonts${NC} ready"
 fi
