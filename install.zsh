@@ -401,6 +401,6 @@ fi
 
 if [ "$fullInstall" = true ]; then
   echo "🍏 Changing OSX settings"
-  ./bin/osx
+  ./misc/osx-settings
 fi
 
