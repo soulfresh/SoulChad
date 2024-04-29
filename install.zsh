@@ -195,8 +195,8 @@ else
 fi
 
 # Prompt
-# if the file doesn't exists and is not a directory
 symlink_dir zsh/.zsh.prompts $HOME/.zsh.prompts
+# if the file doesn't exists and is not a directory
 # if [ ! -d "${HOME}/.zsh.prompts" ]
 # then
 #   echo "🔗 Linking ZSH Prompt"
@@ -215,6 +215,7 @@ symlink_dir zsh/.zsh.prompts $HOME/.zsh.prompts
 
 # Symlink ZSH Configs
 symlink_dir zsh/.zsh.after $HOME/.zsh.after
+symlink_dir zsh $HOME/.zsh
 # if the file doesn't exists and is not a directory
 # if [ ! -d "${HOME}/.zsh.after" ]
 # then
