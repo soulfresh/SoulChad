@@ -233,21 +233,21 @@ symlink_dir zsh/.zsh.after $HOME/.zsh.after
 # fi
 
 # If the file exists and is not a symlink
-symlink_file zsh/prezto-overrides/.zshrc $HOME/.zshrc
+symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
 # if [ -a "${HOME}/.zshrc" ]
 # then 
 #     echo "📦 Backing up existing nvim config to ${GREEN}.config/nvim.backup"
 #     mv $NVIM_HOME $NVIM_HOME.backup
-#     ln -sfn $DOTFILES/zsh/prezto-overrides/.zshrc $HOME
+#     ln -sfn $DOTFILES/zsh/prezto-override/.zshrc $HOME
 #     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
 # else
 #   # If the file is already there, replace it
 #   if [ -L "${HOME}/.zshrc" ]; then
-#     ln -sfn $DOTFILES/zsh/prezto-overrides/.zshrc $HOME
+#     ln -sfn $DOTFILES/zsh/prezto-override/.zshrc $HOME
 #     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
 #   else
 #     echo "🔗 Linking ZSH RC file"
-#     ln -s $DOTFILES/zsh/prezto-overrides/.zshrc $HOME
+#     ln -s $DOTFILES/zsh/prezto-override/.zshrc $HOME
 #     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
 #   fi
 # fi
