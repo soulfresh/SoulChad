@@ -247,13 +247,15 @@ then
   echo "🚗 cloning NerdFonts"
   git clone https://github.com/ronniedroid/getnf.git $ROOT/GetNerdFonts
 else if [ "$fullInstall" = true ]; then
+  echo "🚗 upgrading NerdFonts"
   cd $ROOT/GetNerdFonts
   git pull
   cd $DOTFILES
-  echo "✅ ${GREEN}GetNerdFonts${NC} already checked out"
+  echo "✅ ${GREEN}GetNerdFonts${NC} updated"
 fi
 
 if [ "$fullInstall" = true ]; then
+  echo "🚗 installing NerdFonts"
   cd $ROOT/GetNerdFonts
   ./install.sh
   cd $DOTFILES
