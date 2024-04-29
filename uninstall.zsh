@@ -133,7 +133,7 @@ fi
 
 # Remove Prezto configs
 echo "Removing Prezto Configs"
-for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+for rcfile in "$ROOT"/prezto/runcoms/^README.md(.N); do
   remove_symlink "${HOME}/.${rcfile:t}" 
   # if [ -L "${HOME}/.${rcfile:t}" ]
   # then
