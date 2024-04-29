@@ -246,6 +246,9 @@ if [ ! -d "../GetNerdFonts" ]
 then
   echo "🚗 cloning NerdFonts"
   git clone https://github.com/ronniedroid/getnf.git $ROOT/GetNerdFonts
+  cd $ROOT/GetNerdFonts
+  ./install.sh
+  cd $DOTFILES
   echo "✅ ${GREEN}GetNerdFonts${NC} ready"
 else
   # TODO Update
