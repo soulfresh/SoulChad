@@ -128,6 +128,7 @@ select yn in "Yes" "No"; do
   esac
 done
 
+## XCode Command Line Tools
 if [ "$fullInstall" = true ]; then
   echo "Installing XCode Command Line Tools"
   # Install xcode command line tools
@@ -150,19 +151,8 @@ else
 fi
 echo ""
 
-## XCode Command Line Tools
+# Install Brewed commands
 if [ "$fullInstall" = true ]; then
-  echo "🚗 Installing/Upgrading commandline tools..."
-
-  # Install brew if it doesn't exist
-  if [[ $(command -v brew) == "" ]]; then
-    echo "👷 Installing Hombrew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  else
-    echo "🌱 Updating Homebrew"
-    brew update
-  fi
-
   # Use the bundle file to install system dependencies
   brew bundle install --file "${DOTFILES}/Brewfile"
   echo "✅ ${GREEN}Installed/Upgraded commandline tools${NC}"
