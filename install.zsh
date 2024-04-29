@@ -120,6 +120,10 @@ symlink_multiple_files () {
 ### START
 #########
 
+# Make sure PATH includes .local/bin during this install script
+PATH=$HOME/.local/bin:$PATH
+
+
 echo "Install/Upgrade required commandline dependencies?"
 select yn in "Yes" "No"; do
   case $yn in
