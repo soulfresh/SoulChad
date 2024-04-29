@@ -195,62 +195,13 @@ fi
 
 # Prompt
 symlink_dir zsh/.zsh.prompts $HOME/.zsh.prompts
-# if the file doesn't exists and is not a directory
-# if [ ! -d "${HOME}/.zsh.prompts" ]
-# then
-#   echo "🔗 Linking ZSH Prompt"
-#   ln -s $DOTFILES/zsh/.zsh.prompts $HOME
-#   echo "✅ ${GREEN}ZSH Prompts${NC} linked"
-# else
-#   # If the file is already there, replace it
-#   if [ -L "${HOME}/.zsh.prompts" ]; then
-#     ln -sfn $DOTFILES/zsh/.zsh.prompts $HOME
-#     echo "✅ ${GREEN}Prompts${NC} linked"
-#   else
-#     echo "🙈 ${RED}${HOME}/.zsh.prompts${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-#     hadError=true
-#   fi
-# fi
 
 # Symlink ZSH Configs
 symlink_dir zsh/.zsh.after $HOME/.zsh.after
 symlink_dir zsh $HOME/.zsh
-# if the file doesn't exists and is not a directory
-# if [ ! -d "${HOME}/.zsh.after" ]
-# then
-#   echo "🔗 Linking ZSH After Configs"
-#   ln -s $DOTFILES/zsh/.zsh.after $HOME
-#   echo "✅ ${GREEN}ZSH Configs${NC} linked"
-# else
-#   # If the file is already there, replace it
-#   if [ -L "${HOME}/.zsh.after" ]; then
-#     ln -sfn $DOTFILES/zsh/.zsh.after $HOME
-#     echo "✅ ${GREEN}ZSH Configs${NC} linked"
-#   else
-#     echo "🙈 ${RED}${HOME}/.zsh.after${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-#     hadError=true
-#   fi
-# fi
 
 # If the file exists and is not a symlink
 symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
-# if [ -a "${HOME}/.zshrc" ]
-# then 
-#     echo "📦 Backing up existing nvim config to ${GREEN}.config/nvim.backup"
-#     mv $NVIM_HOME $NVIM_HOME.backup
-#     ln -sfn $DOTFILES/zsh/prezto-override/.zshrc $HOME
-#     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
-# else
-#   # If the file is already there, replace it
-#   if [ -L "${HOME}/.zshrc" ]; then
-#     ln -sfn $DOTFILES/zsh/prezto-override/.zshrc $HOME
-#     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
-#   else
-#     echo "🔗 Linking ZSH RC file"
-#     ln -s $DOTFILES/zsh/prezto-override/.zshrc $HOME
-#     echo "✅ ${GREEN}${HOME}/.zshrc${NC} linked"
-#   fi
-# fi
 
 # Install NVM
 if [ "$fullInstall" = true ]; then
@@ -262,44 +213,26 @@ if [ "$fullInstall" = true ]; then
     echo "✅ ${GREEN}NVM${NC} already installed"
   fi
 
-  echo "Upgrading NVM"
+  echo "🚗 Upgrading NVM"
   (
     cd "$NVM_DIR"
     git fetch --tags origin
     git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
   ) && \. "$NVM_DIR/nvm.sh"
+
+  if ! command -v node &> /dev/null
+  then
+    echo "🚗 Installing lastest stable Node"
+    nvm use stable
+  else
+    echo "Current Node version:"
+    node --version
+  fi
 fi
 
 
 # Symlink Git Configs
 symlink_files_matching_glob "git/.git*" $HOME
-# echo "🔗 Linking Git Configs"
-# for FILE in ./git/.git*; do
-#   # if the glob failed to return any files, skip
-#   if [ ! -e "$FILE" ]
-#   then
-#     echo "${RED}No Git configs to link${NC}"
-#     continue
-#   fi
-#
-#   # if the file doesn't exists and is not a directory
-#   if [ ! -e "${HOME}/${FILE}" ]
-#   then
-#     ln -s $DOTFILES/git/${FILE} $HOME
-#     echo "✅ ${GREEN}${FILE}${NC} linked"
-#   else
-#     # If the file is already there, replace it
-#     if [ -L "${HOME}/${FILE}" ]
-#     then
-#       ln -sfn $DOTFILES/git/${FILE} $HOME
-#       echo "✅ ${GREEN}${FILE}${NC} linked"
-#     else
-#       echo "🙈 ${RED}${HOME}/${FILE}${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-#       hadError=true
-#     fi
-#   fi
-# done
-
 
 # Install Nerd Fonts
 if [ ! -d "../GetNerdFonts" ]
@@ -329,62 +262,12 @@ fi
 
 # Symlink nvchad-config into NvChad/lua/custom
 symlink_dir $CONFIG $ROOT/NVChad/lua/custom
-# if [ ! -d "../NvChad/lua/custom" ]
-# then
-#   echo "🔗 Linking nvchad-config"
-#   ln -s $CONFIG $ROOT/NVChad/lua/custom
-# else
-#   if [ -L "../NvChad/lua/custom" ]
-#   then
-#     echo "✅ ${GREEN}NvChad/lua/custom${NC} already linked"
-#   else
-#     echo "🙈 ${RED}../NvChad/lua/custom${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-#     hadError=true
-#   fi
-# fi
 
 # Symlink tresitter overrides into NVChad/after
 symlink_dir $CONFIG/after $ROOT/NVChad/after
-# if [ ! -d "../NvChad/after" ]
-# then
-#   echo "🔗 Linking nvim after scripts"
-#   ln -s $CONFIG/after $ROOT/NVChad/after
-# else
-#   if [ -L "../NvChad/after" ]
-#   then
-#     echo "✅ ${GREEN}NvChad/after${NC} already linked"
-#   else
-#     echo "🙈 ${RED}../NvChad/after${NC} already exists and is not a symlink. You will need to backup your custom config before proceeding."
-#     hadError=true
-#   fi
-# fi
 
 # Symlink NvChad into ~/.config/nvim
 symlink_dir $ROOT/NvChad $HOME/.config/nvim
-# if [ -e "$NVIM_HOME" ]
-# then
-#   if [ -L "$NVIM_HOME" ]
-#   then
-#     if [ -d "$NVIM_HOME" ]
-#     then
-#       echo "✅ ${GREEN}$NVIM_HOME${NC} is already linked to ${GREEN}$(cd -P "$NVIM_HOME" && pwd)"
-#     else
-#       echo "✅ ${GREEN}$NVIM_HOME${NC} is already linked to ${GREEN}$(realpath "$NVIM_HOME")"
-#     fi
-#   else
-#     echo "📦 Backing up existing nvim config to ${GREEN}.config/nvim.backup"
-#     mv $NVIM_HOME $NVIM_HOME.backup
-#     echo "🔗 Linking NvChad into ${GREEN}~/.config/nvim"
-#     ln -s $ROOT/NvChad ~/.config/nvim
-#   fi
-# else
-#   echo "🔗 Linking NvChad into ${GREEN}~/.config/nvim"
-#   if [ ! -d "$HOME/.config" ]
-#   then
-#     mkdir $HOME/.config
-#   fi
-#   ln -sfn $ROOT/NvChad $HOME/.config/nvim
-# fi
 
 # Copy other configs into place
 # TODO Convert this into a loop over each file/folder in configs/
