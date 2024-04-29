@@ -166,7 +166,7 @@ if [ "$fullInstall" = true ]; then
 
   # Use the bundle file to install system dependencies
   brew bundle install --file "${DOTFILES}/Brewfile"
-  echo "✅ ${GREEN} Installed/Upgraded commandline tools"
+  echo "✅ ${GREEN}Installed/Upgraded commandline tools${NC}"
 fi 
 
 ## ZSH

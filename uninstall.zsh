@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/zsh
+set -e
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -133,7 +134,8 @@ fi
 
 # Remove Prezto configs
 echo "Removing Prezto Configs"
-for rcfile in "$ROOT"/prezto/runcoms/^README.md(.N); do
+setopt EXTENDED_GLOB
+for rcfile in "${ROOT}"/prezto/runcoms/^README.md(.N); do
   remove_symlink "${HOME}/.${rcfile:t}" 
   # if [ -L "${HOME}/.${rcfile:t}" ]
   # then
