@@ -142,16 +142,15 @@ then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     echo ""
 
-    # echo "Adding Brew to PATH..."
+    echo "Adding Brew to PATH..."
     # (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
-    # eval "$(/opt/homebrew/bin/brew shellenv)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo "Brew version:"
   brew --version
 fi
 echo ""
 
-# Install Brewed commands
 if [ "$fullInstall" = true ]; then
   # Use the bundle file to install system dependencies
   brew bundle install --file "${DOTFILES}/Brewfile"
