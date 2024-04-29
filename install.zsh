@@ -44,7 +44,6 @@ symlink_item () {
   # echo "dir? $dir"
 
   local fullFilepath=$(readlink -f $file)
-  echo "fullFilepath: $fullFilepath"
 
   # If the input file doesn't exist, then fail
   if [[ ! -e "${fullFilepath}" ]]; then
@@ -254,7 +253,7 @@ symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
 # fi
 
 # Install NVM
-if [[ fullInstall == true ]]; then
+if [ "$fullInstall" = true ]; then
   if [ ! -e "$HOME/.nvm" ]
   then
     echo "🚗 Installing NVM"
