@@ -112,7 +112,7 @@
   default = upstream
 [core]
   autocrlf = false
-	excludesfile = /Users/marc/.yadr/git/gitignore
+	excludesfile = /Users/marcwren/.gitignore_global
   # Use nvim but tell unception not to open nested sessions
   editor = nvim --cmd 'let g:unception_block_while_host_edits=1'
 [advice]
@@ -132,12 +132,10 @@
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
 [mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	cmd = /Users/marcwren/Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 [init]
 	defaultBranch = main
 [user]
 	name = robert m wren
 	email = things@soul-fresh.com
-[commit]
-	template = /Users/marc/.stCommitMsg

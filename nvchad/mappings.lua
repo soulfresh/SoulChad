@@ -153,7 +153,7 @@ M.general = {
 			"toggle light/dark theme",
 		},
 
-		["gx"] = { ":execute '!open ' . shellescape(expand('<cfile>'), 1)<CR>", "open URL under cursor" },
+		["gx"] = { ":execute '!open ' . shellescape(expand('<cfile>'), 1) . ' -a \"Google Chrome\"'<CR>", "open URL under cursor", opts = {silent = true} },
 	},
 	v = {
 		["H"] = { "^", "go to first non-blank character in line" },

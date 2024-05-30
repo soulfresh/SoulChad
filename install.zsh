@@ -272,7 +272,7 @@ fi
 if [ ! -d "../NvChad" ]
 then
   echo "🚗 cloning NvChad"
-  git clone -b v2.0 https://github.com/NvChad/NvChad $ROOT/NvChad --depth 1
+  git clone -b v2.0 https://github.com/soulfresh/NvChad $ROOT/NvChad --depth 1
   echo "✅ ${GREEN}NvChad${NC} ready"
 else
   # TODO Update

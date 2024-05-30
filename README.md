@@ -32,6 +32,22 @@ All custom vim configuration is stored in the `nvchad` folder and will be symlin
 
 Run `nvim` to start NvChad or open Neovide if you're using that.
 
+### Known Issues
+
+- I've had to use my own fork of NvChad so I could override the base46 usage to
+  my fork.
+- On first run of NvChad, it will install all plugins to the most recent
+  version. To fix this, reset the lazy-lock file changes, restart NvChad and
+  then `:Lazy restore` to install the versions in the lock file. 
+- My override of NvChad/base46 doesn't install cleanly because NvChad installs
+  its own base46 before Lazy gets a chance to use my updated plugin spec (I
+  think). To fix it, do the following:
+  - `cd ~/.local/share/nvim/lazy/`
+  - `rm base46`
+  - `git clone https://github.com/soulfresh/base46`
+  - `cd base46`
+  - `git checkout feat/highlight-color-mix`
+
 ### Uninstall
 
 Run `./uninstall` to remove the NvChad symlinks and restore any previous nvim setup you had. It will not

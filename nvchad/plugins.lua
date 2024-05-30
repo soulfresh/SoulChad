@@ -729,7 +729,7 @@ local plugins = {
 		"utilyre/barbecue.nvim",
 		event = "LspAttach",
 		dependencies = {
-			"NvChad/base46",
+			"soulfresh/base46",
 			"SmiteshP/nvim-navic",
 		},
 		opts = function(_plugin, _opts)

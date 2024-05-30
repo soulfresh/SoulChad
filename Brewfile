@@ -24,8 +24,9 @@ brew "neovim"
 cask "neovide"
 
 # Web Development Tools
-# I think nvm will take care of this for me
-# brew "node"
+# Installing a system node ensures that shells that don't use my zsh profile
+# will have access to Node even if NVM is not loaded.
+brew "node"
 # brew "postgresql@14"
 # brew "mysql@5.7"
 # brew "redis"
@@ -53,7 +54,7 @@ brew "ninja"
 
 # Languages
 # Rust
-# brew "rust"
+brew "rust"
 # Tool Command Language
 # brew "tcl-tk", link: false
 
