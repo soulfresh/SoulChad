@@ -1,20 +1,26 @@
 local has_dap, dap = pcall(require, "dap")
 if not has_dap then
-  vim.print('Failed to load dap plugin')
+  vim.print('Failed to load dap plugin:', dap)
   return
 end
 
 local has_dapui, dapui = pcall(require, "dapui")
 if not has_dapui then
-  vim.print('Failed to load dap-ui plugin')
+  vim.print('Failed to load dap-ui plugin:', dapui)
   return
 end
 
 local has_dap_virtual_text, dap_virtual_text = pcall(require, "nvim-dap-virtual-text")
 if not has_dap_virtual_text then
-  vim.print('Failed to load nvim-dap-virtual-text')
+  vim.print('Failed to load nvim-dap-virtual-text:', dap_virtual_text)
   return
 end
+
+vim.fn.sign_define('DapBreakpoint', { text='⬢', texthl='DapBreakpoint', numhl='DapBreakpoint' })
+vim.fn.sign_define('DapBreakpointCondition', { text='⬢', texthl='DapBreakpointCondition', numhl='DapBreakpointCondition' })
+vim.fn.sign_define('DapBreakpointRejected', { text='⬡', texthl='DapBreakpointRejected', numhl= 'DapBreakpointRejected' })
+vim.fn.sign_define('DapLogPoint', { text='', texthl='DapLogPoint', numhl= 'DapLogPoint' })
+vim.fn.sign_define('DapStopped', { text='', texthl='DapStopped', numhl= 'DapStopped' })
 
 -- Setup the dap ui
 dapui.setup()

@@ -43,6 +43,13 @@ local bbq_bg = {"blue", "black", 30}
 
 ---@type HLTable
 M.add = {
+  -- Debug Signs
+  DapBreakpoint = { fg = 'red' },
+  DapBreakpointCondition = { fg = 'orange' },
+  DapBreakpointRejected = { fg = "light_grey" },
+  DapLogPoint = { fg = 'orange' },
+  DapStopped = { fg = 'green' },
+
   -- NvimTreeOpenedFolderName = { fg = "#green", bold = true },
 
   -- Make the current HEAD stand out in the Flog (git log) viewer.

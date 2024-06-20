@@ -307,7 +307,10 @@ M.dap = {
     ["<F5>"] = { function() require('dap').continue() end, "Debug Continue" },
     ["<D-\\>"] = { function() require('dap').continue() end, "Debug Continue" },
     -- Close UI
-    ["<leader>xd"] = { function() require('dapui').close() end, "Debug Close UI" },
+    ["<leader>xd"] = { function()
+      require('dap').terminate()
+      require('dapui').close()
+    end, "Debug Close UI" },
     ["<D-|>"] = { function() require('dapui').close() end, "Debug Close UI" },
     -- Step Over
     ["<D-'>"] = { function() require('dap').step_over() end, "Debug Step Over" },

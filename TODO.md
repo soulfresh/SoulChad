@@ -2,6 +2,13 @@
 - https://github.com/BrunoKrugel/dotfiles
 
 ### Bugs
+- Crash on format or deleting more than one screen of data. Norrowing this down
+  to:
+  - plugins
+    - Issue is still exhibited after downgrading all plugins to version on my
+      old laptop. 
+  - nvim version (try 0.9.4)
+  - neovide (try 0.10.4)
 - Slow Git commands
   This is due to zsh start time. The fix is probably to set the default shell
   to bash (`:set shell=/bin/bash` or `:set shell=bash`) and then using

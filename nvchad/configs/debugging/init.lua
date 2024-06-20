@@ -7,11 +7,26 @@ local languages = {"js"}
 -- libraries installed via mason:
 -- https://github.com/jay-babu/mason-nvim-dap.nvim
 M.plugins = {
+  -- Async tools for nvim-dap
+  {
+    'nvim-neotest/nvim-nio'
+  },
+  -- Debugging UI for a nicer debugging experience
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      'nvim-neotest/nvim-nio'
+    },
+    config = function()
+      require "custom.configs.dap-ui"
+    end,
+  },
 	-- Debugging server
 	{
     "mfussenegger/nvim-dap",
     cmd = { "DapContinue", "DapStepOver", "DapStepInto", "DapStepOut", "DapToggleBreakpoint" },
     dependencies = {
+      'nvim-neotest/nvim-nio',
       -- Show variable values as virtual text during debug sessions
       {
         "theHamsta/nvim-dap-virtual-text",
@@ -19,13 +34,7 @@ M.plugins = {
           require "custom.configs.dap-virtual-text"
         end,
       },
-      -- Debugging UI for a nicer debugging experience
-      {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-          require "custom.configs.dap-ui"
-        end,
-      },
+      "rcarriga/nvim-dap-ui",
     },
   },
 }

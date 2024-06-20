@@ -21,14 +21,18 @@ end
 
 ---@type NvPluginSpec[]
 local plugins = {
-	{
-		"NvChad/base46",
-		branch = "feat/highlight-color-mix",
-		url = "https://github.com/soulfresh/base46",
-		build = function()
-			require("base46").load_all_highlights()
-		end,
-	},
+  -- Instead of trying to override base46 here, I've created a fork of NvChad v2
+  -- which references soulfresh/base46 feat/highlight-color-mix branch. I had to
+  -- do that because the override below wasn't actually overriding the base46
+  -- repo used by NvChad (probably because it's required at such a low level).
+	-- {
+	-- 	"NvChad/base46",
+	-- 	branch = "feat/highlight-color-mix",
+	-- 	url = "https://github.com/soulfresh/base46",
+	-- 	build = function()
+	-- 		require("base46").load_all_highlights()
+	-- 	end,
+	-- },
 
 	{
 		"neovim/nvim-lspconfig",

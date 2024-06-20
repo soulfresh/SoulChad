@@ -27,6 +27,11 @@ M.treesitter = {
 }
 
 M.mason = {
+  -- TODO: Some of these aren't being automatically installed because NPM isn't
+  -- present when Mason first starts. Two things:
+  -- 1. Try uninstalling to see if this is now fixed by adding node to Brewfile
+  -- 2. See if ensure_installed is getting installed if I edit this list or only
+  --    on NvChad's initial boorstrap
   ensure_installed = {
     -- lua stuff
     "lua-language-server",

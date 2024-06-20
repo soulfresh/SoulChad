@@ -12,7 +12,7 @@ M.plugins = {
 			-- https://github.com/microsoft/vscode-js-debug
 			{
 				"microsoft/vscode-js-debug",
-				run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+				build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
 			},
 		},
 		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
