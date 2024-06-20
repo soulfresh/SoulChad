@@ -8,6 +8,7 @@ NC='\033[0m' # No Color
 HOME="$(realpath ~)"
 NVIM_HOME="$HOME/.config/nvim"
 NVIM_CACHE="$HOME/.local/share/nvim"
+NVIM_STATE="$HOME/.local/state/nvim"
 ROOT=$(realpath ../)
 CONFIG=$(realpath ./config)
 NVCHAD="$ROOT/NvChad"
@@ -60,6 +61,16 @@ remove_symlinks_matching_glob () {
   done
 }
 
+delete_folder () {
+  local folder=$1
+
+  if [ -d $folder ]
+  then
+    echo "🧹 removing ${GREEN}${folder}${NC}"
+    rm -rf $folder
+  fi
+}
+
 declare -a links=("$HOME/.zprezto"
   "$HOME/.zsh.prompts"
   "$HOME/.zsh.before"
@@ -77,12 +88,17 @@ do
   remove_symlink "$i"
 done
 
-# Remove the nvim compiled code/cache
-if [ -d $NVIM_CACHE ]
-then
-  echo "🧹 removing Nvim cache files"
-  rm -rf $NVIM_CACHE
-fi
+declare -a folders=(
+  $NVIM_CACHE
+  $NVIM_STATE
+)
+
+for i in "${folders[@]}"
+do
+  delete_folder "$i"
+done
+
+echo ""
 
 # Remove Prezto configs
 echo "Removing Prezto Configs"

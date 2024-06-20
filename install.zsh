@@ -263,16 +263,17 @@ if [ "$fullInstall" = true ]; then
 fi
 
 # Copy chadrc.lua.template to chadrc.lua (if it doesn't already exist)
-if [ ! -e "nvchad/chadrc.lua" ]
-then
-  cp ./nvchad/chadrc.lua.template ./nvchad/chadrc.lua
-fi
+# if [ ! -e "nvchad/chadrc.lua" ]
+# then
+#   cp ./nvchad/chadrc.lua.template ./nvchad/chadrc.lua
+# fi
 
 # Clone NvChad along side this folder
 if [ ! -d "../NvChad" ]
 then
   echo "🚗 cloning NvChad"
-  git clone -b v2.0 https://github.com/soulfresh/NvChad $ROOT/NvChad --depth 1
+  # git clone https://github.com/NvChad/starter ~/.config/nvim
+  # git clone -b v2.0 https://github.com/soulfresh/NvChad $ROOT/NvChad --depth 1
   echo "✅ ${GREEN}NvChad${NC} ready"
 else
   # TODO Update
