@@ -2,21 +2,10 @@
 - https://github.com/BrunoKrugel/dotfiles
 
 ### Bugs
-- Crash on format or deleting more than one screen of data. Norrowing this down
-  to:
-  - plugins
-    - Issue is still exhibited after downgrading all plugins to version on my
-      old laptop. 
-  - nvim version (try 0.9.4)
-  - neovide (try 0.10.4)
-- Slow Git commands
-  This is due to zsh start time. The fix is probably to set the default shell
-  to bash (`:set shell=/bin/bash` or `:set shell=bash`) and then using
-  `:terminal zsh` to open the built in terminal with zsh (will probably
-  need to over ride NVChad's terminal plugin).
-- Copilot-cmp removes my non-copilot results from the menu sometimes
 
 ### General
+- Remap some <leader> keys so I'm using leader less often:
+  Unused single vim keys: https://vim.fandom.com/wiki/Unused_keys
 - Vim Tips plugin: https://github.com/michaelb/vim-tips
   Use this inside of the startup plugin
 - LSP error underline color should better match theme
@@ -45,7 +34,9 @@
   or https://github.com/dmmulroy/tsc.nvim
 - Treesitter context: stop the function name from being clipped when scrolling
   https://github.com/nvim-treesitter/nvim-treesitter-context
-- Turn off coloring plugin in git buffers
+- Turn off coloring plugin in git buffers. For example, we don't want to
+    highlight hex codes in the git status window or Flog window because those are
+    usually not colors but git object names
 
 ### Testing
 - Neotest https://github.com/nvim-neotest/neotest-jest

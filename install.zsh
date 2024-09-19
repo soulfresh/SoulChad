@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 ROOT=$(cd ..; pwd)
 NVIM_HOME="$HOME/.config/nvim"
 DOTFILES=$(pwd)
-CONFIG="$DOTFILES/nvchad"
+CONFIG="$DOTFILES/nvim"
 
 echo "Using the following paths:"
 echo "NVIM_HOME: $NVIM_HOME"
@@ -287,7 +287,7 @@ fi
 
 # Symlink NvChad into ~/.config/nvim
 # symlink_dir $ROOT/NvChad $HOME/.config/nvim
-symlink_dir $DOTFILES $NVIM_HOME
+symlink_dir $CONFIG $NVIM_HOME
 
 # Copy other configs into place
 symlink_dir "$DOTFILES/config/neovide" $HOME/.config
@@ -295,11 +295,13 @@ symlink_dir "$DOTFILES/config/neovide" $HOME/.config
 echo "✅ Copied configs into place"
 
 # Use Lazy.nvim to install plugins
-echo "🚗 Installing NVim plugins"
-nvim --headless +"Lazy install" +q
-nvim --headless +"Lazy restore" +q
-nvim --headless +"MasonInstallAll" +q
-echo "✅ NVim plugins installed"
+# echo "🚗 Installing NVim plugins"
+# nvim --headless +"Lazy install" +q
+# nvim --headless +"Lazy restore" +q
+# nvim --headless +"MasonInstallAll" +q
+# echo "✅ NVim plugins installed"
+
+# TODO Run :checkhealth lazy after install
 
 if [ hadError = true ]
 then

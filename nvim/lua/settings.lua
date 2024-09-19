@@ -40,13 +40,13 @@ vim.opt.guicursor = "n-v-c-sm:block-blinkwait900-blinkoff500-blinkon500-Cursor,i
 -- This improves the speed of fugitive and other plugins that need to spawn a
 -- shell. For actual nvim terminal windows, we set zsh as the shell when opening
 -- the terminal.
-vim.opt.shell = "/bin/bash"
+-- vim.opt.shell = "/bin/bash"
 
 -- Snippets path relative to $MYVIMRC. You can use ~/ prefixed paths.
 -- See https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md#loaders
-vim.g.luasnippets_path = "~/.config/nvim/lua/custom/snippets"
+-- vim.g.luasnippets_path = "~/.config/nvim/lua/snippets"
 -- vscode format i.e json files
-vim.g.vscode_snippets_path = vim.fn.stdpath "config" .. "/lua/custom/snippets"
+vim.g.vscode_snippets_path = vim.fn.stdpath "config" .. "/lua/snippets"
 
 -- Custom filetypes
 vim.filetype.add({
