@@ -1,6 +1,27 @@
 ### Dotfile Inspiration
 - https://github.com/BrunoKrugel/dotfiles
 
+### Easy to map keys:
+See:
+- Use `:h {key}` to see default for this key
+- https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87#07an
+- `:h map-which-keys`
+- https://vim.fandom.com/wiki/Unused_keys
+
+- g* (check existing *)
+- [{}]* (check existing *)
+- Space* (seems like a synonyme for `l`)
+- Backspace* (BS seems like a synonyme for `b`)
+- \*
+- |* (default is jump to column number but I would usually use `:go {num}` to
+  jump to a character number in an unprettified text)
+- m! m( m) m= m{ m} m; m: m, m. m/ m? m<CR> m<Space> m<BS> 
+  (https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87#07ad)
+- '! '@ '# '$ '% '<Tab> '<Space>
+- dc ds dy d! d= d< d> yc yd yo ys y! y= =p =P cd cs co cp
+- TODO Research uppercase letters
+
+
 ### Bugs
 
 ### General

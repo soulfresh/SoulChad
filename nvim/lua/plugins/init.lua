@@ -1,9 +1,15 @@
-local cmp = require "cmp"
-
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    init = function()
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*",
+        callback = function(args)
+          require("conform").format { bufnr = args.buf }
+        end,
+      })
+    end,
+    event = "BufWritePre",
     config = function()
       require "configs.conform"
     end,
@@ -102,7 +108,6 @@ return {
     },
   },
 
-
   {
     "lukas-reineke/indent-blankline.nvim",
     opts = {
@@ -114,23 +119,82 @@ return {
     },
   },
 
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function()
+      local cmp = require "cmp"
+      local opts = require "nvchad.configs.cmp"
+
+      -- Override NvChad C-Space mapping
+      opts.mapping["<C-Space>"] = cmp.mapping(function()
+        -- Don't show completion menu when inside a prompt window like renamer
+        if cmp.visible() then
+          cmp.close()
+        else
+          cmp.complete()
+        end
+      end)
+
+      return opts
+    end,
+  },
+
   -- NvChad Shortcuts
   "NvChad/nvcommunity",
+  { import = "nvcommunity.editor.telescope-undo" },
   -- { import = "nvcommunity.lsp.codeactionmenu" },
   -- { import = "nvcommunity.lsp.prettyhover" },
-  { import = "nvcommunity.motion.hop" },
+  -- { import = "nvcommunity.motion.hop" },
 
   -- Use `jk` as the escape key
   { "max397574/better-escape.nvim", enabled = false },
 
-	-- Taboo
+  -- Code action menu UI using Telescope
+  -- https://github.com/aznhe21/actions-preview.nvim?tab=readme-ov-file
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    dependencies = { "telescope.nvim" },
+    -- keys = { "<leader>ca" },
+    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    config = function()
+      require("telescope").setup {
+        extensions = {
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {
+              -- even more opts
+            },
+          },
+        },
+      }
+      -- To get ui-select loaded and working with telescope, you need to call
+      -- load_extension, somewhere after setup function:
+      require("telescope").load_extension "ui-select"
+    end,
+  },
+
+  -- Jump motions
+  {
+    "smoka7/hop.nvim",
+    cmd = { "HopWord", "HopLine", "HopLineStart", "HopWordCurrentLine" },
+    opts = { keys = "etovxqpdygfblzhckisuran" },
+    init = function()
+      local map = vim.keymap.set
+
+      map("n", "<Space>w", "<CMD> HopWord <CR>", { desc = "Hop to any word" })
+      map("n", "<Space>t", "<CMD> HopNodes <CR>", { desc = "Hop around syntax tree (ie. scope)" })
+      map("n", "<Space>s", "<CMD> HopLineStart<CR>", { desc = "Hop to line start" })
+      map("n", "<Space>l", "<CMD> HopWordCurrentLine<CR>", { desc = "Hop in this line" })
+    end,
+  },
+
+  -- Taboo
   -- Used to name tabs with my custom tabufline "tabs" module
-	{
-		"gcmt/taboo.vim",
-		dependencies = { "NvChad/ui" },
-		-- Needs to load up front so that NvChad tabufline can use it.
-		lazy = false,
-	},
+  {
+    "gcmt/taboo.vim",
+    dependencies = { "NvChad/ui" },
+    -- Needs to load up front so that NvChad tabufline can use it.
+    lazy = false,
+  },
 
   -- Update imports when renaming files in nvim-tree
   -- https://github.com/antosha417/nvim-lsp-file-operations
