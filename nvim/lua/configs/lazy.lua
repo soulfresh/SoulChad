@@ -3,7 +3,7 @@ return {
   install = { colorscheme = { "nvchad" } },
 
   -- Save the lock file next to our NvChad configs
-  lockfile = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config") .. "/lua/custom"), ':h') .. "/nvchad/lazy-lock.json",
+  lockfile = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config")), ":h") .. "/nvim/lazy-lock.json",
 
   ui = {
     icons = {
