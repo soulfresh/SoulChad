@@ -18,6 +18,9 @@ M.general = {
   i = {
     -- clipboard
     ["<D-v>"] = { "<c-r>*", "Paste" },
+
+    -- close floating windows
+    ["<D-k>"] = { "<C-o>:fclose<CR>", "Close the current floating window" },
   },
   n = {
     ["<leader>si"] = {
@@ -216,11 +219,21 @@ M.folder_tree = {
 
 M.terminals = {
   n = {
-    ["<leader>i"] = {
+    ["<Space>ti"] = {
       function()
-        require("nvterm.terminal").toggle "float"
+        require("nvchad.term").new { pos = "float" }
       end,
       "toggle floating term",
+    },
+    ["<Space>th"] = {
+      function()
+        require("nvchad.term").new { pos = "sp" }
+      end,
+    },
+    ["<Space>tv"] = {
+      function()
+        require("nvchad.term").new { pos = "vsp" }
+      end,
     },
 
     ["<leader>cl"] = {
@@ -405,6 +418,9 @@ M.debug = {
 -- NvChad keys to disable
 vim.keymap.del("n", "<C-n>")
 vim.keymap.del("n", "<leader>x")
+vim.keymap.del("n", "<leader>h")
+vim.keymap.del("n", "<leader>v")
+-- vim.keymap.del("n", "<leader>i")
 
 for category, modes in pairs(M) do
   for mode, maps in pairs(modes) do

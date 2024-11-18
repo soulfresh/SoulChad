@@ -125,9 +125,19 @@ return {
       local cmp = require "cmp"
       local opts = require "nvchad.configs.cmp"
 
-      -- Override NvChad C-Space mapping
-      opts.mapping["<C-Space>"] = cmp.mapping(function()
-        -- Don't show completion menu when inside a prompt window like renamer
+      -- Don't preselect the first item. While it's convenient most of the time,
+      -- it causes issues when you're at the end of a line and want to start a
+      -- new line. If cmp is open, it will select the first completion instead.
+      opts.preselect = cmp.PreselectMode.None
+      opts.completion = { completeopt = "menu,menuone,noselect" }
+
+      -- Override NvChad mappings
+      opts.mapping["<CR>"] = cmp.mapping.confirm {
+        behavior = cmp.ConfirmBehavior.Insert,
+        -- Don't preselect the first item.
+        select = false,
+      }
+      opts.mapping["<C-Space>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.close()
         else
@@ -172,6 +182,22 @@ return {
     end,
   },
 
+  -- Emoji/Dev Icon picker menu
+  {
+    "ziontee113/icon-picker.nvim",
+    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    -- keys = { "<C-D-Space>" },
+    config = function()
+      require("icon-picker").setup { disable_legacy_commands = true }
+
+      local opts = { noremap = true, silent = true }
+
+      vim.keymap.set({ "n", "i" }, "<C-D-Space>", "<cmd>IconPickerNormal emoji<cr>", opts)
+      -- vim.keymap.set("n", "<Leader><Leader>y", "<cmd>IconPickerYank<cr>", opts) --> Yank the selected icon into register
+      -- vim.keymap.set("i", "<C-i>", "<cmd>IconPickerInsert<cr>", opts)
+    end,
+  },
+
   -- Jump motions
   {
     "smoka7/hop.nvim",
@@ -181,7 +207,7 @@ return {
       local map = vim.keymap.set
 
       map("n", "<Space>w", "<CMD> HopWord <CR>", { desc = "Hop to any word" })
-      map("n", "<Space>t", "<CMD> HopNodes <CR>", { desc = "Hop around syntax tree (ie. scope)" })
+      map("n", "<Space>c", "<CMD> HopNodes <CR>", { desc = "Hop around code context (ie. scope/syntax tree)" })
       map("n", "<Space>s", "<CMD> HopLineStart<CR>", { desc = "Hop to line start" })
       map("n", "<Space>l", "<CMD> HopWordCurrentLine<CR>", { desc = "Hop in this line" })
     end,
