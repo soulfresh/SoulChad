@@ -224,18 +224,52 @@ return {
     end,
   },
 
-  -- Jump motions
+  -- Jump motions around current visible file.
   {
     "smoka7/hop.nvim",
     cmd = { "HopWord", "HopLine", "HopLineStart", "HopWordCurrentLine" },
     opts = { keys = "etovxqpdygfblzhckisuran" },
-    init = function()
-      local map = vim.keymap.set
+    keys = {
+      { "<Space>w", "<CMD> HopWord <CR>", mode = "n", desc = "Hop to any word" },
+      { "<Space>c", "<CMD> HopNodes <CR>", mode = "n", desc = "Hop around code context (ie. scope/syntax tree)" },
+      { "<Space>s", "<CMD> HopLineStart<CR>", mode = "n", desc = "Hop to line start" },
+      -- { "<Space>l", "<CMD> HopWordCurrentLine<CR>", mode = "n", desc = "Hop in this line" },
+    },
+  },
 
-      map("n", "<Space>w", "<CMD> HopWord <CR>", { desc = "Hop to any word" })
-      map("n", "<Space>c", "<CMD> HopNodes <CR>", { desc = "Hop around code context (ie. scope/syntax tree)" })
-      map("n", "<Space>s", "<CMD> HopLineStart<CR>", { desc = "Hop to line start" })
-      map("n", "<Space>l", "<CMD> HopWordCurrentLine<CR>", { desc = "Hop in this line" })
+  -- Inner Word Motions (camelCase, snake_case, kebap-case)
+  -- https://github.com/chrisgrieser/nvim-spider
+  {
+    "chrisgrieser/nvim-spider",
+    keys = {
+      {
+        "<Space>l",
+        "<cmd>lua require('spider').motion('w')<CR>",
+        mode = { "n", "o", "x" },
+        desc = "Move forward within word (camelCase, snake_case, kebap-case)",
+      },
+      {
+        "<Space>h",
+        "<cmd>lua require('spider').motion('b')<CR>",
+        mode = { "n", "o", "x" },
+        desc = "Move backward within word (camelCase, snake_case, kebap-case)",
+      },
+    },
+  },
+
+  -- Buffer History Jump
+  -- https://github.com/wilfreddenton/history.nvim/blob/master/README.md
+  {
+    "wilfreddenton/history.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    init = function()
+      require("history").setup {
+        keybinds = {
+          back = "<Space-o>",
+          forward = "<Space-i>",
+          view = "<Space-u>",
+        },
+      }
     end,
   },
 
