@@ -1,14 +1,17 @@
 return {
   {
     "stevearc/conform.nvim",
-    init = function()
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = "*",
-        callback = function(args)
-          require("conform").format { bufnr = args.buf }
-        end,
-      })
-    end,
+    -- This is what NvChad gives us by default but it conflicts with what I've
+    -- added to configs.conform. However, keeping this here temporarily in case
+    -- my changes to configs.conform don't work.
+    -- init = function()
+    --   vim.api.nvim_create_autocmd("BufWritePre", {
+    --     pattern = "*",
+    --     callback = function(args)
+    --       require("conform").format { bufnr = args.buf }
+    --     end,
+    --   })
+    -- end,
     event = "BufWritePre",
     config = function()
       require "configs.conform"
@@ -144,6 +147,29 @@ return {
           cmp.complete()
         end
       end)
+
+      -- Override NvChad's Tab mappings to remove Tab usage with cmp because:
+      -- 1. I use <C-n>/<C-p> to select completions
+      -- 2. I generally don't want completions when expanding a snippet
+      -- 3. I use <Tab> for Copilot completions
+      opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
+        if require("luasnip").expand_or_jumpable() then
+          require("luasnip").expand_or_jump()
+        -- elseif cmp.visible() then
+        --   cmp.select_next_item()
+        else
+          fallback()
+        end
+      end, { "i", "s" })
+      opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+        -- if cmp.visible() then
+        --   cmp.select_prev_item()
+        if require("luasnip").jumpable(-1) then
+          require("luasnip").jump(-1)
+        else
+          fallback()
+        end
+      end, { "i", "s" })
 
       return opts
     end,
@@ -349,6 +375,30 @@ return {
     },
     config = function()
       require "configs.typescript-tools"
+    end,
+  },
+
+  -- Copilot
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          hide_during_completion = false,
+          keymap = {
+            accept = "<Tab>",
+            -- accept_word = false,
+            -- accept_line = false,
+            -- next = "<C-]>",
+            -- prev = "<C-[>",
+            dismiss = "<S-Tab>",
+          },
+        },
+      }
     end,
   },
 }
