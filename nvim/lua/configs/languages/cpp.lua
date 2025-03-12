@@ -1,8 +1,9 @@
 return {
   lspconfig = {
     servers = {
-      "clangd"
-    }
+      "clangd",
+      "cmake",
+    },
   },
   mason = {
     ensure_installed = {

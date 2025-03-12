@@ -153,7 +153,15 @@ return {
       -- 2. I generally don't want completions when expanding a snippet
       -- 3. I use <Tab> for Copilot completions
       opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
-        if require("luasnip").expand_or_jumpable() then
+        -- Do snippet if one has been selected from the cmp menu. Otherwise
+        -- fallback to Copilot.
+        local luasnip = require "luasnip"
+        -- If something is selected in the cmp menu
+        local shouldExpand = cmp.get_active_entry() and luasnip.expand_or_locally_jumpable()
+        -- Or we are currently in snippet mode
+        -- If in_snippet doesn't work, try get_active_snip
+        local shouldJump = luasnip.in_snippet() and luasnip.expand_or_locally_jumpable()
+        if shouldExpand or shouldJump then
           require("luasnip").expand_or_jump()
         -- elseif cmp.visible() then
         --   cmp.select_next_item()
@@ -205,6 +213,17 @@ return {
       -- To get ui-select loaded and working with telescope, you need to call
       -- load_extension, somewhere after setup function:
       require("telescope").load_extension "ui-select"
+    end,
+  },
+
+  -- Customize Telescope file searches by directory, file type, hidden files, etc
+  -- https://github.com/molecule-man/telescope-menufacture
+  {
+    "molecule-man/telescope-menufacture",
+    dependencies = { "telescope.nvim" },
+    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    config = function()
+      require("telescope").load_extension "menufacture"
     end,
   },
 
@@ -265,9 +284,9 @@ return {
     init = function()
       require("history").setup {
         keybinds = {
-          back = "<Space-o>",
-          forward = "<Space-i>",
-          view = "<Space-u>",
+          back = "<Space>o",
+          forward = "<Space>i",
+          view = "<Space>u",
         },
       }
     end,
@@ -410,6 +429,19 @@ return {
     config = function()
       require "configs.typescript-tools"
     end,
+  },
+
+  -- Toggle Cpp header files
+  {
+    "jakemason/ouroboros",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    ft = "cpp",
+    opts = {
+      switch_to_open_pane_if_possible = true,
+    },
+    keys = {
+      { "th", "<cmd>Ouroboros<CR>", mode = "n", desc = "Cpp toggle header file" },
+    },
   },
 
   -- Copilot

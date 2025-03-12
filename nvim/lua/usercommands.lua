@@ -1,3 +1,6 @@
+-- TODO It might be nice to map the built in `tabnew` to our `TabOpen`
+-- making the tab name optional
+-- https://stackoverflow.com/questions/61100302/is-there-a-way-to-overwrite-vims-default-command
 -- Taboo aliases
 vim.api.nvim_create_user_command(
   "TabOpen",

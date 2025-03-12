@@ -1,4 +1,4 @@
-require "nvchad.mappings"
+require("nvchad.mappings")
 
 vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode", nowait = true })
 
@@ -55,9 +55,9 @@ M.general = {
     },
     ["<leader>xo"] = {
       function()
-        local tb = require "nvchad.tabufline"
-        tb.closeBufs_at_direction "right"
-        tb.closeBufs_at_direction "left"
+        local tb = require("nvchad.tabufline")
+        tb.closeBufs_at_direction("right")
+        tb.closeBufs_at_direction("left")
       end,
       "Close other buffers",
     },
@@ -130,19 +130,6 @@ M.general = {
 
 M.navigation = {
   i = {
-    -- movement
-    -- ["<C-O>"] = {
-    -- 	function()
-    -- 		t("<Up>")
-    -- 	end,
-    -- 	"Move cursor up one line",
-    -- },
-    -- ["<C-o>"] = {
-    -- 	function()
-    -- 		t("<Down>")
-    -- 	end,
-    -- 	"Move cursor down one line",
-    -- },
     ["<M-h>"] = {
       "<S-Left>",
       "Move cursor left one word",
@@ -176,14 +163,14 @@ M.navigation = {
     -- LSP
     ["[d"] = {
       function()
-        vim.diagnostic.goto_prev { float = { border = "rounded" } }
+        vim.diagnostic.goto_prev({ float = { border = "rounded" } })
       end,
       "Goto prev",
     },
 
     ["]d"] = {
       function()
-        vim.diagnostic.goto_next { float = { border = "rounded" } }
+        vim.diagnostic.goto_next({ float = { border = "rounded" } })
       end,
       "Goto next",
     },
@@ -207,6 +194,9 @@ M.telescope = {
       "<cmd> Telescope buffers only_cwd=true sort_lastused=true sort_mru=true ignore_current_buffer=true<CR>",
       "Find buffers",
     },
+    ["<leader>ff"] = { require("telescope").extensions.menufacture.find_files, "Find files" },
+    ["<leader>fw"] = { require("telescope").extensions.menufacture.live_grep, "Live grep" },
+    ["<leader>fo"] = { require("telescope").extensions.menufacture.oldfiles, "Find oldfiles" },
   },
 }
 
@@ -221,18 +211,18 @@ M.terminals = {
   n = {
     ["<Space>ti"] = {
       function()
-        require("nvchad.term").new { pos = "float" }
+        require("nvchad.term").new({ pos = "float" })
       end,
       "toggle floating term",
     },
     ["<Space>th"] = {
       function()
-        require("nvchad.term").new { pos = "sp" }
+        require("nvchad.term").new({ pos = "sp" })
       end,
     },
     ["<Space>tv"] = {
       function()
-        require("nvchad.term").new { pos = "vsp" }
+        require("nvchad.term").new({ pos = "vsp" })
       end,
     },
 
@@ -242,11 +232,11 @@ M.terminals = {
         if vim.bo.buftype == "terminal" then
           vim.api.nvim_feedkeys("z\r", "n", false)
           -- TODO Try to get the current scrollback so we can reset to that
-          -- local scrollback = vim.b.scrollback
+          local scrollback = vim.b.scrollback and vim.b.scrollback or 20000
           vim.opt.scrollback = 1
           vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-l>", true, false, true), "t", true)
-          vim.cmd "sleep 100m"
-          vim.opt.scrollback = 10000
+          vim.cmd("sleep 100m")
+          vim.opt.scrollback = scrollback
         end
       end,
       "Clear terminal output",
@@ -284,9 +274,9 @@ M.terminals = {
     -- Clear terminal
     ["<M-l>"] = {
       function()
-        vim.cmd "set scrollback=1"
-        vim.cmd "sleep 100m"
-        vim.cmd "set scrollback=10000"
+        vim.cmd("set scrollback=1")
+        vim.cmd("sleep 100m")
+        vim.cmd("set scrollback=10000")
       end,
       -- ":set scrollback=1 \\| sleep 100m \\| set scrollback=10000<cr>",
       "Clear terminal output",
@@ -401,14 +391,14 @@ M.debug = {
     -- Set Conditional Breakpoint
     ["<D-B>"] = {
       function()
-        require("dap").set_breakpoint(vim.fn.input "Breakpoint condition: ")
+        require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
       end,
       "Debug Toggle Conditional Breakpoint",
     },
     -- Disable Breakpoints
     ["<D-F8>"] = {
       function()
-        require "dap"
+        require("dap")
       end,
       "Enable/Disable All Breapoints",
     },
@@ -421,6 +411,10 @@ vim.keymap.del("n", "<leader>x")
 vim.keymap.del("n", "<leader>h")
 vim.keymap.del("n", "<leader>v")
 -- vim.keymap.del("n", "<leader>i")
+-- Replace these default mappings with the ones for telescope_menufature
+vim.keymap.del("n", "<leader>ff")
+vim.keymap.del("n", "<leader>fw")
+vim.keymap.del("n", "<leader>fo")
 
 for category, modes in pairs(M) do
   for mode, maps in pairs(modes) do
