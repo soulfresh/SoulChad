@@ -21,7 +21,7 @@ return {
       "prettier",
       "eslint-lsp",
       -- TODO This isn't installing on startup
-      "some-sass-language-server",
+      "some-sass-language-server"
     },
   },
   treesitter = {
@@ -35,6 +35,7 @@ return {
       "graphql",
       "markdown",
       "markdown_inline",
+      "yaml"
     },
   },
 }

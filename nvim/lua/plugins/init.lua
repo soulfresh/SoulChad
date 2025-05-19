@@ -14,7 +14,7 @@ return {
     -- end,
     event = "BufWritePre",
     config = function()
-      require "configs.conform"
+      require("configs.conform")
     end,
   },
 
@@ -23,7 +23,7 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       require("nvchad.configs.lspconfig").defaults()
-      require "configs.lspconfig"
+      require("configs.lspconfig")
     end,
   },
 
@@ -125,8 +125,8 @@ return {
   {
     "hrsh7th/nvim-cmp",
     opts = function()
-      local cmp = require "cmp"
-      local opts = require "nvchad.configs.cmp"
+      local cmp = require("cmp")
+      local opts = require("nvchad.configs.cmp")
 
       -- Don't preselect the first item. While it's convenient most of the time,
       -- it causes issues when you're at the end of a line and want to start a
@@ -135,11 +135,11 @@ return {
       opts.completion = { completeopt = "menu,menuone,noselect" }
 
       -- Override NvChad mappings
-      opts.mapping["<CR>"] = cmp.mapping.confirm {
+      opts.mapping["<CR>"] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Insert,
         -- Don't preselect the first item.
         select = false,
-      }
+      })
       opts.mapping["<C-Space>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.close()
@@ -155,7 +155,7 @@ return {
       opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
         -- Do snippet if one has been selected from the cmp menu. Otherwise
         -- fallback to Copilot.
-        local luasnip = require "luasnip"
+        local luasnip = require("luasnip")
         -- If something is selected in the cmp menu
         local shouldExpand = cmp.get_active_entry() and luasnip.expand_or_locally_jumpable()
         -- Or we are currently in snippet mode
@@ -201,18 +201,18 @@ return {
     -- keys = { "<leader>ca" },
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
     config = function()
-      require("telescope").setup {
+      require("telescope").setup({
         extensions = {
           ["ui-select"] = {
-            require("telescope.themes").get_dropdown {
+            require("telescope.themes").get_dropdown({
               -- even more opts
-            },
+            }),
           },
         },
-      }
+      })
       -- To get ui-select loaded and working with telescope, you need to call
       -- load_extension, somewhere after setup function:
-      require("telescope").load_extension "ui-select"
+      require("telescope").load_extension("ui-select")
     end,
   },
 
@@ -223,7 +223,7 @@ return {
     dependencies = { "telescope.nvim" },
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
     config = function()
-      require("telescope").load_extension "menufacture"
+      require("telescope").load_extension("menufacture")
     end,
   },
 
@@ -233,7 +233,7 @@ return {
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
     -- keys = { "<C-D-Space>" },
     config = function()
-      require("icon-picker").setup { disable_legacy_commands = true }
+      require("icon-picker").setup({ disable_legacy_commands = true })
 
       local opts = { noremap = true, silent = true }
 
@@ -282,13 +282,13 @@ return {
     "wilfreddenton/history.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     init = function()
-      require("history").setup {
+      require("history").setup({
         keybinds = {
           back = "<Space>o",
           forward = "<Space>i",
           view = "<Space>u",
         },
-      }
+      })
     end,
   },
 
@@ -323,11 +323,11 @@ return {
     -- event = { "BufRead", "BufWinEnter", "BufNewFile" },
     cmd = { "TSJToggle", "TSJSplit", "TSJJoin" },
     config = function()
-      require("treesj").setup {
+      require("treesj").setup({
         -- https://github.com/Wansmer/treesj#settings
         use_default_keymaps = false,
         max_join_length = 1000,
-      }
+      })
       -- tell treesitter to use the markdown parser for mdx files
       vim.treesitter.language.register("markdown", "mdx")
     end,
@@ -340,9 +340,9 @@ return {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup {
+      require("nvim-surround").setup({
         -- Configuration here, or leave empty to use defaults
-      }
+      })
     end,
   },
 
@@ -387,7 +387,7 @@ return {
       "SmiteshP/nvim-navic",
     },
     opts = function()
-      local colors = require("base46").get_theme_tb "base_30"
+      local colors = require("base46").get_theme_tb("base_30")
       local mix = require("base46.colors").mix
 
       local bg = mix(colors.blue, colors.black, 30)
@@ -427,7 +427,7 @@ return {
       "typescriptreact",
     },
     config = function()
-      require "configs.typescript-tools"
+      require("configs.typescript-tools")
     end,
   },
 
@@ -450,7 +450,7 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
-      require("copilot").setup {
+      require("copilot").setup({
         suggestion = {
           enabled = true,
           auto_trigger = true,
@@ -464,7 +464,39 @@ return {
             dismiss = "<S-Tab>",
           },
         },
-      }
+      })
     end,
+  },
+
+  -- Code Companion
+  {
+    "olimorris/codecompanion.nvim",
+    config = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionActions" },
+    opts = {
+      strategies = {
+        chat = {
+          adapter = "copilot",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+      },
+      -- TODO Get the copilot token from 1Password:
+      -- https://codecompanion.olimorris.dev/getting-started.html#configuring-an-adapter
+      -- adapters = {
+      --   openai = function()
+      --     return require("codecompanion.adapters").extend("openai", {
+      --       env = {
+      --         api_key = "cmd:op read op://personal/OpenAI/credential --no-newline",
+      --       },
+      --     })
+      --   end,
+      -- },
+    },
   },
 }

@@ -8,6 +8,10 @@ vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode", nowait = true }
 vim.g.neovide_scale_factor = 1.0
 function ChangeScaleFactor(delta)
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+  -- TODO Need some way to force a redraw. Currently, this code changes the
+  -- scale factor but the screen doesn't redraw until I move the cursor or type
+  -- enter.
+  -- vim.api.nvim__redraw({flush = true})
 end
 
 -- TODO Convert to map function calls
@@ -29,7 +33,7 @@ M.general = {
     },
 
     -- Zoom
-    ["<D-+>"] = {
+    ["<D-=>"] = {
       function()
         ChangeScaleFactor(1.25)
       end,

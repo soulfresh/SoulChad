@@ -1,5 +1,5 @@
 local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
--- local on_attach = require("plugins.configs.lspconfig").on_attach
+local on_attach = require("nvchad.configs.lspconfig").on_attach
 
 local filter = function(arr, fn)
   if type(arr) ~= "table" then
@@ -46,7 +46,8 @@ local handlers = {
 }
 
 require("typescript-tools").setup {
-  -- on_attach = on_attach,
+  -- Load the NvChad LSP config so we get those keybindings and the renamer.
+  on_attach = on_attach,
   handlers = handlers,
 
   settings = {
