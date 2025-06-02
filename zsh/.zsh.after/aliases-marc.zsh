@@ -19,6 +19,9 @@ alias wav2m4a='for wav in ./*.wav; do ffmpeg -i "$wav" -codec:a aac "${$(basenam
 alias wav2aif='for wav in ./*.wav; do ffmpeg -i "$wav" -codec:a pcm_s16le "${$(basename $wav)}".aif; done'
 alias wav2ogg='for wav in ./*.wav; do ffmpeg -i "$wav" -codec:a libvorbis "${$(basename $wav)}".ogg; done'
 
+# Video
+alias mov2webm='for mov in ./*.mov; do ffmpeg -i "$mov" -c:v libvpx-vp9 -pix_fmt yuva420p "${$(basename $mov)}".webm; done'
+
 # Restart coreaudiod if Focusrite Saffire Pro 40 is not working
 alias restartaudio='sudo kill `ps -ax | grep "coreaudiod" | grep "sbin" | awk "{print $1}"`'
 
