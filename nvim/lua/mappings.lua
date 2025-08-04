@@ -36,12 +36,16 @@ M.general = {
     ["<D-=>"] = {
       function()
         ChangeScaleFactor(1.25)
+        -- Simulate pressing Enter to force a redraw
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
       end,
       "Zoom In (Neovide)",
     },
     ["<D-->"] = {
       function()
         ChangeScaleFactor(1 / 1.25)
+        -- Simulate pressing Enter to force a redraw
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
       end,
       "Zoom Out (Neovide)",
     },
@@ -100,6 +104,9 @@ M.general = {
       end,
       "Toggle comment",
     },
+
+    -- word wrapping
+    ["Space-r"] = { ":set wrap!<CR>", "Toggle word wrapping" },
 
     -- highlighting
     ["//"] = { "<cmd> noh <CR>", "no highlight" },

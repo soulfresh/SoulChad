@@ -9,6 +9,7 @@
   "cmp-nvim-lua": { "branch": "main", "commit": "f12408bdb54c39c23e67cab726264c10db33ada8" },
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
+  "codecompanion-spinner.nvim": { "branch": "main", "commit": "1f53b8d402de2a5ee6f9d64793f5eda49ed12a64" },
   "codecompanion.nvim": { "branch": "main", "commit": "12a1f0e8c8512e69d3ed64b7ac179a024794e4e4" },
   "conform.nvim": { "branch": "master", "commit": "62eba813b7501b39612146cbf29cd07f1d4ac29c" },
   "copilot.lua": { "branch": "master", "commit": "f8d8d872bb319f640d5177dad5fbf01f7a16d7d0" },
@@ -44,6 +45,7 @@
   "ui": { "branch": "v2.5", "commit": "23a5a720d1a7389175eca2b2bdd9d5d17b45071e" },
   "vim-flog": { "branch": "master", "commit": "03f6e39050c2a32deca6964291005c6c5c4c73cf" },
   "vim-fugitive": { "branch": "master", "commit": "0444df68cd1cdabc7453d6bd84099458327e5513" },
+  "vim-rbenv": { "branch": "master", "commit": "2961648bcd772b0dc115ff5b5100f7d15b8c499f" },
   "vim-rzip": { "branch": "master", "commit": "f65400fed27b27c7cff7ef8d428c4e5ff749bf28" },
   "which-key.nvim": { "branch": "main", "commit": "6c1584eb76b55629702716995cca4ae2798a9cca" }
 }

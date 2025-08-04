@@ -1,79 +1,4 @@
 return {
-  {
-    "stevearc/conform.nvim",
-    -- This is what NvChad gives us by default but it conflicts with what I've
-    -- added to configs.conform. However, keeping this here temporarily in case
-    -- my changes to configs.conform don't work.
-    -- init = function()
-    --   vim.api.nvim_create_autocmd("BufWritePre", {
-    --     pattern = "*",
-    --     callback = function(args)
-    --       require("conform").format { bufnr = args.buf }
-    --     end,
-    --   })
-    -- end,
-    event = "BufWritePre",
-    config = function()
-      require("configs.conform")
-    end,
-  },
-
-  -- These are some examples, uncomment them if you want to see them work!
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("nvchad.configs.lspconfig").defaults()
-      require("configs.lspconfig")
-    end,
-  },
-
-  {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        -- vim stuff
-        "lua-language-server",
-        "stylua",
-
-        -- web stuff
-        "html-lsp",
-        "css-lsp",
-        "prettier",
-        "eslint-lsp",
-
-        -- cpp stuff
-        "clangd",
-        "codelldb",
-
-        -- rust stuff
-        "rust-analyzer",
-      },
-    },
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-        "json5",
-        "javascript",
-        "typescript",
-        "tsx",
-        "graphql",
-        "markdown",
-        "markdown_inline",
-        "c",
-        "cpp",
-        "rust",
-        "toml",
-      },
-    },
-  },
 
   {
     "nvim-tree/nvim-tree.lua",
@@ -437,6 +362,25 @@ return {
     end,
   },
 
+  {
+    "tpope/vim-rbenv",
+    ft = "ruby",
+  },
+
+  -- Adds node path from nvm when changing nvim's directory.
+  -- This is throwing an error for me at the moment and I need more time debug
+  -- it.
+  -- {
+  --   "pipoprods/nvm.nvim",
+  --   config = true,
+  --   event = {
+  --     -- "DirChangedPre",
+  --     -- "VimLeavePre",
+  --     "DirChanged",
+  --     -- "VimEnter",
+  --   },
+  -- },
+
   -- Toggle Cpp header files
   {
     "jakemason/ouroboros",
@@ -472,37 +416,5 @@ return {
         },
       })
     end,
-  },
-
-  -- Code Companion
-  {
-    "olimorris/codecompanion.nvim",
-    config = true,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionActions" },
-    opts = {
-      strategies = {
-        chat = {
-          adapter = "copilot",
-        },
-        inline = {
-          adapter = "copilot",
-        },
-      },
-      -- TODO Get the copilot token from 1Password:
-      -- https://codecompanion.olimorris.dev/getting-started.html#configuring-an-adapter
-      -- adapters = {
-      --   openai = function()
-      --     return require("codecompanion.adapters").extend("openai", {
-      --       env = {
-      --         api_key = "cmd:op read op://personal/OpenAI/credential --no-newline",
-      --       },
-      --     })
-      --   end,
-      -- },
-    },
   },
 }

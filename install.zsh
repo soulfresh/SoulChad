@@ -198,6 +198,7 @@ done
 # Override some of the default prezto runcoms with my own
 symlink_file zsh/prezto-override/.zpreztorc $HOME/.zpreztorc
 symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
+symlink_file zsh/prezto-override/.zprofile $HOME/.zprofile
 
 # Symlink ZSH Configs
 symlink_dir zsh/.zsh.after $HOME/.zsh.after
