@@ -42,6 +42,8 @@ local options = {
       -- default/round/block/arrow separators work only for default statusline theme
       -- round and block will work for minimal theme only
       separator_style = "default",
+      -- customize the status line to include a CodeCompanion loading status
+      -- order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "lsp", "cwd" },
       order = nil,
       modules = nil,
     },

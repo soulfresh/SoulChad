@@ -87,7 +87,20 @@ return {
       "cmake",
 
       -- swift stuff
-      "sourcekit",
+      sourcekit = {
+        capabilities = {
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
+            },
+          },
+        },
+        -- root_dir = lspconfig.util.root_pattern(
+        --   '.git',
+        --   'Package.swift',
+        --   'compile_commands.json'
+        -- ),
+      },
 
       -- ruby stuff
       -- "ruby_lsp",

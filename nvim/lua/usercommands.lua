@@ -46,3 +46,34 @@ vim.api.nvim_create_user_command(
     end,
     {desc = "Close all floating windows"}
 )
+
+-- vim.api.nvim_create_user_command(
+--   "FlipNavigationHand",
+--   function()
+--     -- Navigation remappings
+--     local navigation_mappings = {
+--       h = "g",
+--       j = "f",
+--       k = "d",
+--       l = "s",
+--     }
+--
+--     -- Conflicting key remappings
+--     local conflicting_mappings = {
+--       g = "h",
+--       f = "h",
+--       d = "k",
+--     }
+--
+--     -- Apply navigation remappings
+--     for original, new in pairs(navigation_mappings) do
+--       vim.api.nvim_set_keymap("n", new, original, { noremap = true, silent = true })
+--     end
+--
+--     -- Apply conflicting key remappings
+--     for original, new in pairs(conflicting_mappings) do
+--       vim.api.nvim_set_keymap("n", new, original, { noremap = true, silent = true })
+--     end
+--   end,
+--   {desc = "Flip navigation keyboard shortcuts to the left hand."}
+-- )

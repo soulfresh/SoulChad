@@ -1,6 +1,8 @@
 tap "homebrew/bundle"
 tap "mulle-kybernetik/software"
 
+brew "1password-cli"
+
 # Tmux 3.3 introduced an issue in my tmux + vim + iterm where cursors would not
 # update between insert and normal mode.
 # https://github.com/tmux/tmux/issues/3218
@@ -52,11 +54,15 @@ brew "ninja"
 # HTTP2 implementation in C
 # brew "nghttp2"
 
-# Languages
 # Rust
 brew "rust"
 # Tool Command Language
 # brew "tcl-tk", link: false
+
+# Swift
+# Allows generating buildServer.json files to integrate XCode projects
+# with sourcekit-lsp
+brew "xcode-build-server"
 
 # General
 # DNS

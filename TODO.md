@@ -21,6 +21,13 @@ See:
 - dc ds dy d! d= d< d> yc yd yo ys y! y= =p =P cd cs co cp
 - TODO Research uppercase letters
 
+### ZSH Environment
+- Currently the install script will install Prezto alongside this repo and then
+  symlink things up. However, Prezto suggests forking that repo to make changes.
+  Should we just add that code to this repo? Or make it a submodule rather than
+  installing it outside this repo and expecting it to be there?
+- We should combine the Yadr ZSH configs and my customizations since we don't
+  need that distinction any more and it just complicates the configurations.
 
 ### Bugs
 

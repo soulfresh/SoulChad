@@ -6,6 +6,8 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
+    -- Use Fidget.nvim to show progress for requests
+    -- "j-hui/fidget.nvim",
     -- inline spinner
     -- This was causing nvim to freeze after the second chat message.
     -- TODO Implement this into my status line:
@@ -19,7 +21,7 @@ return {
     },
     strategies = {
       chat = {
-        adapter = "copilot",
+        adapter = "gemini",
         -- See:
         -- https://github.com/olimorris/codecompanion.nvim/blob/main/lua/codecompanion/adapters/githubmodels.lua
         -- https://github.com/baseddxyz/BASEDDvim/blob/main/lua%2Fplugins%2Fai.lua
@@ -38,7 +40,14 @@ return {
     },
     -- TODO Get the copilot token from 1Password:
     -- https://codecompanion.olimorris.dev/getting-started.html#configuring-an-adapter
-    -- adapters = {
+    adapters = {
+      gemini = function()
+        return require("codecompanion.adapters").extend("gemini", {
+          env = {
+            api_key = "cmd:op read op://Personal/Google Gemini API Key/credential --no-newline",
+          },
+        })
+      end,
     --   openai = function()
     --     return require("codecompanion.adapters").extend("openai", {
     --       env = {
@@ -46,7 +55,7 @@ return {
     --       },
     --     })
     --   end,
-    -- },
+    },
   },
   -- init = function()
   --   -- Integrate with Fidget spinner
