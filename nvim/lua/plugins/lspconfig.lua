@@ -2,12 +2,7 @@ local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
-local lspconfig = require("lspconfig")
-
--- TODO Maybe use lsp-zero instead of this. I'm not sure how well that will play
--- with NvChad though.
--- https://lsp-zero.netlify.app/v4.x/tutorial.html#complete-code
--- local servers = utils.loadLanguageConfigs({ "cpp", "js" }, { "lspconfig", "servers" })
+local lspconfig = require "lspconfig"
 
 local setup = function(servers)
   -- lsps with default config
@@ -15,9 +10,23 @@ local setup = function(servers)
     local name, config
 
     local baseConfig = {
-      on_attach = on_attach,
       on_init = on_init,
       capabilities = capabilities,
+      on_attach = function(_, bufnr)
+        on_attach(_, bufnr)
+
+        vim.keymap.set("n", "[d", function()
+          vim.diagnostic.goto_prev { float = { border = "rounded" } }
+        end, { desc = "LSP Goto prev diagnostic", buffer = bufnr })
+
+        vim.keymap.set("n", "]d", function()
+          vim.diagnostic.goto_next { float = { border = "rounded" } }
+        end, { desc = "LSP Goto next diagnostic", buffer = bufnr })
+
+        vim.keymap.set("n", "<Space>k", function()
+          vim.diagnostic.open_float()
+        end, { desc = "LSP Show diagnostic", buffer = bufnr })
+      end,
     }
 
     if type(value) == "table" then
@@ -36,7 +45,7 @@ local setup = function(servers)
   end
 
   -- Global configs for diagnostics
-  vim.diagnostic.config({
+  vim.diagnostic.config {
     virtual_text = false,
     float = {
       border = "rounded",
@@ -44,7 +53,7 @@ local setup = function(servers)
     signs = {
       severity = { min = vim.diagnostic.severity.WARN },
     },
-  })
+  }
 
   local border = {
     { "╭", "CmpBorder" },
@@ -106,7 +115,7 @@ return {
       -- "ruby_lsp",
       ruby_lsp = {
         mason = false,
-        cmd = { vim.fn.expand("~/.local/share/mise/shims/ruby-lsp") },
+        cmd = { vim.fn.expand "~/.local/share/mise/shims/ruby-lsp" },
         -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby"},
         -- cmd = { vim.fn.expand("~/.local/share/mise/installs/ruby/3.4.4/bin/ruby")},
         -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby-lsp"},
@@ -124,12 +133,12 @@ return {
           formatter = false,
           -- formatter = 'standard',
           -- diagnostics = false,
-        }
+        },
       },
       -- "rubocop",
       rubocop = {
-        cmd = { vim.fn.expand("~/.local/share/mise/shims/rubocop") },
-      }
+        cmd = { vim.fn.expand "~/.local/share/mise/shims/rubocop" },
+      },
     },
   },
   config = function(config)

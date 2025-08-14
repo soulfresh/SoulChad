@@ -14,6 +14,8 @@ NC='\033[0m' # No Color
 
 ROOT=$(cd ..; pwd)
 NVIM_HOME="$HOME/.config/nvim"
+NVIM_CACHE="$HOME/.local/share/nvim"
+NVIM_STATE="$HOME/.local/state/nvim"
 DOTFILES=$(pwd)
 CONFIG="$DOTFILES/nvim"
 
@@ -116,9 +118,30 @@ symlink_multiple_files () {
   done
 }
 
+delete_folder () {
+  local folder=$1
+
+  if [ -d $folder ]
+  then
+    echo "🧹 removing ${GREEN}${folder}${NC}"
+    rm -rf $folder
+  fi
+}
+
 #########
 ### START
 #########
+
+# Clear NVIM cache and state
+declare -a folders=(
+  $NVIM_CACHE
+  $NVIM_STATE
+)
+
+for i in "${folders[@]}"
+do
+  delete_folder "$i"
+done
 
 # Make sure PATH includes .local/bin during this install script
 PATH=$HOME/.local/bin:$PATH

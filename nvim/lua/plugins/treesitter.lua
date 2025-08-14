@@ -32,7 +32,7 @@ return {
 
       -- ruby
       "ruby",
-      "yaml"
+      "yaml",
     },
   },
 }

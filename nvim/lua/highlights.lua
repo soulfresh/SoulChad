@@ -1,4 +1,3 @@
-
 -- TODO Find a better way to organize these?
 return {
   ---@type Base46HLGroupsList
@@ -10,19 +9,19 @@ return {
     -- New lines
     DiffAdd = {
       fg = "green",
-      bg = {"green", "black", 90 },
+      bg = { "green", "black", 90 },
     },
 
     -- Line that has a change in it
     DiffChange = {
-      fg = {"green", "black", 30},
+      fg = { "green", "black", 30 },
       bg = { "green", "black", 97 },
     },
 
     -- The change in a line containing changes
     DiffText = {
-      fg = {"green", "white", 5},
-      bg = {"green", "black", 85}
+      fg = { "green", "white", 5 },
+      bg = { "green", "black", 85 },
     },
 
     -- Removed lines
@@ -32,8 +31,8 @@ return {
     },
 
     -- Change autocomplete border color
-    CmpBorder = { fg = {"blue", "black", 50}, bg = "black" },
-    CmpDocBorder = { fg = {"blue", "black", 50}, bg = "black" },
+    CmpBorder = { fg = { "blue", "black", 50 }, bg = "black" },
+    CmpDocBorder = { fg = { "blue", "black", 50 }, bg = "black" },
     -- Default floating window background
     NormalFloat = { bg = "black" },
   },
@@ -41,11 +40,11 @@ return {
   ---@type HLTable
   add = {
     -- Debug Signs
-    DapBreakpoint = { fg = 'red' },
-    DapBreakpointCondition = { fg = 'orange' },
+    DapBreakpoint = { fg = "red" },
+    DapBreakpointCondition = { fg = "orange" },
     DapBreakpointRejected = { fg = "light_grey" },
-    DapLogPoint = { fg = 'orange' },
-    DapStopped = { fg = 'green' },
+    DapLogPoint = { fg = "orange" },
+    DapStopped = { fg = "green" },
 
     -- NvimTreeOpenedFolderName = { fg = "#green", bold = true },
 
@@ -56,9 +55,13 @@ return {
       fg = "darker_black",
     },
 
-    -- terminal unfocused cursor color
-    TermCursorNC = { bg = { "pink", "black", 30 } },
+    -- The color of the active window separator
+    ColorfulWinSep = { fg = "blue" },
+
     -- terminal focused color
+    Cursor = { bg = "blue" },
     TermCursor = { bg = "green" },
-  }
+    -- non-focused terminal status line
+    StatusLineTermNC = { bg = { "pink", "black", 30 } },
+  },
 }

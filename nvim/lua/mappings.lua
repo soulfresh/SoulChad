@@ -1,420 +1,6 @@
-require("nvchad.mappings")
+require "nvchad.mappings"
 
-vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode", nowait = true })
-
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-
--- NEOVIDE
-vim.g.neovide_scale_factor = 1.0
-function ChangeScaleFactor(delta)
-  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
-  -- TODO Need some way to force a redraw. Currently, this code changes the
-  -- scale factor but the screen doesn't redraw until I move the cursor or type
-  -- enter.
-  -- vim.api.nvim__redraw({flush = true})
-end
-
--- TODO Convert to map function calls
-
-local M = {}
-
-M.general = {
-  i = {
-    -- clipboard
-    ["<D-v>"] = { "<c-r>*", "Paste" },
-
-    -- close floating windows
-    ["<D-k>"] = { "<C-o>:fclose<CR>", "Close the current floating window" },
-  },
-  n = {
-    ["<leader>si"] = {
-      "<cmd> Inspect<CR>",
-      "Show Highlight: show the highlight group name under the cursor.",
-    },
-
-    -- Zoom
-    ["<D-=>"] = {
-      function()
-        ChangeScaleFactor(1.25)
-        -- Simulate pressing Enter to force a redraw
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
-      end,
-      "Zoom In (Neovide)",
-    },
-    ["<D-->"] = {
-      function()
-        ChangeScaleFactor(1 / 1.25)
-        -- Simulate pressing Enter to force a redraw
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
-      end,
-      "Zoom Out (Neovide)",
-    },
-
-    -- buffers
-    ["Q"] = { ":close<CR>", "close window" },
-    ["W"] = { ":wa<CR>", "save all" },
-    --    -- Remove NvChad's buffer close key
-    --    ["<leader>x"] = {},
-    ["<leader>xb"] = {
-      function()
-        require("nvchad.tabufline").close_buffer()
-      end,
-      "Close current buffer",
-    },
-    ["<leader>xo"] = {
-      function()
-        local tb = require("nvchad.tabufline")
-        tb.closeBufs_at_direction("right")
-        tb.closeBufs_at_direction("left")
-      end,
-      "Close other buffers",
-    },
-
-    -- splits
-    ["ss"] = { ":split<CR><C-w>k", "horizontal split" },
-    ["vv"] = { ":vsplit<CR><C-w>h", "vertical split" },
-
-    -- tabs
-    ["<leader>xt"] = {
-      function()
-        require("nvchad.tabufline").closeAllBufs(true)
-      end,
-      "Close current tab",
-    },
-
-    -- window sizing/movement
-    ["<Left>"] = { ":vertical resize -1<CR>", "resize window left" },
-    ["<S-Left>"] = { ":vertical resize -10<CR>", "resize window left" },
-    ["<D-Left>"] = { ":winc H<CR>", "move window left" },
-    ["<Right>"] = { ":vertical resize +1<CR>", "resize window right" },
-    ["<S-Right>"] = { ":vertical resize +10<CR>", "resize window right" },
-    ["<D-Right>"] = { ":winc L<CR>", "move window left" },
-    ["<Up>"] = { ":resize -1<CR>", "resize window up" },
-    ["<S-Up>"] = { ":resize -10<CR>", "resize window up" },
-    ["<D-Up>"] = { ":winc K<CR>", "move window left" },
-    ["<Down>"] = { ":resize +1<CR>", "resize window down" },
-    ["<S-Down>"] = { ":resize +10<CR>", "resize window down" },
-    ["<D-Down>"] = { ":winc J<CR>", "move window left" },
-
-    -- comments
-    -- ["<C-Space>"] = { "<leader>/", "comment line"},
-    ["<leader>/"] = {
-      function()
-        require("Comment.api").toggle.linewise.current()
-      end,
-      "Toggle comment",
-    },
-
-    -- word wrapping
-    ["Space-r"] = { ":set wrap!<CR>", "Toggle word wrapping" },
-
-    -- highlighting
-    ["//"] = { "<cmd> noh <CR>", "no highlight" },
-
-    -- text manipulation
-    ["<leader>sj"] = { ":TSJToggle<CR>", "Split or Join long lines" },
-    ["="] = { "V=", "Auto indent current line." },
-
-    -- themes
-    ["<leader>tt"] = {
-      function()
-        require("base46").toggle_theme()
-      end,
-      "toggle light/dark theme",
-    },
-
-    -- open url
-    ["gx"] = {
-      ":silent execute '!open ' . shellescape(expand('<cfile>'), 1) . ' -a \"Google Chrome\"'<CR>",
-      "open URL under cursor",
-      opts = { silent = true },
-    },
-  },
-  v = {
-    -- comments
-    ["<leader>/"] = {
-      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
-      "Toggle comment",
-    },
-  },
-}
-
-M.navigation = {
-  i = {
-    ["<M-h>"] = {
-      "<S-Left>",
-      "Move cursor left one word",
-    },
-    ["<M-l>"] = {
-      "<S-Right>",
-      "Move cursor right one word",
-    },
-  },
-  n = {
-    -- Cursor movement
-    -- NvChad maps gj/gk to j/k to work around navigating through wrapped lines
-    -- but since I don't use line wrapping, I'm turning that off here.
-    -- See core/mappings.lua for the original functionality.
-    ["j"] = { "j", "Line down" },
-    ["k"] = { "k", "Line up" },
-    ["H"] = { "^", "go to first non-blank character in line" },
-    ["L"] = { "g_", "go to the last non-blank character in line" },
-    ["<D-h>"] = { "zH", "scroll window to left edge" },
-    ["<D-l>"] = { "zL", "scroll window to right edge" },
-    ["<D-L>"] = { "5zL", "scroll window to right edge" },
-    ["<D-k>"] = { "<C-y>", "scroll window to right edge" },
-    ["<D-K>"] = { "5<C-y>", "scroll window to right edge" },
-    ["<D-j>"] = { "<C-e>", "scroll window to left edge" },
-    ["E"] = { "ge", "move to the end of the previous word" },
-
-    -- tabs
-    ["<D-]>"] = { ":tabnext<CR>", "Next tab" },
-    ["<D-[>"] = { ":tabprevious<CR>", "Previous tab" },
-
-    -- LSP
-    ["[d"] = {
-      function()
-        vim.diagnostic.goto_prev({ float = { border = "rounded" } })
-      end,
-      "Goto prev",
-    },
-
-    ["]d"] = {
-      function()
-        vim.diagnostic.goto_next({ float = { border = "rounded" } })
-      end,
-      "Goto next",
-    },
-
-    ["<Space>k"] = {
-      function()
-        vim.diagnostic.open_float()
-      end,
-      "Show diagnostic",
-    },
-  },
-  v = {
-    ["H"] = { "^", "go to first non-blank character in line" },
-    ["L"] = { "g_", "go to the last non-blank character in line" },
-  },
-}
-
-M.telescope = {
-  n = {
-    ["<leader>fb"] = {
-      "<cmd> Telescope buffers only_cwd=true sort_lastused=true sort_mru=true ignore_current_buffer=true<CR>",
-      "Find buffers",
-    },
-    ["<leader>ff"] = { require("telescope").extensions.menufacture.find_files, "Find files" },
-    ["<leader>fw"] = { require("telescope").extensions.menufacture.live_grep, "Live grep" },
-    ["<leader>fo"] = { require("telescope").extensions.menufacture.oldfiles, "Find oldfiles" },
-  },
-}
-
-M.folder_tree = {
-  n = {
-    -- TODO Remove C-n?
-    ["<C-\\>"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
-  },
-}
-
-M.terminals = {
-  n = {
-    ["<Space>ti"] = {
-      function()
-        require("nvchad.term").new({ pos = "float" })
-      end,
-      "toggle floating term",
-    },
-    ["<Space>th"] = {
-      function()
-        require("nvchad.term").new({ pos = "sp" })
-      end,
-    },
-    ["<Space>tv"] = {
-      function()
-        require("nvchad.term").new({ pos = "vsp" })
-      end,
-    },
-
-    ["<leader>cl"] = {
-      -- https://vi.stackexchange.com/questions/21260/how-to-clear-neovim-terminal-buffer
-      function()
-        if vim.bo.buftype == "terminal" then
-          vim.api.nvim_feedkeys("z\r", "n", false)
-          -- TODO Try to get the current scrollback so we can reset to that
-          local scrollback = vim.b.scrollback and vim.b.scrollback or 20000
-          vim.opt.scrollback = 1
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-l>", true, false, true), "t", true)
-          vim.cmd("sleep 100m")
-          vim.opt.scrollback = scrollback
-        end
-      end,
-      "Clear terminal output",
-    },
-  },
-  -- Terminal mode
-  t = {
-    -- disable sending Shift + space because it clears the current line in ZSH
-    -- https://github.com/neovim/neovim/issues/24093
-    ["<S-Space>"] = { "<Space>", "Disable Shift + Space in terminals" },
-    ["<S-Enter>"] = { "<Enter>", "Disable Shift + Enter in terminals" },
-
-    -- navigation in/out of terminal mode
-    ["<Esc><Esc>"] = { "<C-\\><C-N>", "exit terminal mode" },
-    ["<C-h>"] = { "<C-\\><C-N><C-w>h", "leave terminal left" },
-    ["<C-l>"] = { "<C-\\><C-N><C-w>l", "leave terminal right" },
-    ["<C-j>"] = { "<C-\\><C-N><C-w>j", "leave terminal down" },
-    ["<C-k>"] = { "<C-\\><C-N><C-w>k", "leave terminal up" },
-    ["<D-]>"] = { "<C-\\><C-N>gt", "Next tab" },
-    ["<D-[>"] = { "<C-\\><C-N>gT", "Previous tab" },
-
-    -- window sizing/movement
-    ["<S-Left>"] = { "<CMD>vertical resize -10<CR>", "resize window left" },
-    ["<D-Left>"] = { "<CMD>winc H<CR>", "move window left" },
-    ["<S-Right>"] = { "<CMD>vertical resize +10<CR>", "resize window right" },
-    ["<D-Right>"] = { "<CMD>winc L<CR>", "move window left" },
-    ["<S-Up>"] = { "<CMD>resize -10<CR>", "resize window up" },
-    ["<D-Up>"] = { "<CMD>winc K<CR>", "move window left" },
-    ["<S-Down>"] = { "<CMD>resize +10<CR>", "resize window down" },
-    ["<D-Down>"] = { "<CMD>winc J<CR>", "move window left" },
-
-    -- Clipboard
-    ["<D-v>"] = { '<C-\\><C-N>"*pi', "Paste" },
-
-    -- Clear terminal
-    ["<M-l>"] = {
-      function()
-        vim.cmd("set scrollback=1")
-        vim.cmd("sleep 100m")
-        vim.cmd("set scrollback=10000")
-      end,
-      -- ":set scrollback=1 \\| sleep 100m \\| set scrollback=10000<cr>",
-      "Clear terminal output",
-    },
-  },
-  -- Command mode
-  c = {
-    ["<D-v>"] = { "<c-r>*", "Paste" },
-  },
-}
-
-M.git = {
-  n = {
-    ["<leader>gs"] = { "<cmd> G <cr>", "Toggle the Git status view" },
-  },
-}
-
-M.undo = {
-  n = {
-    ["<leader>u"] = { "<cmd> Telescope undo <cr>", "Find Undo: show undo history" },
-  },
-}
-
-M.align = {
-  n = {
-    ["<leader>ta"] = { "<Plug>(EasyAlign)", "Align/tabularize" },
-  },
-  v = {
-    ["<leader>ta"] = { "<Plug>(EasyAlign)", "Align/tabularize" },
-  },
-}
-
--- https://miguelcrespo.co/posts/debugging-javascript-applications-with-neovim/
-M.debug = {
-  n = {
-    -- TODO Terminate an active debug session
-    -- TODO Restart the active debug session
-    -- Provide multiple keybindings for terminals that don't support Meta and Command.
-    -- Continue
-    ["<F5>"] = {
-      function()
-        require("dap").continue()
-      end,
-      "Debug Continue",
-    },
-    ["<D-\\>"] = {
-      function()
-        require("dap").continue()
-      end,
-      "Debug Continue",
-    },
-    -- Close UI
-    ["<leader>xd"] = {
-      function()
-        require("dap").terminate()
-        require("dapui").close()
-      end,
-      "Debug Close UI",
-    },
-    ["<D-|>"] = {
-      function()
-        require("dapui").close()
-      end,
-      "Debug Close UI",
-    },
-    -- Step Over
-    ["<D-'>"] = {
-      function()
-        require("dap").step_over()
-      end,
-      "Debug Step Over",
-    },
-    ["<F10>"] = {
-      function()
-        require("dap").step_over()
-      end,
-      "Debug Step Over",
-    },
-    -- Step Into
-    ["<D-;>"] = {
-      function()
-        require("dap").step_into()
-      end,
-      "Debug Step Into",
-    },
-    ["<F11>"] = {
-      function()
-        require("dap").step_into()
-      end,
-      "Debug Step Into",
-    },
-    -- Step Out
-    ["<D-:>"] = {
-      function()
-        require("dap").step_out()
-      end,
-      "Debug Step Out",
-    },
-    ["<F12>"] = {
-      function()
-        require("dap").step_out()
-      end,
-      "Debug Step Out",
-    },
-    -- Toggle Breakpoint
-    ["<D-b>"] = {
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      "Debug Toggle Breakpoint",
-    },
-    -- Set Conditional Breakpoint
-    ["<D-B>"] = {
-      function()
-        require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end,
-      "Debug Toggle Conditional Breakpoint",
-    },
-    -- Disable Breakpoints
-    ["<D-F8>"] = {
-      function()
-        require("dap")
-      end,
-      "Enable/Disable All Breapoints",
-    },
-  },
-}
+local map = vim.keymap.set
 
 -- NvChad keys to disable
 vim.keymap.del("n", "<C-n>")
@@ -422,22 +8,194 @@ vim.keymap.del("n", "<leader>x")
 vim.keymap.del("n", "<leader>h")
 vim.keymap.del("n", "<leader>v")
 -- vim.keymap.del("n", "<leader>i")
--- Replace these default mappings with the ones for telescope_menufature
-vim.keymap.del("n", "<leader>ff")
-vim.keymap.del("n", "<leader>fw")
-vim.keymap.del("n", "<leader>fo")
 
-for category, modes in pairs(M) do
-  for mode, maps in pairs(modes) do
-    for key, val in pairs(maps) do
-      -- if not val[0] then
-      --   -- TODO This was throwing an error for one of the keymaps
-      --   -- vim.keymap.del(mode, key)
-      -- else
-      local desc = category .. (val[2] and " " .. val[2] or "")
-      local opts = { desc = desc }
-      vim.keymap.set(mode, key, val[1], opts)
-      -- end
-    end
-  end
+---------------------
+-- GENERAL: Insert --
+---------------------
+-- clipboard
+map({ "i", "t" }, "<D-v>", "<c-r>*", { desc = "Paste" })
+-- close floating windows
+map("i", "<D-k>", "<C-o>:fclose<CR>", { desc = "general Close the current floating window" })
+-- movement
+map("i", "<M-h>", "<S-Left>", { desc = "Move cursor left one word" })
+map("i", "<M-l>", "<S-Right>", { desc = "Move cursor right one word" })
+---------------------
+-- GENERAL: Normal --
+---------------------
+-- Commands
+map("n", ";", ":", { desc = "CMD enter command mode", nowait = true })
+
+-- Cursor movement
+-- NvChad maps gj/gk to j/k to work around navigating through wrapped lines
+-- but since I don't use line wrapping, I'm turning that off here.
+-- See core/mappings.lua for the original functionality.
+map("n", "j", "j", { desc = "general Line down" })
+map("n", "k", "k", { desc = "general Line up" })
+map("n", "H", "^", { desc = "general go to first non-blank character in line" })
+map("n", "L", "g_", { desc = "general go to the last non-blank character in line" })
+map("n", "<D-h>", "zH", { desc = "general scroll window to left edge" })
+map("n", "<D-l>", "zL", { desc = "general scroll window to right edge" })
+map("n", "<D-L>", "5zL", { desc = "general scroll window to right edge" })
+map("n", "<D-k>", "<C-y>", { desc = "general scroll window to right edge" })
+map("n", "<D-K>", "5<C-y>", { desc = "general scroll window to right edge" })
+map("n", "<D-j>", "<C-e>", { desc = "general scroll window to left edge" })
+map("n", "E", "ge", { desc = "general move to the end of the previous word" })
+
+-- Highlighting
+map("n", "<leader>si", "<cmd> Inspect<CR>", { desc = "general Show the highlight group name under the cursor." })
+
+-- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+-- Zoom in/out
+vim.g.neovide_scale_factor = 1.0
+function ChangeScaleFactor(delta)
+  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
 end
+
+map("n", "<D-=>", function()
+  ChangeScaleFactor(1.25)
+  -- Simulate pressing Enter to force a redraw
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
+end, { desc = "general Zoom In (Neovide)" })
+map("n", "<D-->", function()
+  ChangeScaleFactor(1 / 1.25)
+  -- Simulate pressing Enter to force a redraw
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
+end, { desc = "general Zoom Out (Neovide)" })
+
+-- Buffers
+map("n", "Q", ":close<CR>", { desc = "general Close window" })
+map("n", "W", ":wa<CR>", { desc = "general Save all" })
+map("n", "<leader>xb", function()
+  require("nvchad.tabufline").close_buffer()
+end, { desc = "general Close current buffer" })
+map("n", "<leader>xo", function()
+  local tb = require "nvchad.tabufline"
+  tb.closeBufs_at_direction "right"
+  tb.closeBufs_at_direction "left"
+end, { desc = "general Close other buffers" })
+
+-- Splits
+map("n", "ss", ":split<CR><C-w>k", { desc = "general Horizontal split" })
+map("n", "vv", ":vsplit<CR><C-w>h", { desc = "general Vertical split" })
+
+-- Tabs
+map("n", "<leader>xt", function()
+  require("nvchad.tabufline").closeAllBufs(true)
+end, { desc = "general Close current tab" })
+map("n", "<D-]>", ":tabnext<CR>", { desc = "general Next tab" })
+map("n", "<D-[>", ":tabprevious<CR>", { desc = "general Previous tab" })
+
+-- window sizing/movement
+map({ "n" }, "<Left>", "<cmd>vertical resize -1<CR>", { desc = "move resize window left" })
+map({ "n", "t" }, "<S-Left>", "<cmd>vertical resize -10<CR>", { desc = "move resize window left" })
+map({ "n", "t" }, "<D-Left>", "<cmd>winc H<CR>", { desc = "move move window left" })
+map({ "n" }, "<Right>", "<cmd>vertical resize +1<CR>", { desc = "move resize window right" })
+map({ "n", "t" }, "<S-Right>", "<cmd>vertical resize +10<CR>", { desc = "move resize window right" })
+map({ "n", "t" }, "<D-Right>", "<cmd>winc L<CR>", { desc = "move move window left" })
+map({ "n" }, "<Up>", "<cmd>resize -1<CR>", { desc = "move resize window up" })
+map({ "n", "t" }, "<S-Up>", "<cmd>resize -10<CR>", { desc = "move resize window up" })
+map({ "n", "t" }, "<D-Up>", "<cmd>winc K<CR>", { desc = "move move window left" })
+map({ "n" }, "<Down>", "<cmd>resize +1<CR>", { desc = "move resize window down" })
+map({ "n", "t" }, "<S-Down>", "<cmd>resize +10<CR>", { desc = "move resize window down" })
+map({ "n", "t" }, "<D-Down>", "<cmd>winc J<CR>", { desc = "move move window left" })
+
+-- word wrapping
+map("n", "Space-r", ":set wrap!<CR>", { desc = "general Toggle word wrapping" })
+
+-- Text manipulation
+map("n", "<leader>sj", ":TSJToggle<CR>", { desc = "general Split or Join long lines" })
+map("n", "=", "V=", { desc = "general Auto indent current line." })
+
+-- themes
+map("n", "<leader>tt", function()
+  require("base46").toggle_theme()
+end, { desc = "toggle light/dark theme" })
+
+---------------------
+-- GENERAL: Visual --
+---------------------
+map(
+  "v",
+  "<leader>/",
+  "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+  { desc = "Toggle comment" }
+)
+map("v", "H", "^", { desc = "go to first non-blank character in line" })
+map("v", "L", "g_", { desc = "go to the last non-blank character in line" })
+
+----------------------
+-- TERMINAL: Insert --
+----------------------
+
+-- disable sending Shift + space because it clears the current line in ZSH
+-- https://github.com/neovim/neovim/issues/24093
+map("t", "<S-Space>", "<Space>", { desc = "Disable Shift + Space in terminals" })
+map("t", "<S-Enter>", "<Enter>", { desc = "Disable Shift + Enter in terminals" })
+-- navigation in/out of terminal mode
+map("t", "<S-Esc>", "<C-\\><C-N>", { desc = "exit terminal mode" })
+map("t", "<C-h>", "<C-\\><C-N><C-w>h", { desc = "leave terminal left" })
+map("t", "<C-l>", "<C-\\><C-N><C-w>l", { desc = "leave terminal right" })
+map("t", "<C-j>", "<C-\\><C-N><C-w>j", { desc = "leave terminal down" })
+map("t", "<C-k>", "<C-\\><C-N><C-w>k", { desc = "leave terminal up" })
+map("t", "<D-]>", "<C-\\><C-N>gt", { desc = "Next tab" })
+map("t", "<D-[>", "<C-\\><C-N>gT", { desc = "Previous tab" })
+-- window sizing/movement
+-- map("t", "<S-Left>", "<CMD>vertical resize -10<CR>", { desc = "resize window left" })
+-- map("t", "<D-Left>", "<CMD>winc H<CR>", { desc = "move window left" })
+-- map("t", "<S-Right>", "<CMD>vertical resize +10<CR>", { desc = "resize window right" })
+-- map("t", "<D-Right>", "<CMD>winc L<CR>", { desc = "move window left" })
+-- map("t", "<S-Up>", "<CMD>resize -10<CR>", { desc = "resize window up" })
+-- map("t", "<D-Up>", "<CMD>winc K<CR>", { desc = "move window left" })
+-- map("t", "<S-Down>", "<CMD>resize +10<CR>", { desc = "resize window down" })
+-- map("t", "<D-Down>", "<CMD>winc J<CR>", { desc = "move window left" })
+-- Clipboard
+-- map("t", "<D-v>", '<C-\\><C-N>"*pi', { desc = "Paste" })
+-- Clear terminal
+map(
+  "t",
+  "<M-l>",
+  function()
+    vim.cmd "set scrollback=1"
+    vim.cmd "sleep 100m"
+    vim.cmd "set scrollback=10000"
+  end,
+  -- ":set scrollback=1 \\| sleep 100m \\| set scrollback=10000<cr>",
+  { desc = "Clear terminal output" }
+)
+
+----------------------
+-- TERMINAL: Normal --
+----------------------
+map("n", "<Space>ti", function()
+  require("nvchad.term").new { pos = "float" }
+end, { desc = "toggle floating term" })
+map("n", "<Space>th", function()
+  require("nvchad.term").new { pos = "sp" }
+end)
+map("n", "<Space>tv", function()
+  require("nvchad.term").new { pos = "vsp" }
+end)
+
+map(
+  "n",
+  "<leader>cl",
+  -- https://vi.stackexchange.com/questions/21260/how-to-clear-neovim-terminal-buffer
+  function()
+    if vim.bo.buftype == "terminal" then
+      vim.api.nvim_feedkeys("z\r", "n", false)
+      -- TODO Try to get the current scrollback so we can reset to that
+      local scrollback = vim.b.scrollback and vim.b.scrollback or 20000
+      vim.opt.scrollback = 1
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-l>", true, false, true), "t", true)
+      vim.cmd "sleep 100m"
+      vim.opt.scrollback = scrollback
+    end
+  end,
+  { desc = "Clear terminal output" }
+)
+
+-----------------------
+-- TERMINAL: Command --
+-----------------------
+map("c", "<D-v>", "<c-r>*", { desc = "Paste" })

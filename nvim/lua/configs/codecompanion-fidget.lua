@@ -1,4 +1,9 @@
-local progress = require("fidget.progress")
+-- This file integrates CodeCompanion with Fidget for showing
+-- load progress.
+-- TODO: Currently, this isn't being used but keeping it in case
+-- I need to bring it back.
+
+local progress = require "fidget.progress"
 
 local M = {}
 
@@ -40,13 +45,13 @@ function M:pop_progress_handle(id)
 end
 
 function M:create_progress_handle(request)
-  return progress.handle.create({
+  return progress.handle.create {
     title = " Requesting assistance (" .. request.data.strategy .. ")",
     message = "In progress...",
     lsp_client = {
       name = M:llm_role_title(request.data.adapter),
     },
-  })
+  }
 end
 
 function M:llm_role_title(adapter)
