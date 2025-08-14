@@ -1,22 +1,39 @@
 ### Dotfile Inspiration
 - https://github.com/BrunoKrugel/dotfiles
 
+### Easy to map keys:
+See:
+- Use `:h {key}` to see default for this key
+- https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87#07an
+- `:h map-which-keys`
+- https://vim.fandom.com/wiki/Unused_keys
+
+- g* (check existing *)
+- [{}]* (check existing *)
+- Space* (seems like a synonyme for `l`)
+- Backspace* (BS seems like a synonyme for `b`)
+- \*
+- |* (default is jump to column number but I would usually use `:go {num}` to
+  jump to a character number in an unprettified text)
+- m! m( m) m= m{ m} m; m: m, m. m/ m? m<CR> m<Space> m<BS> 
+  (https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87#07ad)
+- '! '@ '# '$ '% '<Tab> '<Space>
+- dc ds dy d! d= d< d> yc yd yo ys y! y= =p =P cd cs co cp
+- TODO Research uppercase letters
+
+### ZSH Environment
+- Currently the install script will install Prezto alongside this repo and then
+  symlink things up. However, Prezto suggests forking that repo to make changes.
+  Should we just add that code to this repo? Or make it a submodule rather than
+  installing it outside this repo and expecting it to be there?
+- We should combine the Yadr ZSH configs and my customizations since we don't
+  need that distinction any more and it just complicates the configurations.
+
 ### Bugs
-- Crash on format or deleting more than one screen of data. Norrowing this down
-  to:
-  - plugins
-    - Issue is still exhibited after downgrading all plugins to version on my
-      old laptop. 
-  - nvim version (try 0.9.4)
-  - neovide (try 0.10.4)
-- Slow Git commands
-  This is due to zsh start time. The fix is probably to set the default shell
-  to bash (`:set shell=/bin/bash` or `:set shell=bash`) and then using
-  `:terminal zsh` to open the built in terminal with zsh (will probably
-  need to over ride NVChad's terminal plugin).
-- Copilot-cmp removes my non-copilot results from the menu sometimes
 
 ### General
+- Remap some <leader> keys so I'm using leader less often:
+  Unused single vim keys: https://vim.fandom.com/wiki/Unused_keys
 - Vim Tips plugin: https://github.com/michaelb/vim-tips
   Use this inside of the startup plugin
 - LSP error underline color should better match theme
@@ -45,7 +62,9 @@
   or https://github.com/dmmulroy/tsc.nvim
 - Treesitter context: stop the function name from being clipped when scrolling
   https://github.com/nvim-treesitter/nvim-treesitter-context
-- Turn off coloring plugin in git buffers
+- Turn off coloring plugin in git buffers. For example, we don't want to
+    highlight hex codes in the git status window or Flog window because those are
+    usually not colors but git object names
 
 ### Testing
 - Neotest https://github.com/nvim-neotest/neotest-jest

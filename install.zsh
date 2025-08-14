@@ -14,8 +14,10 @@ NC='\033[0m' # No Color
 
 ROOT=$(cd ..; pwd)
 NVIM_HOME="$HOME/.config/nvim"
+NVIM_CACHE="$HOME/.local/share/nvim"
+NVIM_STATE="$HOME/.local/state/nvim"
 DOTFILES=$(pwd)
-CONFIG="$DOTFILES/nvchad"
+CONFIG="$DOTFILES/nvim"
 
 echo "Using the following paths:"
 echo "NVIM_HOME: $NVIM_HOME"
@@ -116,9 +118,30 @@ symlink_multiple_files () {
   done
 }
 
+delete_folder () {
+  local folder=$1
+
+  if [ -d $folder ]
+  then
+    echo "🧹 removing ${GREEN}${folder}${NC}"
+    rm -rf $folder
+  fi
+}
+
 #########
 ### START
 #########
+
+# Clear NVIM cache and state
+declare -a folders=(
+  $NVIM_CACHE
+  $NVIM_STATE
+)
+
+for i in "${folders[@]}"
+do
+  delete_folder "$i"
+done
 
 # Make sure PATH includes .local/bin during this install script
 PATH=$HOME/.local/bin:$PATH
@@ -198,6 +221,7 @@ done
 # Override some of the default prezto runcoms with my own
 symlink_file zsh/prezto-override/.zpreztorc $HOME/.zpreztorc
 symlink_file zsh/prezto-override/.zshrc $HOME/.zshrc
+symlink_file zsh/prezto-override/.zprofile $HOME/.zprofile
 
 # Symlink ZSH Configs
 symlink_dir zsh/.zsh.after $HOME/.zsh.after
@@ -269,30 +293,39 @@ fi
 # fi
 
 # Clone NvChad along side this folder
-if [ ! -d "../NvChad" ]
-then
-  echo "🚗 cloning NvChad"
-  # git clone https://github.com/NvChad/starter ~/.config/nvim
-  # git clone -b v2.0 https://github.com/soulfresh/NvChad $ROOT/NvChad --depth 1
-  echo "✅ ${GREEN}NvChad${NC} ready"
-else
-  # TODO Update
-  echo "✅ ${GREEN}NvChad${NC} already checked out"
-fi
+# if [ ! -d "../NvChad" ]
+# then
+#   echo "🚗 cloning NvChad"
+#   git clone -b v2.0 https://github.com/soulfresh/NvChad $ROOT/NvChad --depth 1
+#   echo "✅ ${GREEN}NvChad${NC} ready"
+# else
+#   # TODO Update
+#   echo "✅ ${GREEN}NvChad${NC} already checked out"
+# fi
 
 # Symlink nvchad-config into NvChad/lua/custom
-symlink_dir $CONFIG $ROOT/NVChad/lua/custom
+# symlink_dir $CONFIG $ROOT/NVChad/lua/custom
 
-# Symlink tresitter overrides into NVChad/after
-symlink_dir $CONFIG/after $ROOT/NVChad/after
+# Symlink treesitter overrides into NVChad/after
+# symlink_dir $CONFIG/after $ROOT/NVChad/after
 
 # Symlink NvChad into ~/.config/nvim
-symlink_dir $ROOT/NvChad $HOME/.config/nvim
+# symlink_dir $ROOT/NvChad $HOME/.config/nvim
+symlink_dir $CONFIG $NVIM_HOME
 
 # Copy other configs into place
 symlink_dir "$DOTFILES/config/neovide" $HOME/.config
 # cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
+
+# Use Lazy.nvim to install plugins
+# echo "🚗 Installing NVim plugins"
+# nvim --headless +"Lazy install" +q
+# nvim --headless +"Lazy restore" +q
+# nvim --headless +"MasonInstallAll" +q
+# echo "✅ NVim plugins installed"
+
+# TODO Run :checkhealth lazy after install
 
 if [ hadError = true ]
 then
