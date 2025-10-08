@@ -23,11 +23,14 @@ vim.opt.winwidth = 80
 vim.opt.winminwidth = 10
 vim.opt.winheight = 10
 vim.opt.winminheight = 10
+vim.opt.winborder = "rounded"
 -- keep x lines visible above and below cursor at all times
 vim.opt.scrolloff = 10
 -- keep x columns visible left and right of the cursor at all times
 vim.opt.sidescrolloff = 10
 -- vim.opt.termguicolors = true
+-- Turn on line numbers by default
+vim.opt.number = true
 
 -- Override NvChad settings
 -- put cursor wrapping back to the vim defaults

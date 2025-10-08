@@ -1,4 +1,4 @@
-require "nvchad.mappings"
+require("nvchad.mappings")
 
 local map = vim.keymap.set
 
@@ -13,7 +13,8 @@ vim.keymap.del("n", "<leader>v")
 -- GENERAL: Insert --
 ---------------------
 -- clipboard
-map({ "i", "t" }, "<D-v>", "<c-r>*", { desc = "Paste" })
+map("i", "<D-v>", "<c-r>*", { desc = "Paste" })
+map("t", "<D-v>", '<C-\\><C-N>"*pi', { desc = "Paste (in terminal)" })
 -- close floating windows
 map("i", "<D-k>", "<C-o>:fclose<CR>", { desc = "general Close the current floating window" })
 -- movement
@@ -70,14 +71,14 @@ map("n", "<leader>xb", function()
   require("nvchad.tabufline").close_buffer()
 end, { desc = "general Close current buffer" })
 map("n", "<leader>xo", function()
-  local tb = require "nvchad.tabufline"
-  tb.closeBufs_at_direction "right"
-  tb.closeBufs_at_direction "left"
+  local tb = require("nvchad.tabufline")
+  tb.closeBufs_at_direction("right")
+  tb.closeBufs_at_direction("left")
 end, { desc = "general Close other buffers" })
 
 -- Splits
-map("n", "ss", ":split<CR><C-w>k", { desc = "general Horizontal split" })
-map("n", "vv", ":vsplit<CR><C-w>h", { desc = "general Vertical split" })
+map("n", "ss", ":split<CR>", { desc = "general Horizontal split" })
+map("n", "vv", ":vsplit<CR>", { desc = "general Vertical split" })
 
 -- Tabs
 map("n", "<leader>xt", function()
@@ -156,9 +157,9 @@ map(
   "t",
   "<M-l>",
   function()
-    vim.cmd "set scrollback=1"
-    vim.cmd "sleep 100m"
-    vim.cmd "set scrollback=10000"
+    vim.cmd("set scrollback=1")
+    vim.cmd("sleep 100m")
+    vim.cmd("set scrollback=10000")
   end,
   -- ":set scrollback=1 \\| sleep 100m \\| set scrollback=10000<cr>",
   { desc = "Clear terminal output" }
@@ -168,13 +169,13 @@ map(
 -- TERMINAL: Normal --
 ----------------------
 map("n", "<Space>ti", function()
-  require("nvchad.term").new { pos = "float" }
+  require("nvchad.term").new({ pos = "float" })
 end, { desc = "toggle floating term" })
 map("n", "<Space>th", function()
-  require("nvchad.term").new { pos = "sp" }
+  require("nvchad.term").new({ pos = "sp" })
 end)
 map("n", "<Space>tv", function()
-  require("nvchad.term").new { pos = "vsp" }
+  require("nvchad.term").new({ pos = "vsp" })
 end)
 
 map(
@@ -188,7 +189,7 @@ map(
       local scrollback = vim.b.scrollback and vim.b.scrollback or 20000
       vim.opt.scrollback = 1
       vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-l>", true, false, true), "t", true)
-      vim.cmd "sleep 100m"
+      vim.cmd("sleep 100m")
       vim.opt.scrollback = scrollback
     end
   end,

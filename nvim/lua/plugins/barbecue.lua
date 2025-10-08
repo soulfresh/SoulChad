@@ -7,7 +7,7 @@ return {
     "SmiteshP/nvim-navic",
   },
   opts = function()
-    local colors = require("base46").get_theme_tb "base_30"
+    local colors = require("base46").get_theme_tb("base_30")
 
     -- local mix = require("base46.colors").mix
     -- local bg = mix(colors.blue, colors.black, 60)

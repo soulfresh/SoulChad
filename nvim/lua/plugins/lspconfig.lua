@@ -2,7 +2,7 @@ local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
-local lspconfig = require "lspconfig"
+local lspconfig = require("lspconfig")
 
 local setup = function(servers)
   -- lsps with default config
@@ -12,20 +12,24 @@ local setup = function(servers)
     local baseConfig = {
       on_init = on_init,
       capabilities = capabilities,
-      on_attach = function(_, bufnr)
-        on_attach(_, bufnr)
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
 
         vim.keymap.set("n", "[d", function()
-          vim.diagnostic.goto_prev { float = { border = "rounded" } }
+          vim.diagnostic.goto_prev({ float = { border = "rounded" } })
         end, { desc = "LSP Goto prev diagnostic", buffer = bufnr })
 
         vim.keymap.set("n", "]d", function()
-          vim.diagnostic.goto_next { float = { border = "rounded" } }
+          vim.diagnostic.goto_next({ float = { border = "rounded" } })
         end, { desc = "LSP Goto next diagnostic", buffer = bufnr })
 
         vim.keymap.set("n", "<Space>k", function()
           vim.diagnostic.open_float()
         end, { desc = "LSP Show diagnostic", buffer = bufnr })
+
+        vim.keymap.set("n", "<leader>ca", function()
+          vim.lsp.buf.code_action()
+        end, { desc = "LSP Show code actions", buffer = bufnr })
       end,
     }
 
@@ -45,7 +49,7 @@ local setup = function(servers)
   end
 
   -- Global configs for diagnostics
-  vim.diagnostic.config {
+  vim.diagnostic.config({
     virtual_text = false,
     float = {
       border = "rounded",
@@ -53,25 +57,6 @@ local setup = function(servers)
     signs = {
       severity = { min = vim.diagnostic.severity.WARN },
     },
-  }
-
-  local border = {
-    { "╭", "CmpBorder" },
-    { "─", "CmpBorder" },
-    { "╮", "CmpBorder" },
-    { "│", "CmpBorder" },
-    { "╯", "CmpBorder" },
-    { "─", "CmpBorder" },
-    { "╰", "CmpBorder" },
-    { "│", "CmpBorder" },
-  }
-
-  -- Make sure all floating windows have a border
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = border,
-  })
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = border,
   })
 end
 
@@ -115,7 +100,7 @@ return {
       -- "ruby_lsp",
       ruby_lsp = {
         mason = false,
-        cmd = { vim.fn.expand "~/.local/share/mise/shims/ruby-lsp" },
+        cmd = { vim.fn.expand("~/.local/share/mise/shims/ruby-lsp") },
         -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby"},
         -- cmd = { vim.fn.expand("~/.local/share/mise/installs/ruby/3.4.4/bin/ruby")},
         -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby-lsp"},
@@ -137,7 +122,7 @@ return {
       },
       -- "rubocop",
       rubocop = {
-        cmd = { vim.fn.expand "~/.local/share/mise/shims/rubocop" },
+        cmd = { vim.fn.expand("~/.local/share/mise/shims/rubocop") },
       },
     },
   },

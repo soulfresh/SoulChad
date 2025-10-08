@@ -59,7 +59,7 @@ return {
     ColorfulWinSep = { fg = "blue" },
 
     -- terminal focused color
-    Cursor = { bg = "blue" },
+    Cursor = { bg = { "blue", "white", 40 } },
     TermCursor = { bg = "green" },
     -- non-focused terminal status line
     StatusLineTermNC = { bg = { "pink", "black", 30 } },

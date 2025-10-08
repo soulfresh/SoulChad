@@ -1,6 +1,15 @@
 ### Dotfile Inspiration
 - https://github.com/BrunoKrugel/dotfiles
 
+### Post NvChad 2.5 Upgrade
+- ZSH command up is broken:
+  - type a partial command (ex: yarn)
+  - press the up arrow key
+    - this should cycle through my yarn commands
+    - it's currently cycling through the full command history
+- plugin to handle vim.ui.select (snacks.nvim or noice.nvim?)
+- color the terminal cursor?
+
 ### Easy to map keys:
 See:
 - Use `:h {key}` to see default for this key
