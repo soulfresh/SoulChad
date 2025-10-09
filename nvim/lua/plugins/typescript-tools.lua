@@ -1,6 +1,5 @@
 -- Replacement for tsserver lsp config
 -- https://github.com/pmizio/typescript-tools.nvim
-
 local baseDefinitionHandler = vim.lsp.handlers["textDocument/definition"]
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 
@@ -58,7 +57,7 @@ return {
     "typescriptreact",
   },
   config = function()
-    require("typescript-tools").setup {
+    require("typescript-tools").setup({
       -- Load the NvChad LSP config so we get those keybindings and the renamer.
       on_attach = on_attach,
       handlers = handlers,
@@ -113,6 +112,6 @@ return {
           },
         },
       },
-    }
+    })
   end,
 }

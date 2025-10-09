@@ -2,6 +2,7 @@
 - https://github.com/BrunoKrugel/dotfiles
 
 ### Post NvChad 2.5 Upgrade
+- <leader>cc no longer jumps to enclosing scope
 - ZSH command up is broken:
   - type a partial command (ex: yarn)
   - press the up arrow key
