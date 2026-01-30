@@ -5,11 +5,12 @@ return {
   -- event = { "BufRead", "BufWinEnter", "BufNewFile" },
   cmd = { "TSJToggle", "TSJSplit", "TSJJoin" },
   config = function()
-    require("treesj").setup {
+    require("treesj").setup({
       -- https://github.com/Wansmer/treesj#settings
       use_default_keymaps = false,
       max_join_length = 1000,
-    }
+      cursor_behavior = "hold",
+    })
     -- tell treesitter to use the markdown parser for mdx files
     vim.treesitter.language.register("markdown", "mdx")
   end,
