@@ -7,6 +7,7 @@ vim.keymap.del("n", "<C-n>")
 vim.keymap.del("n", "<leader>x")
 vim.keymap.del("n", "<leader>h")
 vim.keymap.del("n", "<leader>v")
+vim.keymap.del("n", "<leader>b")
 -- vim.keymap.del("n", "<leader>i")
 
 ---------------------
@@ -77,7 +78,15 @@ map("n", "<leader>xo", function()
 end, { desc = "general Close other buffers" })
 
 -- Splits
-map("n", "ss", ":split<CR>", { desc = "general Horizontal split" })
+-- split and then move cursor back to the original window and position
+map("n", "ss", function()
+  local view = vim.fn.winsaveview()
+  vim.cmd("split")
+  vim.fn.winrestview(view)
+  vim.cmd("wincmd p")
+  vim.fn.winrestview(view)
+end, { desc = "general Horizontal split" })
+
 map("n", "vv", ":vsplit<CR>", { desc = "general Vertical split" })
 
 -- Tabs

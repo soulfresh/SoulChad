@@ -1,4 +1,4 @@
-require "nvchad.autocmds"
+require("nvchad.autocmds")
 
 -- Set startup directory when VIM loads
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.api.nvim_create_autocmd("TermLeave", {
   pattern = "*",
   callback = function()
-    vim.api.nvim_command "checktime"
+    vim.api.nvim_command("checktime")
   end,
 })
 
