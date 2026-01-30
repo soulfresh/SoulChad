@@ -122,6 +122,15 @@ map("n", "<leader>tt", function()
   require("base46").toggle_theme()
 end, { desc = "toggle light/dark theme" })
 
+-- Telescope
+-- override NvChad's default buffer finder to ignore the current buffer
+vim.keymap.set(
+  "n",
+  "<leader>fb",
+  "<cmd> Telescope buffers only_cwd=true sort_lastused=true sort_mru=true ignore_current_buffer=true<CR>",
+  { desc = "Find buffers" }
+)
+
 ---------------------
 -- GENERAL: Visual --
 ---------------------
