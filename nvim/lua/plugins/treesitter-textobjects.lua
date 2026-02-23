@@ -25,22 +25,22 @@ return {
           set_jumps = true, -- Add jumps to jumplist
           goto_next_start = {
             ["]f"] = "@function.outer",
-            ["]c"] = "@class.outer",
+            ["]k"] = "@class.outer",
             ["]b"] = "@block.outer",
           },
           goto_next_end = {
             ["]F"] = "@function.outer",
-            ["]C"] = "@class.outer",
+            ["]K"] = "@class.outer",
             ["]B"] = "@block.outer",
           },
           goto_previous_start = {
             ["[f"] = "@function.outer",
-            ["[c"] = "@class.outer",
+            ["[k"] = "@class.outer",
             ["[b"] = "@block.outer",
           },
           goto_previous_end = {
             ["[F"] = "@function.outer",
-            ["[C"] = "@class.outer",
+            ["[K"] = "@class.outer",
             ["[B"] = "@block.outer",
           },
         },
