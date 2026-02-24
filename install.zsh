@@ -319,12 +319,21 @@ cp -r "$DOTFILES/config/claude" $HOME/.claude
 # cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 
-# Use Lazy.nvim to install plugins
-# echo "🚗 Installing NVim plugins"
-# nvim --headless +"Lazy install" +q
-# nvim --headless +"Lazy restore" +q
-# nvim --headless +"MasonInstallAll" +q
-# echo "✅ NVim plugins installed"
+# Install plugins and restore to lock file versions
+echo "🚗 Installing/restoring NVim plugins to lock file versions"
+nvim --headless "+Lazy! restore" +qa
+echo "✅ NVim plugins installed"
+
+# Install LSP servers, formatters, and linters via Mason
+echo "🚗 Installing Mason tools"
+nvim --headless "+MasonInstallAll" +qa
+echo "✅ Mason tools installed"
+
+# Run health check
+echo "🩺 Running NVim health check"
+nvim --headless "+checkhealth" "+w! /tmp/nvim-healthcheck.txt" +qa
+cat /tmp/nvim-healthcheck.txt
+rm /tmp/nvim-healthcheck.txt
 
 # TODO Run :checkhealth lazy after install
 
