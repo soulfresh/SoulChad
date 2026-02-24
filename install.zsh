@@ -315,7 +315,11 @@ symlink_dir $CONFIG $NVIM_HOME
 
 # Copy other configs into place
 symlink_dir "$DOTFILES/config/neovide" $HOME/.config
-cp -r "$DOTFILES/config/claude" $HOME/.claude
+mkdir -p "$HOME/.claude"
+mkdir -p "$HOME/.config/claude"
+cp -f "$DOTFILES/config/claude/settings.json" "$HOME/.claude/settings.json"
+cp -f "$DOTFILES/config/claude/notify.sh" "$HOME/.config/claude/notify.sh"
+chmod +x "$HOME/.config/claude/notify.sh"
 # cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 
@@ -349,4 +353,3 @@ if [ "$fullInstall" = true ]; then
   echo "🍏 Changing OSX settings"
   ./misc/osx-settings
 fi
-
