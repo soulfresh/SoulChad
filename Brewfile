@@ -25,6 +25,10 @@ brew "neovim"
 # brew "zsh" # This is now the default shell on OSX
 cask "neovide"
 
+# AI
+# notifier tool used for sending notifications from the command line
+brew install terminal-notifier
+
 # Web Development Tools
 # Installing a system node ensures that shells that don't use my zsh profile
 # will have access to Node even if NVM is not loaded.

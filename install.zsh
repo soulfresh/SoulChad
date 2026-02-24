@@ -315,6 +315,7 @@ symlink_dir $CONFIG $NVIM_HOME
 
 # Copy other configs into place
 symlink_dir "$DOTFILES/config/neovide" $HOME/.config
+cp -r "$DOTFILES/config/claude" $HOME/.claude
 # cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 

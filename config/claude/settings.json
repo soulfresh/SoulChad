@@ -1,0 +1,39 @@
+{
+  "enabledPlugins": {
+    "swift-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": false,
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifer -message 'Claude is requesting permission to access your files.' -title 'Permission Request 🔔' -sound Sosumi"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -message 'Claude has finished working' -title 'Done ✅' -sound default"
+          }
+        ]
+      },
+      {
+        "matcher": "elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifer -message 'Claude would like your attention.' -title 'Claude Request 👋' -sound Ping"
+          }
+        ]
+      }
+    ]
+  }
+}
