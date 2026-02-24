@@ -77,11 +77,14 @@ return {
       "somesass_ls",
 
       -- cpp stuff
+      -- Could move to sourcekit if I need to support mixed C++/Swift projects
+      -- but clangd might be faster and more full featured C++.
       "clangd",
       "cmake",
 
       -- swift stuff
       sourcekit = {
+        filetypes = { "swift" },
         capabilities = {
           workspace = {
             didChangeWatchedFiles = {
