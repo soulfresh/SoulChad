@@ -6,8 +6,31 @@ message="${1:-}"
 sound="${2:-default}"
 title="${3:-Claude Code}"
 
+payload=""
+if [ ! -t 0 ]; then
+  payload="$(cat)"
+fi
+
+if [ -n "$payload" ]; then
+  if command -v jq >/dev/null 2>&1; then
+    payload_message="$(printf '%s' "$payload" | jq -r '.message // empty' 2>/dev/null || true)"
+  else
+    payload_message="$(printf '%s' "$payload" | /usr/bin/python3 -c 'import json,sys
+try:
+    data=json.load(sys.stdin)
+    print(data.get("message",""), end="")
+except Exception:
+    pass
+' 2>/dev/null || true)"
+  fi
+
+  if [ -z "$message" ] && [ -n "${payload_message:-}" ]; then
+    message="$payload_message"
+  fi
+fi
+
 if [ -z "$message" ]; then
-  echo "Usage: $0 <message> [sound] [title]" >&2
+  echo "Usage: $0 [message] [sound] [title] (message can also come from hook stdin JSON)" >&2
   exit 1
 fi
 

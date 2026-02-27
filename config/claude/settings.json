@@ -8,11 +8,11 @@
   "hooks": {
     "Notification": [
       {
-        "matcher": "*",
+        "matcher": "permission_prompt",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude/notify.sh 'Claude would like your attention.' 'Ping' 'Claude Request 👋'"
+            "command": "~/.config/claude/notify.sh '' 'Ping' 'Claude Request 👋'"
           }
         ]
       }

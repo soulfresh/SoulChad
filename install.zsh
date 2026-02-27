@@ -118,6 +118,102 @@ symlink_multiple_files () {
   done
 }
 
+merge_toml_without_duplicate_sections () {
+  local source_file=$1
+  local target_file=$2
+
+  mkdir -p "$(dirname "$target_file")"
+  touch "$target_file"
+
+  /usr/bin/python3 - "$source_file" "$target_file" <<'PY'
+import pathlib
+import re
+import sys
+
+source_path = pathlib.Path(sys.argv[1]).expanduser()
+target_path = pathlib.Path(sys.argv[2]).expanduser()
+
+source_text = source_path.read_text(encoding="utf-8")
+target_text = target_path.read_text(encoding="utf-8") if target_path.exists() else ""
+
+section_re = re.compile(r'^\s*(\[\[?[^\]]+\]\]?)\s*(?:#.*)?$')
+key_re = re.compile(r'^\s*([A-Za-z0-9_.-]+)\s*=')
+
+def parse_blocks(text: str):
+    blocks = []
+    current_header = None
+    current_lines = []
+    for line in text.splitlines(True):
+        m = section_re.match(line)
+        if m:
+            blocks.append((current_header, current_lines))
+            current_header = m.group(1)
+            current_lines = [line]
+        else:
+            current_lines.append(line)
+    blocks.append((current_header, current_lines))
+    return blocks
+
+def existing_headers(text: str):
+    headers = set()
+    for line in text.splitlines():
+        m = section_re.match(line)
+        if m:
+            headers.add(m.group(1))
+    return headers
+
+def top_level_keys(text: str):
+    keys = set()
+    seen_section = False
+    for line in text.splitlines():
+        if section_re.match(line):
+            seen_section = True
+        if seen_section:
+            continue
+        m = key_re.match(line)
+        if m:
+            keys.add(m.group(1))
+    return keys
+
+headers_in_target = existing_headers(target_text)
+top_keys_in_target = top_level_keys(target_text)
+blocks = parse_blocks(source_text)
+append_parts = []
+
+for header, lines in blocks:
+    if not lines:
+        continue
+    if header is None:
+        for line in lines:
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            m = key_re.match(line)
+            if m:
+                key = m.group(1)
+                if key in top_keys_in_target:
+                    continue
+                top_keys_in_target.add(key)
+            if line in target_text:
+                continue
+            append_parts.append(line)
+        continue
+
+    if header in headers_in_target:
+        continue
+    append_parts.extend(lines)
+    headers_in_target.add(header)
+
+if append_parts:
+    merged = target_text
+    if merged and not merged.endswith("\n"):
+        merged += "\n"
+    if merged and not merged.endswith("\n\n"):
+        merged += "\n"
+    merged += "".join(append_parts)
+    target_path.write_text(merged, encoding="utf-8")
+PY
+}
+
 delete_folder () {
   local folder=$1
 
@@ -317,9 +413,14 @@ symlink_dir $CONFIG $NVIM_HOME
 symlink_dir "$DOTFILES/config/neovide" $HOME/.config
 mkdir -p "$HOME/.claude"
 mkdir -p "$HOME/.config/claude"
+mkdir -p "$HOME/.config/codex"
+mkdir -p "$HOME/.codex"
 cp -f "$DOTFILES/config/claude/settings.json" "$HOME/.claude/settings.json"
 cp -f "$DOTFILES/config/claude/notify.sh" "$HOME/.config/claude/notify.sh"
 chmod +x "$HOME/.config/claude/notify.sh"
+cp -f "$DOTFILES/config/codex/notify.sh" "$HOME/.config/codex/notify.sh"
+chmod +x "$HOME/.config/codex/notify.sh"
+merge_toml_without_duplicate_sections "$DOTFILES/config/codex/config.toml" "$HOME/.codex/config.toml"
 # cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 
