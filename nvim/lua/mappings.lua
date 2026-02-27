@@ -204,11 +204,13 @@ map(
     if vim.bo.buftype == "terminal" then
       vim.api.nvim_feedkeys("z\r", "n", false)
       -- TODO Try to get the current scrollback so we can reset to that
-      local scrollback = vim.b.scrollback and vim.b.scrollback or 20000
-      vim.opt.scrollback = 1
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-l>", true, false, true), "t", true)
+      local scrollback = vim.bo.scrollback
+      vim.bo.scrollback = 1
+      if vim.b.terminal_job_id then
+        vim.api.nvim_chan_send(vim.b.terminal_job_id, "\x0c")
+      end
       vim.cmd("sleep 100m")
-      vim.opt.scrollback = scrollback
+      vim.bo.scrollback = scrollback
     end
   end,
   { desc = "Clear terminal output" }
