@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"vim.fn.system\\\\|vim.system\\\\|os_uname\\\\|sysname\\\\|/bin/\\\\|/Users\\\\|\\\\\\\\.exe\\\\|cmd.exe\\\\|powershell\" \"C:\\\\Users\\\\Marc\\\\Development\\\\SoulChad\\\\nvim\\\\lua\")",
+      "Bash(powershell.exe -NoProfile -Command '& { $tokens = $null; $errors = $null; [System.Management.Automation.Language.Parser]::ParseFile\\('\\\\''C:\\\\Users\\\\Marc\\\\Development\\\\SoulChad\\\\uninstall.ps1'\\\\'', [ref]$tokens, [ref]$errors\\); if \\($errors -and $errors.Count -gt 0\\) { $errors | Format-List; exit 1 } else { Write-Host '\\\\''parse OK'\\\\'' } }')",
+      "Bash(scoop search *)",
+      "Bash(scoop info *)",
+      "Bash(powershell *)"
+    ]
+  }
+}

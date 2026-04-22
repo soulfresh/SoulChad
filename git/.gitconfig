@@ -112,7 +112,7 @@
   default = upstream
 [core]
   autocrlf = false
-	excludesfile = /Users/marcwren/.gitignore_global
+	excludesfile = ~/.gitignore_global
   # Use nvim but tell unception not to open nested sessions
   editor = nvim --cmd 'let g:unception_block_while_host_edits=1'
 [advice]

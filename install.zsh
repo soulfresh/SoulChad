@@ -228,17 +228,6 @@ delete_folder () {
 ### START
 #########
 
-# Clear NVIM cache and state
-declare -a folders=(
-  $NVIM_CACHE
-  $NVIM_STATE
-)
-
-for i in "${folders[@]}"
-do
-  delete_folder "$i"
-done
-
 # Make sure PATH includes .local/bin during this install script
 PATH=$HOME/.local/bin:$PATH
 
@@ -250,6 +239,21 @@ select yn in "Yes" "No"; do
     No ) break;;
   esac
 done
+
+# Clear NVIM cache and state on full installs only — otherwise Lazy has to
+# re-clone every plugin on the next headless run (several minutes on a cold
+# cache).
+if [ "$fullInstall" = true ]; then
+  declare -a folders=(
+    $NVIM_CACHE
+    $NVIM_STATE
+  )
+
+  for i in "${folders[@]}"
+  do
+    delete_folder "$i"
+  done
+fi
 
 ## XCode Command Line Tools
 if [ "$fullInstall" = true ]; then
@@ -424,21 +428,25 @@ merge_toml_without_duplicate_sections "$DOTFILES/config/codex/config.toml" "$HOM
 # cp -r $DOTFILES/config/neovide $HOME/.config
 echo "✅ Copied configs into place"
 
-# Install plugins and restore to lock file versions
-echo "🚗 Installing/restoring NVim plugins to lock file versions"
-nvim --headless "+Lazy! restore" +qa
-echo "✅ NVim plugins installed"
+# Install plugins, Mason tooling, and run health check (full install only —
+# these each take minutes on a cold cache and aren't needed when just
+# re-linking configs).
+if [ "$fullInstall" = true ]; then
+  echo "🚗 Installing/restoring NVim plugins to lock file versions"
+  nvim --headless "+Lazy! restore" +qa
+  echo "✅ NVim plugins installed"
 
-# Install LSP servers, formatters, and linters via Mason
-echo "🚗 Installing Mason tools"
-nvim --headless "+MasonInstallAll" +qa
-echo "✅ Mason tools installed"
+  # Install LSP servers, formatters, and linters via Mason
+  echo "🚗 Installing Mason tools"
+  nvim --headless "+MasonInstallAll" +qa
+  echo "✅ Mason tools installed"
 
-# Run health check
-echo "🩺 Running NVim health check"
-nvim --headless "+checkhealth" "+w! /tmp/nvim-healthcheck.txt" +qa
-cat /tmp/nvim-healthcheck.txt
-rm /tmp/nvim-healthcheck.txt
+  # Run health check
+  echo "🩺 Running NVim health check"
+  nvim --headless "+checkhealth" "+w! /tmp/nvim-healthcheck.txt" +qa
+  cat /tmp/nvim-healthcheck.txt
+  rm /tmp/nvim-healthcheck.txt
+fi
 
 # TODO Run :checkhealth lazy after install
 

@@ -1,0 +1,38 @@
+# Windows equivalent of Brewfile. One package per line, comments start with '#'.
+# Consumed by install.ps1 via `scoop install <name>`.
+
+# Fonts — listed first so Neovide renders with icons the first time it opens.
+# From the nerd-fonts bucket (install.ps1 adds it before this loop runs).
+# Installs to the current user (no admin needed); matches `getnf -i FiraCode`
+# in install.zsh. nvim's chadrc.lua sets `guifont = "FiraCode_Nerd_Font:h10"`.
+FiraCode-NF
+
+# Core dev toolchain for C++/Rust work
+llvm
+cmake
+ninja
+git
+ripgrep
+fd
+universal-ctags
+
+# Version manager — activated in the PowerShell profile by install.ps1
+mise
+
+# Rust toolchain. Install via rustup rather than `scoop install rust` so
+# `cargo`, `rustc`, `clippy`, and `rustfmt` all come from the same managed
+# toolchain. install.ps1 will run `rustup default stable` after this lands.
+rustup
+
+# Mason in nvim installs several Node-backed LSPs (prettier, eslint-lsp,
+# tree-sitter-cli, some-sass-language-server). Without Node, MasonInstallAll
+# will report failures for those tools. Harmless for pure C++/Rust work — comment
+# out if you truly don't want Node on this machine.
+nodejs-lts
+
+# Editor — listed so a fresh machine install is self-contained. No-op if you
+# already installed these via scoop.
+neovim
+claude-code
+extras/neovide
+extras/autohotkey

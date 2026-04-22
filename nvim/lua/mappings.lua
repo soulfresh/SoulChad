@@ -1,6 +1,26 @@
 require("nvchad.mappings")
 
-local map = vim.keymap.set
+local is_mac = vim.fn.has("macunix") == 1
+
+-- Wrapper around vim.keymap.set that lets the lhs be either a string or a
+-- `{ mac = "...", win = "..." }` table. Each platform value can itself be a
+-- single key string or a list of keys (all bound to the same rhs). Omit or
+-- set a side to `false`/`nil` to skip binding on that platform.
+local function map(mode, lhs, rhs, opts)
+  if type(lhs) == "table" then
+    lhs = is_mac and lhs.mac or lhs.win
+    if not lhs then
+      return
+    end
+  end
+  if type(lhs) == "table" then
+    for _, key in ipairs(lhs) do
+      vim.keymap.set(mode, key, rhs, opts)
+    end
+  else
+    vim.keymap.set(mode, lhs, rhs, opts)
+  end
+end
 
 -- NvChad keys to disable
 vim.keymap.del("n", "<C-n>")
@@ -14,8 +34,10 @@ vim.keymap.del("n", "<leader>b")
 -- GENERAL: Insert --
 ---------------------
 -- clipboard
-map("i", "<D-v>", "<c-r>*", { desc = "Paste" })
-map("t", "<D-v>", '<C-\\><C-N>"*pi', { desc = "Paste (in terminal)" })
+-- Can't use Ctrl + v on Windows because that would overwrite visual block mode
+-- so we'll have to use Ctrl + Shift + v
+map("i", { mac = "<D-v>", win = "<C-S-v>" }, "<c-r>*", { desc = "Paste" })
+map("t", { mac = "<D-v>", win = { "<C-v>", "<C-S-v>" } }, '<C-\\><C-N>"*pi', { desc = "Paste (in terminal)" })
 -- close floating windows
 map("i", "<D-k>", "<C-o>:fclose<CR>", { desc = "general Close the current floating window" })
 -- movement
@@ -54,12 +76,12 @@ function ChangeScaleFactor(delta)
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
 end
 
-map("n", "<D-=>", function()
+map("n", { mac = "<D-=>", win = "<C-=>" }, function()
   ChangeScaleFactor(1.25)
   -- Simulate pressing Enter to force a redraw
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
 end, { desc = "general Zoom In (Neovide)" })
-map("n", "<D-->", function()
+map("n", { mac = "<D-->", win = "<C-->"}, function()
   ChangeScaleFactor(1 / 1.25)
   -- Simulate pressing Enter to force a redraw
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", true)
@@ -93,22 +115,22 @@ map("n", "vv", ":vsplit<CR>", { desc = "general Vertical split" })
 map("n", "<leader>xt", function()
   require("nvchad.tabufline").closeAllBufs(true)
 end, { desc = "general Close current tab" })
-map("n", "<D-]>", ":tabnext<CR>", { desc = "general Next tab" })
-map("n", "<D-[>", ":tabprevious<CR>", { desc = "general Previous tab" })
+map("n", { mac = "<D-]>", win = "<C-S-]>" }, ":tabnext<CR>", { desc = "general Next tab" })
+map("n", { mac = "<D-[>", win = "<C-S-[>" }, ":tabprevious<CR>", { desc = "general Previous tab" })
 
 -- window sizing/movement
 map({ "n" }, "<Left>", "<cmd>vertical resize -1<CR>", { desc = "move resize window left" })
 map({ "n", "t" }, "<S-Left>", "<cmd>vertical resize -10<CR>", { desc = "move resize window left" })
-map({ "n", "t" }, "<D-Left>", "<cmd>winc H<CR>", { desc = "move move window left" })
+map({ "n", "t" }, { mac = "<D-Left>", win = "<C-Left>" }, "<cmd>winc H<CR>", { desc = "move move window left" })
 map({ "n" }, "<Right>", "<cmd>vertical resize +1<CR>", { desc = "move resize window right" })
 map({ "n", "t" }, "<S-Right>", "<cmd>vertical resize +10<CR>", { desc = "move resize window right" })
-map({ "n", "t" }, "<D-Right>", "<cmd>winc L<CR>", { desc = "move move window left" })
+map({ "n", "t" }, { mac = "<D-Right>", win = "<C-Right>" }, "<cmd>winc L<CR>", { desc = "move move window right" })
 map({ "n" }, "<Up>", "<cmd>resize -1<CR>", { desc = "move resize window up" })
 map({ "n", "t" }, "<S-Up>", "<cmd>resize -10<CR>", { desc = "move resize window up" })
-map({ "n", "t" }, "<D-Up>", "<cmd>winc K<CR>", { desc = "move move window left" })
+map({ "n", "t" }, { mac = "<D-Up>", win = "<C-Up>" }, "<cmd>winc K<CR>", { desc = "move move window up" })
 map({ "n" }, "<Down>", "<cmd>resize +1<CR>", { desc = "move resize window down" })
 map({ "n", "t" }, "<S-Down>", "<cmd>resize +10<CR>", { desc = "move resize window down" })
-map({ "n", "t" }, "<D-Down>", "<cmd>winc J<CR>", { desc = "move move window left" })
+map({ "n", "t" }, { mac = "<D-Down>", win = "<C-Down>" }, "<cmd>winc J<CR>", { desc = "move move window down" })
 
 -- word wrapping
 map("n", "Space-r", ":set wrap!<CR>", { desc = "general Toggle word wrapping" })

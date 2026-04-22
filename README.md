@@ -53,6 +53,63 @@ Run `nvim` to start NvChad or open Neovide if you're using that.
 Run `./uninstall` to remove the NvChad symlinks and restore any previous nvim setup you had. It will not
 remove the NvChad repo clone that was checked out along side this repo. You can do that if you want.
 
+## Windows Setup
+
+Windows support is intentionally minimal — enough to do light C++/Rust work
+with the same nvim config. The zsh layer and Prezto prompt are not ported;
+PowerShell is the expected shell.
+
+Prerequisites:
+
+- [scoop](https://scoop.sh) installed and on PATH
+- PowerShell 5.1 or later (ships with Windows 10/11)
+
+Then, from the repo root in PowerShell:
+
+```powershell
+.\install.ps1
+```
+
+This will:
+
+- Install packages from `Scoopfile` (FiraCode Nerd Font, llvm, cmake, ninja,
+  ripgrep, fd, universal-ctags, mise, rustup, nodejs-lts, neovim, neovide)
+- Run `rustup default stable`
+- Junction `nvim/` into `%LOCALAPPDATA%\nvim` (backs up any existing config)
+- Copy the Neovide config into `%APPDATA%\neovide\`
+- Copy Claude and Codex configs into `%USERPROFILE%\.claude\` and `.codex\`
+- Add `mise activate pwsh` to your PowerShell `$PROFILE`
+- Run `:Lazy! restore` and `:MasonInstallAll` headless
+
+What's skipped on Windows vs macOS:
+
+- Prezto, zsh configs, and all `.zsh.after/*` files
+- Homebrew-only Brewfile entries (ffmpeg, xcode-build-server, watchman,
+  libass/srt/libheif, tesseract, etc.)
+- `misc/osx-settings` (Finder tweaks, dock, etc.)
+- Ruby LSP (`ruby_lsp` / `rubocop`) — gated out of `lspconfig.lua` on Windows
+- `config/claude/notify.sh` and `config/codex/notify.sh` (bash, macOS-only).
+  Claude/Codex notifications will not fire on Windows until these are ported.
+- NerdFonts bootstrap via `getnf` — on Windows the installer pulls
+  `FiraCode-NF` directly from the `nerd-fonts` scoop bucket instead. Other
+  Nerd Fonts can be added ad hoc via `scoop install <font>` from that bucket.
+
+### Uninstall (Windows)
+
+```powershell
+.\uninstall.ps1
+```
+
+Reverses everything `install.ps1` did: uninstalls all scoop packages from
+`Scoopfile`, removes the `extras` and `nerd-fonts` buckets, drops the
+`%LOCALAPPDATA%\nvim` junction (restoring any `.backup`), clears
+`%LOCALAPPDATA%\nvim-data`, deletes the Neovide/Claude/Codex config files it
+copied, strips the mise activation line from `$PROFILE`, and removes
+`~/.rustup`, `~/.cargo`, and `%LOCALAPPDATA%\mise`.
+
+Prompts for y/N confirmation first. Assumes anything matching the above came
+from SoulChad — does not try to preserve pre-existing installs.
+
 ## NerdFonts
 This gives us fonts with ligatures and icons that work with vim. Without this you will see a
 lot of broken icons in vim.

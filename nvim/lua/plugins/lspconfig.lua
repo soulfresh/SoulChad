@@ -60,74 +60,81 @@ local setup = function(servers)
   })
 end
 
+local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+
+local servers = {
+  -- web stuff
+  "html",
+  -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#eslint
+  "eslint",
+  -- Using pmizio/typescript-tools.nvim instead
+  -- "tsserver",
+  -- TODO Try these out
+  -- "css_variables",
+  -- "cssls",
+  -- "css_modules",
+  "somesass_ls",
+
+  -- cpp stuff
+  -- Could move to sourcekit if I need to support mixed C++/Swift projects
+  -- but clangd might be faster and more full featured C++.
+  "clangd",
+  "cmake",
+
+  -- swift stuff
+  sourcekit = {
+    filetypes = { "swift" },
+    capabilities = {
+      workspace = {
+        didChangeWatchedFiles = {
+          dynamicRegistration = true,
+        },
+      },
+    },
+    -- root_dir = lspconfig.util.root_pattern(
+    --   '.git',
+    --   'Package.swift',
+    --   'compile_commands.json'
+    -- ),
+  },
+}
+
+-- Ruby toolchain is managed through mise on Unix; shim paths don't exist on
+-- Windows and Ruby isn't part of the Windows dev workflow.
+if not is_windows then
+  -- "ruby_lsp",
+  servers.ruby_lsp = {
+    mason = false,
+    cmd = { vim.fn.expand("~/.local/share/mise/shims/ruby-lsp") },
+    -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby"},
+    -- cmd = { vim.fn.expand("~/.local/share/mise/installs/ruby/3.4.4/bin/ruby")},
+    -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby-lsp"},
+    -- cmd = {"ruby-lsp"},
+    -- cmd = {
+    --   "bash", "-c", "echo 'Ruby version:' $(~/.local/share/mise/shims/rubocop -v) >> /tmp/ruby_lsp.log && ~/.local/share/mise/shims/ruby-lsp"
+    -- },
+    -- cmd = {
+    --   "bash", "-c", "env >> /tmp/ruby_lsp_env.log && ruby -v >> /tmp/ruby_lsp.log && ~/.local/share/mise/shims/ruby-lsp"
+    -- },
+    -- cmd = {
+    --   "bash", "-c", "ruby -v >> /tmp/ruby_lsp.log && ~/.local/share/mise/shims/ruby-lsp && ~/.local/share/mise/shims/ruby -S rubocop -v >> /tmp/rubocop_version.log"
+    -- },
+    init_options = {
+      formatter = false,
+      -- formatter = 'standard',
+      -- diagnostics = false,
+    },
+  }
+  -- "rubocop",
+  servers.rubocop = {
+    cmd = { vim.fn.expand("~/.local/share/mise/shims/rubocop") },
+  }
+end
+
 return {
   "neovim/nvim-lspconfig",
   opts = {
-    servers = {
-      -- web stuff
-      "html",
-      -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#eslint
-      "eslint",
-      -- Using pmizio/typescript-tools.nvim instead
-      -- "tsserver",
-      -- TODO Try these out
-      -- "css_variables",
-      -- "cssls",
-      -- "css_modules",
-      "somesass_ls",
-
-      -- cpp stuff
-      -- Could move to sourcekit if I need to support mixed C++/Swift projects
-      -- but clangd might be faster and more full featured C++.
-      "clangd",
-      "cmake",
-
-      -- swift stuff
-      sourcekit = {
-        filetypes = { "swift" },
-        capabilities = {
-          workspace = {
-            didChangeWatchedFiles = {
-              dynamicRegistration = true,
-            },
-          },
-        },
-        -- root_dir = lspconfig.util.root_pattern(
-        --   '.git',
-        --   'Package.swift',
-        --   'compile_commands.json'
-        -- ),
-      },
-
-      -- ruby stuff
-      -- "ruby_lsp",
-      ruby_lsp = {
-        mason = false,
-        cmd = { vim.fn.expand("~/.local/share/mise/shims/ruby-lsp") },
-        -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby"},
-        -- cmd = { vim.fn.expand("~/.local/share/mise/installs/ruby/3.4.4/bin/ruby")},
-        -- cmd = { "/Users/marcwren/.local/share/mise/installs/ruby/3.4.4/bin/ruby-lsp"},
-        -- cmd = {"ruby-lsp"},
-        -- cmd = {
-        --   "bash", "-c", "echo 'Ruby version:' $(~/.local/share/mise/shims/rubocop -v) >> /tmp/ruby_lsp.log && ~/.local/share/mise/shims/ruby-lsp"
-        -- },
-        -- cmd = {
-        --   "bash", "-c", "env >> /tmp/ruby_lsp_env.log && ruby -v >> /tmp/ruby_lsp.log && ~/.local/share/mise/shims/ruby-lsp"
-        -- },
-        -- cmd = {
-        --   "bash", "-c", "ruby -v >> /tmp/ruby_lsp.log && ~/.local/share/mise/shims/ruby-lsp && ~/.local/share/mise/shims/ruby -S rubocop -v >> /tmp/rubocop_version.log"
-        -- },
-        init_options = {
-          formatter = false,
-          -- formatter = 'standard',
-          -- diagnostics = false,
-        },
-      },
-      -- "rubocop",
-      rubocop = {
-        cmd = { vim.fn.expand("~/.local/share/mise/shims/rubocop") },
-      },
-    },
+    servers = servers,
   },
   config = function(config)
     require("nvchad.configs.lspconfig").defaults()

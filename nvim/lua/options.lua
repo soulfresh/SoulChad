@@ -48,6 +48,18 @@ vim.opt.guicursor = "n-v-c-sm:block-blinkwait900-blinkoff500-blinkon500-Cursor,i
 -- the terminal.
 -- vim.opt.shell = "/bin/bash"
 
+-- On Windows, use PowerShell for both `:!` commands and `:terminal`.
+if vim.fn.has "win32" == 1 then
+  local pwsh = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell"
+  vim.opt.shell = pwsh
+  vim.opt.shellcmdflag =
+    "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+  vim.opt.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+  vim.opt.shellpipe = '2>&1 | %%{ "$_" } | Tee-Object %s; exit $LastExitCode'
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+end
+
 -- Snippets path relative to $MYVIMRC. You can use ~/ prefixed paths.
 -- See https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md#loaders
 -- vim.g.luasnippets_path = "~/.config/nvim/lua/snippets"

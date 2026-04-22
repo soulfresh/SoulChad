@@ -1,16 +1,13 @@
 require("nvchad.autocmds")
 
--- Set startup directory when VIM loads
+-- Set startup directory to ~/Development when nvim is launched without a file.
 vim.api.nvim_create_autocmd("VimEnter", {
   pattern = "*",
   callback = function()
-    local cwd = vim.fn.getcwd()
-    if cwd == "/" or cwd == "/Users/marcwren" then
-      local root = "~/Development/"
-      if root ~= "" then
-        vim.api.nvim_set_current_dir(root)
-      end
+    if vim.fn.argc() > 0 then
+      return
     end
+    vim.api.nvim_set_current_dir(vim.fn.expand("~/Development"))
   end,
 })
 
