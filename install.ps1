@@ -89,6 +89,27 @@ if ($fullInstall) {
     } else {
         Write-Warn "rustup not on PATH after scoop install; restart your shell and re-run"
     }
+
+    # MSVC Build Tools via winget. Not in the Scoopfile because scoop doesn't
+    # have a clean package for this. The VS installer elevates itself when it
+    # runs, so this will prompt for admin. Idempotent: a no-op if already
+    # installed. ~6 GB download on a fresh machine.
+    Write-Host ""
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+        Write-Warn "winget not on PATH; skipping MSVC Build Tools install. Install winget via the Microsoft Store (App Installer) and re-run."
+    } else {
+        Write-Host "Installing MSVC Build Tools (VCTools workload) via winget"
+        winget install --id Microsoft.VisualStudio.2022.BuildTools `
+            --silent `
+            --accept-package-agreements `
+            --accept-source-agreements `
+            --override "--wait --quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+        # winget returns 0 on success and a non-zero "already installed" code
+        # (-1978335189) when nothing needed to change. Treat both as success.
+        if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne -1978335189) {
+            Write-Warn "winget install of MSVC Build Tools failed (exit $LASTEXITCODE)"
+        }
+    }
 }
 
 # ---------------------------------------------------------------------------
